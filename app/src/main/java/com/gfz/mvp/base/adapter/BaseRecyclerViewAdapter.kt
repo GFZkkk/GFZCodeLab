@@ -17,13 +17,17 @@ import com.gfz.mvp.data.App
  * created by gaofengze on 2020-01-19
  */
 
-abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickIndex: Int = -1) : RecyclerView.Adapter<BaseRecyclerViewHolder<T>>() {
+abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clickIndex: Int = -1) : RecyclerView.Adapter<BaseRecyclerViewHolder<T>>() {
 
     /**
-     *
+     * 主要数据
      */
     private val list: MutableList<T?> = ArrayList()
-
+    /**
+     * 获取数据长度
+     */
+    val length
+        get() = list.size
     /**
      * 当前点击的position
      */
@@ -53,6 +57,10 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
      */
     private val viewHolderLayoutIds: SparseArray<Int> = SparseArray(10)
 
+    init {
+        addAllData(dataList)
+        setClickIndex(clickIndex)
+    }
 
     @NonNull
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
@@ -76,15 +84,15 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
      * @param type 视图类型
      * @param layoutId 视图布局id
      */
-    open fun addItemType(type: Int, layoutId: Int) {
+    protected fun addItemType(type: Int, layoutId: Int) {
         viewHolderLayoutIds.append(type, layoutId)
     }
 
-    open fun setLayoutId(layoutId: Int) {
+    fun setLayoutId(layoutId: Int) {
         viewHolderLayoutIds.append(0, layoutId)
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = length
 
     /**
      * 得到当前点击的itemIndex
@@ -94,7 +102,7 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * 主动设置选中的itemIndex
      */
-    open fun setClickIndex(clickIndex: Int) {
+    protected fun setClickIndex(clickIndex: Int) {
         if (!isItemIndex(clickIndex)) return
         val preClickIndex = this.clickIndex
         this.clickIndex = clickIndex
@@ -107,12 +115,12 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * @return 绑定的数据
      */
-    open fun getData(): List<T?>? = list
+    fun getData(): List<T?>? = list
 
     /**
      * @return 绑定的数据
      */
-    open fun getData(position: Int): T? {
+    fun getData(position: Int): T? {
         return if (isDataIndex(position)) {
             list[position]
         } else null
@@ -170,7 +178,7 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * 添加单个数据
      */
-    open fun addData(data: T?) {
+    fun addData(data: T?) {
         if (needAutoFilterEmptyData && data == null) {
             return
         }
@@ -180,7 +188,7 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * 添加数据列表
      */
-    open fun addAllData(dataList: List<T?>?) {
+    fun addAllData(dataList: List<T?>?) {
         if (dataList != null) {
             if (needAutoFilterEmptyData) {
                 for (data in dataList) {
@@ -190,13 +198,12 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
                 list.addAll(dataList)
             }
         }
-
     }
 
     /**
      * 设置某个位置的数据
      */
-    open fun setData(position: Int, data: T?) {
+    fun setData(position: Int, data: T?) {
         if (isDataIndex(position)) {
             if (data == null && needAutoFilterEmptyData) {
                 removeData(position)
@@ -209,7 +216,7 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * 设置list
      */
-    open fun setDataList(data: List<T>?) {
+    fun setDataList(data: List<T?>?) {
         clear()
         addAllData(data)
     }
@@ -217,13 +224,13 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * 移除某个位置的数据
      */
-    open fun removeData(position: Int) {
+    fun removeData(position: Int) {
         if (isDataIndex(position)) {
             list.removeAt(position)
         }
     }
 
-    open fun getIndex(data: T): Int = list.indexOf(data)
+    fun getIndex(data: T): Int = list.indexOf(data)
 
     /**
      * 刷新添加某个数据后的视图
@@ -236,7 +243,7 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * 刷新添加数据列表后的视图
      */
-    open fun addAll(data: List<T>) {
+    open fun addAll(data: List<T?>) {
         addAllData(data)
         notifyItemRangeInserted(itemCount - data.size, data.size)
     }
@@ -252,7 +259,7 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * 刷新全部数据
      */
-    open fun refresh(data: List<T>?) {
+    open fun refresh(data: List<T?>?) {
         setDataList(data)
         notifyDataSetChanged()
     }
@@ -293,44 +300,30 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * 根据viewType获取view
      */
-    fun getViewByViewType(viewGroup: ViewGroup, viewType: Int): View {
+    protected fun getViewByViewType(viewGroup: ViewGroup, viewType: Int): View {
         return getView(viewGroup, viewHolderLayoutIds[viewType])
     }
 
     /**
      * 获取一个可用的context
      */
-    fun getContext(): Context {
-        return context?: getAppContext()
-    }
-
-    /**
-     * 设置控件显隐
-     */
-    fun setDisplay(view: View, show: Boolean) {
-        view.visibility = if (show) View.VISIBLE else View.GONE
-    }
-
-    /**
-     * 某个view是否显示
-     */
-    fun isDisplay(view: View): Boolean {
-        return view.visibility == View.VISIBLE
-    }
+    fun getContext(): Context = context?: getAppContext()
 
     /**
      * 设置item中控件的点击事件
      */
-    fun setListener(view: View, position: Int) {
+    protected fun setListener(view: View?, position: Int) {
         if (isItemIndex(position)) {
-            view.setOnClickListener { clickEvent(view, position) }
+            view?.setOnClickListener {
+                clickEvent(view, position)
+            }
         }
     }
 
     /**
      * 设置item中控件的点击事件
      */
-    private fun setHolderListener(holder: BaseRecyclerViewHolder<*>) {
+    protected fun setHolderListener(holder: BaseRecyclerViewHolder<*>) {
         val view = holder.itemView
         view.setOnClickListener {
             clickEvent(view, holder.layoutPosition)
@@ -340,7 +333,7 @@ abstract class BaseRecyclerViewAdapter<T>(list: List<T?> = ArrayList(), clickInd
     /**
      * 是否是数组下标
      */
-    open fun isDataIndex(position: Int): Boolean = position in 0 until list.size
+    open fun isDataIndex(position: Int): Boolean = position in 0 until length
 
     /**
      * 是否是item下标

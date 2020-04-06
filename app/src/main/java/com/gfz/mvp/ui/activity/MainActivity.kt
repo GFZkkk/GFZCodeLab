@@ -1,12 +1,12 @@
 package com.gfz.mvp.ui.activity
 
+import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.Test3Adapter
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.model.bean.TestBean
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item_test.*
 
 class MainActivity : BaseActivity() {
 
@@ -15,7 +15,9 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
-
+        tvText.setOnClickListener {
+            startActivity(Intent(this,TestCalendarActivity::class.java))
+        }
     }
 
     override fun initData() {
