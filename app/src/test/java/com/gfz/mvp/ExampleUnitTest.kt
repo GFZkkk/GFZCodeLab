@@ -11,20 +11,17 @@ import org.junit.Test
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
-/*        val a = arrayOf(true,true,false,false)
-        val b = arrayOf(true,false,true,false)
-        for (i in 0..3){
-            print(test(a[i],b[i]))
-            println(" ${!(a[i] xor b[i])}")
-        }*/
-        val x: MutableList<Int?> = ArrayList(10)
-        println(x.count())
+        var list = mutableListOf<Int>(1,2,3,4,5)
+        list.move()
+        list.forEach{
+            print(it)
+        }
 
     }
 
-    fun MutableList<Int>.move(isNext: Boolean = true, num: Int = 3){
-        val partNum = if (isNext) num else 0
+    fun MutableList<Int>.move(isNext: Boolean = true){
+        val num: Int = this.count() / 2
+        val partNum = if (isNext) this.count() - num else 0
         this.filterIndexed { index, _ ->
             !(isNext xor (index < num))
         }.forEachIndexed{ index, v ->

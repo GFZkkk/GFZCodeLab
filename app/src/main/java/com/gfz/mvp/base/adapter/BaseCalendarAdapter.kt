@@ -1,11 +1,8 @@
 package com.gfz.mvp.base.adapter
 
-import android.util.Log
 import com.gfz.mvp.utils.DateUtil
 import com.gfz.mvp.utils.DateUtil.getCurStandardShortDate
 import com.gfz.mvp.utils.TopLog
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -19,7 +16,9 @@ import kotlin.collections.ArrayList
  */
 abstract class BaseCalendarAdapter<T>(sDate: String,
                                       eDate: String,
-                                      nDate: String = getCurStandardShortDate()) :
+                                      nDate: String = getCurStandardShortDate(),
+                                      private val partLimit: Int = 12,
+                                      private val loadNextLimit: Int = 3) :
     BaseRecyclerViewAdapter<T>() {
 
     /**
@@ -43,11 +42,6 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
     private var monthNum = 0
 
     /**
-     * 加载的数据限制
-     */
-    val partLimit = 12
-
-    /**
      * 日历的数据
      */
     private var monthList: MutableList<List<T?>> = ArrayList(partLimit * 2)
@@ -61,11 +55,6 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      * 是否需要分步加载
      */
     private var needLoadPartition = false
-
-    /**
-     * 数据加载边界
-     */
-    val loadNextLimit = 3
 
     /**
      * 当前加载下标
@@ -82,7 +71,11 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
     init {
         startDate = sDate.getDate()
         endDate = eDate.getDate()
-        nowDate = if (compareTo(eDate,nDate) == AFTER) eDate.getDate() else nDate.getDate()
+        nowDate = when {
+            compareTo(eDate,nDate) == AFTER -> eDate.getDate()
+            compareTo(sDate,nDate) == BEFORE -> sDate.getDate()
+            else -> nDate.getDate()
+        }
         //一共加载几个月的数据
         monthNum = (endDate.getYear() - startDate.getYear()) * 12 + endDate.getMonth() - startDate.getMonth() + 1
         //是否需要分步加载
@@ -94,7 +87,6 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
         //分步加载的月份下标
         if (needLoadPartition){
             partFocusIndex = focusMonth % partLimit
-            TopLog.e("$partFocusIndex")
             //最后一段数据和不是第一段数据但坐标处于前半部分的情况需要往后移
             if (focusMonth / partLimit == monthNum / partLimit || partFocusIndex < partLimit / 2 && focusMonth / partLimit != 0){
                 partFocusIndex += partLimit
@@ -190,7 +182,6 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      * 检查每个月的数据
      */
     fun checkMonthList() {
-        TopLog.e("当前位置$partFocusIndex")
         if (needLoadPartition){
             val start = focusMonth - partFocusIndex % partLimit
             if (monthList.count() != 0){
@@ -330,8 +321,9 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
         return s.map { it.toInt() }.toIntArray()
     }
 
-    fun MutableList<List<T?>>.move(isNext: Boolean, num: Int = partLimit){
-        val partNum = if (isNext) num else 0
+    fun MutableList<List<T?>>.move(isNext: Boolean){
+        val num: Int = this.count() / 2
+        val partNum = if (isNext) this.count() - num else 0
         this.filterIndexed { index, _ ->
             !(isNext xor (index < num))
         }.forEachIndexed{ index, v ->

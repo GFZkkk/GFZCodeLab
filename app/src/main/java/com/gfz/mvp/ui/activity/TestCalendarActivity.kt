@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_calendar.*
  * created by gfz on 2020/4/6
  **/
 class TestCalendarActivity: BaseActivity() {
-    private val adapter = TestCalendarAdapter("2020-04-03","2020-04-05")
+    private val adapter = TestCalendarAdapter("2015-04-03","2025-04-05")
     override fun getLayoutId(): Int {
         return R.layout.activity_calendar
     }
