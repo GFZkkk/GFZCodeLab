@@ -3,6 +3,7 @@ package com.gfz.mvp.base.adapter
 import com.gfz.mvp.utils.DateUtil
 import com.gfz.mvp.utils.DateUtil.getCurStandardShortDate
 import com.gfz.mvp.utils.TopLog
+import kotlinx.coroutines.CoroutineScope
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -117,7 +118,6 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      * 看下一个月
      */
     open fun laterMonth() {
-        TopLog.e("${partFocusIndex%partLimit} + $focusMonth + ${focusMonth %partLimit} + $monthNum")
         if (haveNext()) {
             if (needLoadPartition){
                 if (partFocusIndex < partLimit * 2 - 1){
