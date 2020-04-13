@@ -91,7 +91,6 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
             //最后一段数据和不是第一段数据但坐标处于前半部分的情况需要往后移
             if (focusMonth / partLimit == monthNum / partLimit || partFocusIndex < partLimit / 2 && focusMonth / partLimit != 0){
                 partFocusIndex += partLimit
-                TopLog.e("$partFocusIndex")
             }
         }
         //支持不显示上个月数据的情况
