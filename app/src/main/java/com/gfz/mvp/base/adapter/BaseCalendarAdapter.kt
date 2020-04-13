@@ -1,5 +1,6 @@
 package com.gfz.mvp.base.adapter
 
+import android.view.View
 import com.gfz.mvp.utils.DateUtil
 import com.gfz.mvp.utils.DateUtil.getCurStandardShortDate
 import com.gfz.mvp.utils.TopLog
@@ -18,9 +19,10 @@ import kotlin.collections.ArrayList
 abstract class BaseCalendarAdapter<T>(sDate: String,
                                       eDate: String,
                                       nDate: String = getCurStandardShortDate(),
+                                      layoutId: Int,
                                       private val partLimit: Int = 12,
                                       private val loadNextLimit: Int = 3) :
-    BaseRecyclerViewAdapter<T>() {
+    BaseRecyclerViewAdapter<T>(layoutId = layoutId) {
 
     /**
      * 开始时间

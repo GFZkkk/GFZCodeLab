@@ -4,9 +4,28 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 /**
+ * #BaseRecyclerViewAdapter
  * created by gaofengze on 2020-01-19
  */
 
-abstract class BaseRecyclerViewHolder<T>(view : View) : RecyclerView.ViewHolder(view) {
-    abstract fun onBindViewHolder(data : T?, position : Int)
+abstract class BaseRecyclerViewHolder<T>(view: View) : RecyclerView.ViewHolder(view) {
+    /**
+     * 空数据将不被显示
+     */
+    fun bindViewHolder(data: T?, position: Int) {
+        if (data != null){
+            onBindViewHolder(data, position)
+        }else{
+            bindNoDataViewHolder()
+        }
+    }
+
+    /**
+     * 隐藏没有数据的viewholder
+     */
+    open fun bindNoDataViewHolder(){
+        itemView.visibility = View.INVISIBLE
+    }
+
+    abstract fun onBindViewHolder(data : T, position : Int)
 }

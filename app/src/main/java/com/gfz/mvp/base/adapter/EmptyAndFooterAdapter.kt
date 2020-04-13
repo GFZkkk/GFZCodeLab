@@ -7,15 +7,18 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-abstract class EmptyAndFooterAdapter<T>(dataList: List<T?> = ArrayList(), clickIndex: Int = -1): BaseRecyclerViewAdapter<T>(dataList, clickIndex) {
+/**
+ * 自动空布局和足布局的adapter
+ * created by gaofengze on 2020-01-19
+ */
+abstract class EmptyAndFooterAdapter<T>(dataList: List<T?> = ArrayList(), clickIndex: Int = -1):
+    BaseRecyclerViewAdapter<T>(dataList, clickIndex) {
 
-    protected val EMPTY = -1
-    protected val FOOT = -2
+    private val EMPTY = -1
+    private val FOOT = -2
 
-    init {
-        addItemType(EMPTY, getEmptyLayoutId())
-        addItemType(FOOT, getFooterLayoutId())
-    }
+    private var isHaveFootView = false
+    private var isHaveEmptyView = false
 
     override fun getViewHolder(view: View, viewType: Int): BaseRecyclerViewHolder<T> {
          return when (viewType) {
@@ -28,28 +31,30 @@ abstract class EmptyAndFooterAdapter<T>(dataList: List<T?> = ArrayList(), clickI
     abstract fun getEFViewHolder(view: View, viewType: Int): BaseRecyclerViewHolder<T>
 
     override fun getItemCount(): Int {
-        if (isHaveEmpty() && length == 0) return 1
-        return if (isHaveFoot()) length + 1 else length
+        if (isHaveEmptyView && length == 0) return 1
+        return if (isHaveFootView) length + 1 else length
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (isHaveEmpty() && length == 0) return EMPTY
-        return if (isHaveFoot() && length == position) FOOT else 0
+        if (isHaveEmptyView && length == 0) return EMPTY
+        return if (isHaveFootView && length == position) FOOT else 0
     }
 
-    protected open fun getEmptyLayoutId() = 0
-
-    protected open fun getFooterLayoutId() = 0
+    /**
+     * 添加空布局
+     */
+    fun addEmptyLayoutId(layoutId: Int){
+        isHaveEmptyView = true
+        addItemType(EMPTY, layoutId)
+    }
 
     /**
-     * 是否有足布局
+     * 添加足布局
      */
-    protected fun isHaveFoot() = getFooterLayoutId() != 0
-
-    /**
-     * 是否有空布局
-     */
-    protected fun isHaveEmpty() = getEmptyLayoutId() != 0
+    fun addFooterLayoutId(layoutId: Int){
+        isHaveFootView = true
+        addItemType(FOOT, layoutId)
+    }
 
     /**
      * 是否是空布局
@@ -64,6 +69,15 @@ abstract class EmptyAndFooterAdapter<T>(dataList: List<T?> = ArrayList(), clickI
     open fun getFooterViewHolder(view: View) = FooterViewHolder(view)
 
     open fun getEmptyViewHolder(view: View) = EmptyViewHolder(view)
+
+    override fun addAll(data: List<T?>) {
+        addAllData(data)
+        if (isHaveFootView){
+            notifyItemRangeInserted(itemCount - data.size, data.size)
+        }else{
+            notifyItemRangeInserted(itemCount - data.size - 1, data.size)
+        }
+    }
 
     /**
      * 如果是GridLayoutManager布局，空布局需要独占一行
@@ -82,11 +96,6 @@ abstract class EmptyAndFooterAdapter<T>(dataList: List<T?> = ArrayList(), clickI
         }
     }
 
-    override fun addAll(data: List<T?>) {
-        addAllData(data)
-        notifyItemRangeInserted(itemCount - data.size, data.size)
-    }
-
     //针对流式布局
     override fun onViewAttachedToWindow(holder: BaseRecyclerViewHolder<T>) {
         val layoutPosition = holder.layoutPosition
@@ -102,11 +111,15 @@ abstract class EmptyAndFooterAdapter<T>(dataList: List<T?> = ArrayList(), clickI
     }
 
     inner class EmptyViewHolder(itemView: View) : BaseRecyclerViewHolder<T>(itemView) {
-        override fun onBindViewHolder(data: T?, position: Int) {}
+        override fun onBindViewHolder(data: T, position: Int) {
+        }
+
     }
 
     inner class FooterViewHolder(itemView: View) : BaseRecyclerViewHolder<T>(itemView) {
-        override fun onBindViewHolder(data: T?, position: Int) {}
+        override fun onBindViewHolder(data: T, position: Int) {
+        }
+
     }
  }
 
