@@ -19,7 +19,8 @@ import com.gfz.mvp.data.App
  * created by gaofengze on 2020-01-19
  */
 
-abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clickIndex: Int = -1) : RecyclerView.Adapter<BaseRecyclerViewHolder<T>>() {
+abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clickIndex: Int = -1) :
+    RecyclerView.Adapter<BaseRecyclerViewHolder<T>>() {
 
     /**
      * 主要数据
@@ -41,7 +42,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * 点击事件
      */
-    private var listener: OnItemClickListener? = null
+    private var listener: ((View,Int) -> Unit)? = null
     /**
      * 是否自动刷新点击的item
      */
@@ -124,7 +125,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * 主动设置选中的itemIndex
      */
-    protected fun setClickIndex(clickIndex: Int) {
+    protected open fun setClickIndex(clickIndex: Int) {
         if (!isItemIndex(clickIndex)) return
         val preClickIndex = this.clickIndex
         this.clickIndex = clickIndex
@@ -155,7 +156,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      * 绑定点击事件
      * @param listener 点击事件接口
      */
-    fun setOnItemClickListener(listener: OnItemClickListener?) {
+    fun setOnItemClickListener(listener: (view: View,position: Int) -> Unit) {
         this.listener = listener
     }
 
@@ -184,12 +185,12 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      * 设置点击事件
      * @param v 点击的视图
      */
-    open fun clickEvent(v: View?, position: Int) {
+    open fun clickEvent(v: View, position: Int) {
         if (!fastClick() && !click(v, position)) {
             if (needAutoSetClickIndex) {
                 setClickIndex(position)
             }
-            listener?.onClick(v, position)
+            listener?.invoke(v, position)
         }
     }
 
@@ -426,18 +427,20 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     }
 
     /**
-     * 设置控件显示
+     * 设置控件显隐
      */
-    protected open fun setDisplay(view: View, show: Boolean) {
-        view.visibility = if (show) View.VISIBLE else View.GONE
+    fun View.setDisplay(visible: Boolean) {
+        this.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    fun View.setVisible(visible: Boolean) {
+        this.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     /**
-     * 设置控件显示
+     * 某个view是否显示
      */
-    protected open fun setVisible(view: View, show: Boolean) {
-        view.visibility = if (show) View.VISIBLE else View.INVISIBLE
-    }
+    fun View.isDisplay(view: View?): Boolean = view?.visibility == View.VISIBLE
 
     private var lastClickTime: Long = 0
 
