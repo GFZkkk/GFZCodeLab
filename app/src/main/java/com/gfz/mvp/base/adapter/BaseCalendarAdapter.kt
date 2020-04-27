@@ -79,12 +79,12 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
             compareTo(sDate,nDate) == BEFORE -> sDate.getDate()
             else -> nDate.getDate()
         }
-        //一共加载几个月的数据
-        monthNum = (endDate.getYear() - startDate.getYear()) * 12 + endDate.getMonth() - startDate.getMonth() + 1
         //是否需要分步加载
         if (monthNum > partLimit * 2){
             needLoadPartition = true
         }
+        //一共加载几个月的数据
+        monthNum = (endDate.getYear() - startDate.getYear()) * 12 + endDate.getMonth() - startDate.getMonth() + 1
         //当前要显示哪个月
         focusMonth = (nowDate.getYear() - startDate.getYear()) * 12 + nowDate.getMonth() - startDate.getMonth()
         //分步加载的月份下标
