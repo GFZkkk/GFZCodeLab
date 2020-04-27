@@ -323,6 +323,7 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
     }
 
     fun MutableList<List<T?>>.move(isNext: Boolean){
+        require(this.count() > 1)
         val num: Int = this.count() / 2
         val partNum = if (isNext) this.count() - num else 0
         this.filterIndexed { index, _ ->
