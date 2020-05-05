@@ -3,17 +3,17 @@ package com.gfz.mvp.service
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.view.*
+import android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+import android.view.WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.gfz.mvp.R
-import com.gfz.mvp.utils.TopLog
-import com.gfz.mvp.utils.toPX
+import com.gfz.mvp.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -40,11 +40,20 @@ class DrawOverService : Service() {
 
     private val handler = Handler()
 
-    private var timeText : TextView? = null
-    private var ivClose : ImageView? = null
-    private var bg : View? = null
+    private var sum = 0
+    private var key = 100
+    private var start = false
 
-    private val simpleDateFormat = SimpleDateFormat("HH:mm:ss", Locale.CHINESE)
+    private var timeText : TextView? = null
+    private var tvSum : TextView? = null
+    private var tvStart : TextView? = null
+    private var tvBoth : TextView? = null
+    private var tvFirst : TextView? = null
+    private var tvSecond : TextView? = null
+    private var ivClose : ImageView? = null
+    private var bg : ConstraintLayout? = null
+
+    private val simpleDateFormat = SimpleDateFormat("HH:mm:ss:SS", Locale.CHINESE)
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
@@ -53,18 +62,26 @@ class DrawOverService : Service() {
     override fun onCreate() {
         super.onCreate()
         initView()
-        initData()
-        initEvent()
+        countDownLayout?.post {
+            initData()
+            initEvent()
+        }
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         handler.removeCallbacks(updateTime)
+        countDownLayout.apply {
+            windowManager?.removeView(this)
+        }
+
+        super.onDestroy()
+
     }
 
     private fun initData(){
-        timeText?.text = simpleDateFormat.format(Date())
-        ivClose?.setImageResource(R.drawable.close_white)
+        TopLog.e("初始化")
+        stop()
+
     }
 
     private fun initView(){
@@ -78,10 +95,9 @@ class DrawOverService : Service() {
             params?.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         }
         //设置效果为背景透明.
-        params?.format = PixelFormat.RGBA_8888
+//        params?.format = PixelFormat.RGBA_8888
         //设置flags.不可聚焦及不可使用按钮对悬浮窗进行操控.
-        params?.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-
+        params?.flags = FLAG_NOT_FOCUSABLE or FLAG_WATCH_OUTSIDE_TOUCH
         //设置窗口初始停靠位置.
         params?.gravity = Gravity.LEFT or Gravity.TOP
         params?.x = 0
@@ -107,22 +123,62 @@ class DrawOverService : Service() {
         }
         TopLog.i( "状态栏高度为:$statusBarHeight")
 
-        timeText = countDownLayout?.findViewById(R.id.tv_time)
-        ivClose = countDownLayout?.findViewById(R.id.iv_close)
-        bg = countDownLayout?.findViewById(R.id.v_bg)
     }
 
     private fun initEvent(){
+        //绑定控件
+        timeText = countDownLayout?.findViewById(R.id.tv_time)
+        tvSum = countDownLayout?.findViewById(R.id.tv_sum)
+        tvStart = countDownLayout?.findViewById(R.id.tv_start)
+        tvBoth = countDownLayout?.findViewById(R.id.tv_both)
+        tvFirst = countDownLayout?.findViewById(R.id.tv_first)
+        tvSecond = countDownLayout?.findViewById(R.id.tv_second)
+        ivClose = countDownLayout?.findViewById(R.id.iv_close)
+        bg = countDownLayout?.findViewById(R.id.cl_body)
         //移动悬浮窗
         bg?.setOnTouchListener{
                 view, motionEvent ->
-            params?.x = motionEvent.rawX.toInt() - width.toPX() / 2
-            params?.y = motionEvent.rawY.toInt() - height.toPX() / 2 - statusBarHeight
-            windowManager?.updateViewLayout(countDownLayout,params)
+            TopLog.e(motionEvent.action)
+            when (motionEvent.action) {
+
+                MotionEvent.ACTION_MOVE -> {
+                    params?.x = motionEvent.rawX.toInt() - width.toPX() / 2
+                    params?.y = motionEvent.rawY.toInt() - height.toPX() / 2 - statusBarHeight
+                    windowManager?.updateViewLayout(countDownLayout,params)
+                }
+            }
+
             false
         }
         ivClose?.setOnClickListener {
+            TopLog.e("停止服务")
             stopSelf()
+        }
+        tvStart?.setOnClickListener {
+            if (start){
+                stop()
+            }else{
+                key = 100
+                start()
+            }
+        }
+        tvBoth?.setOnClickListener {
+            if (!start){
+                key = 100
+                start()
+            }
+        }
+        tvFirst?.setOnClickListener {
+            if (!start){
+                key = 95
+                start()
+            }
+        }
+        tvSecond?.setOnClickListener {
+            if (!start){
+                key = 105
+                start()
+            }
         }
         handler.post(updateTime)
 
@@ -130,8 +186,45 @@ class DrawOverService : Service() {
 
     private val updateTime = object : Runnable {
         override fun run() {
-            timeText?.text = simpleDateFormat.format(Date())
             handler.postDelayed(this,100)
+            timeText?.text = simpleDateFormat.format(Date())
+            if (start){
+                sum++
+                tvSum?.text = String.format("%.1f", sum / 10.0f)
+                if (sum == key){
+                    stop()
+                }
+
+            }
+
         }
+    }
+
+    private fun start(){
+        tvStart?.text = "暂停"
+        tvStart?.setTextColor(getmColor(R.color.colorAccent))
+        start = true
+        status(false)
+    }
+
+    private fun end(){
+        sum = 0
+        tvStart?.text = "开始"
+        tvStart?.setTextColor(getmColor(R.color.colorPrimary))
+        start = false
+        status(false)
+    }
+
+    private fun stop(){
+        sum = 0
+        start = false
+        status(true)
+    }
+
+    private fun status(start: Boolean){
+        tvStart.setDisplay(!start)
+        tvBoth.setDisplay(start)
+        tvSecond.setDisplay(start)
+        tvFirst.setDisplay(start)
     }
 }

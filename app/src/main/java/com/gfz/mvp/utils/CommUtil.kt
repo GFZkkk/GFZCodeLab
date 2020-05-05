@@ -28,12 +28,12 @@ fun getDrawableWithBounds(resId: Int): Drawable? {
 /**
  * 设置控件显隐
  */
-fun View.setDisplay(visible: Boolean) {
-    this.visibility = if (visible) View.VISIBLE else View.GONE
+fun View?.setDisplay(visible: Boolean) {
+    this?.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
-fun View.setVisible(visible: Boolean) {
-    this.visibility = if (visible) View.VISIBLE else View.GONE
+fun View?.setVisible(visible: Boolean) {
+    this?.visibility = if (visible) View.VISIBLE else View.INVISIBLE
 }
 
 /**
