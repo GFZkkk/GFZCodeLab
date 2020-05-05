@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.gfz.mvp.callback.OnItemClickListener
 import com.gfz.mvp.data.App
 
 
@@ -42,7 +43,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * 点击事件
      */
-    private var listener: ((View,Int) -> Unit)? = null
+    private var listener: OnItemClickListener? = null
     /**
      * 是否自动刷新点击的item
      */
@@ -156,7 +157,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      * 绑定点击事件
      * @param listener 点击事件接口
      */
-    fun setOnItemClickListener(listener: (view: View,position: Int) -> Unit) {
+    fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
     }
 
@@ -190,7 +191,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
             if (needAutoSetClickIndex) {
                 setClickIndex(position)
             }
-            listener?.invoke(v, position)
+            listener?.onClick(v, position)
         }
     }
 
@@ -379,10 +380,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      */
     open fun click(v: View?, position: Int): Boolean = false
 
-    interface OnItemClickListener {
-        fun onClick(v: View?, position: Int)
-    }
-
     /**
      * 根据资源id获取颜色
      */
@@ -409,19 +406,16 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      * 2：文字右边图标
      * 3：文字下边图标
      */
-    protected open fun setCompoundDrawable(
-        view: TextView?,
+    fun TextView?.setIcon(
         resId: Int,
         direction: Int
     ) {
-        if (view != null) {
-            when (direction) {
-                0 -> view.setCompoundDrawables(getDrawableWithBounds(resId), null, null, null)
-                1 -> view.setCompoundDrawables(null, getDrawableWithBounds(resId), null, null)
-                2 -> view.setCompoundDrawables(null, null, getDrawableWithBounds(resId), null)
-                3 -> view.setCompoundDrawables(null, null, null, getDrawableWithBounds(resId))
-                else -> {
-                }
+        when (direction) {
+            0 -> this?.setCompoundDrawables(getDrawableWithBounds(resId), null, null, null)
+            1 -> this?.setCompoundDrawables(null, getDrawableWithBounds(resId), null, null)
+            2 -> this?.setCompoundDrawables(null, null, getDrawableWithBounds(resId), null)
+            3 -> this?.setCompoundDrawables(null, null, null, getDrawableWithBounds(resId))
+            else -> {
             }
         }
     }
@@ -429,18 +423,18 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * 设置控件显隐
      */
-    fun View.setDisplay(visible: Boolean) {
-        this.visibility = if (visible) View.VISIBLE else View.GONE
+    fun View?.setDisplay(visible: Boolean) {
+        this?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
-    fun View.setVisible(visible: Boolean) {
-        this.visibility = if (visible) View.VISIBLE else View.GONE
+    fun View?.setVisible(visible: Boolean) {
+        this?.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     /**
      * 某个view是否显示
      */
-    fun View.isDisplay(view: View?): Boolean = view?.visibility == View.VISIBLE
+    fun View?.isDisplay(): Boolean = this?.visibility == View.VISIBLE
 
     private var lastClickTime: Long = 0
 
