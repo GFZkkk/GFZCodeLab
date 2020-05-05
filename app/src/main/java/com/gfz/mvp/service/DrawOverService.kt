@@ -146,6 +146,10 @@ class DrawOverService : Service() {
                     params?.y = motionEvent.rawY.toInt() - height.toPX() / 2 - statusBarHeight
                     windowManager?.updateViewLayout(countDownLayout,params)
                 }
+                MotionEvent.ACTION_OUTSIDE -> {
+                    TopLog.e("窗口外点击")
+                    stop()
+                }
             }
 
             false
