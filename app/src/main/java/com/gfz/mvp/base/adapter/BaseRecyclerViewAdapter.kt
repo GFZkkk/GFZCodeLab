@@ -7,18 +7,20 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.mvp.callback.OnItemClickListener
 import com.gfz.mvp.data.App
 
 
 /**
+ * RecyclerView的adapter的基类
  * created by gaofengze on 2020-01-19
  */
 
-abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clickIndex: Int = -1) : RecyclerView.Adapter<BaseRecyclerViewHolder<T>>() {
+abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clickIndex: Int = -1) :
+    RecyclerView.Adapter<BaseRecyclerViewHolder<T>>() {
 
     /**
      * 主要数据
@@ -40,7 +42,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * 点击事件
      */
-    private var listener: OnItemClickListener? = null
+    private var listener: ((View,Int) -> Unit)? = null
     /**
      * 是否自动刷新点击的item
      */
@@ -63,6 +65,13 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
         setClickIndex(clickIndex)
     }
 
+    constructor(dataList: List<T?> = ArrayList(),
+                clickIndex: Int = -1,
+                layoutId: Int
+    ) : this(dataList, clickIndex){
+        setLayoutId(layoutId)
+    }
+
     @NonNull
     override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
         val holder = getViewHolder(getViewByViewType(parent, viewType), viewType)
@@ -75,9 +84,12 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      * 绑定点击事件
      */
     override fun onBindViewHolder(@NonNull holder: BaseRecyclerViewHolder<T>, position: Int) {
-        holder.onBindViewHolder(getData(position), position)
+        holder.bindViewHolder(getData(position), position)
     }
 
+    /**
+     * 抽象方法得到子类viewHolder
+     */
     abstract fun getViewHolder(view: View, viewType: Int): BaseRecyclerViewHolder<T>
 
     /**
@@ -89,10 +101,20 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
         viewHolderLayoutIds.append(type, layoutId)
     }
 
-    fun setLayoutId(layoutId: Int) {
+    /**
+     * 设置单布局样式
+     */
+    protected fun setLayoutId(layoutId: Int) {
         viewHolderLayoutIds.append(0, layoutId)
     }
 
+    /**
+     * 获取多布局某个type的布局layoutId
+     */
+    protected fun getLayoutId(type: Int): Int = viewHolderLayoutIds.get(type, -1)
+    /**
+     * 列表长度
+     */
     override fun getItemCount(): Int = length
 
     /**
@@ -103,7 +125,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * 主动设置选中的itemIndex
      */
-    protected fun setClickIndex(clickIndex: Int) {
+    protected open fun setClickIndex(clickIndex: Int) {
         if (!isItemIndex(clickIndex)) return
         val preClickIndex = this.clickIndex
         this.clickIndex = clickIndex
@@ -114,18 +136,14 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     }
 
     /**
-     * @return 绑定的数据
+     * @return 绑定的数据集合
      */
     fun getData(): List<T?>? = list
 
     /**
-     * @return 绑定的数据
+     * @return 绑定的某个位置的数据
      */
-    fun getData(position: Int): T? {
-        return if (isDataIndex(position)) {
-            list[position]
-        } else null
-    }
+    fun getData(position: Int): T? = if (isDataIndex(position)) list[position] else null
 
     /**
      * 主动设置context
@@ -138,7 +156,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      * 绑定点击事件
      * @param listener 点击事件接口
      */
-    fun setOnItemClickListener(listener: OnItemClickListener?) {
+    fun setOnItemClickListener(listener: (view: View,position: Int) -> Unit) {
         this.listener = listener
     }
 
@@ -167,12 +185,12 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      * 设置点击事件
      * @param v 点击的视图
      */
-    open fun clickEvent(v: View?, position: Int) {
-        if (!fastClick(getClickDoubleTime()) && !click(v, position)) {
+    open fun clickEvent(v: View, position: Int) {
+        if (!fastClick() && !click(v, position)) {
             if (needAutoSetClickIndex) {
                 setClickIndex(position)
             }
-            listener?.onClick(v, position)
+            listener?.invoke(v, position)
         }
     }
 
@@ -231,6 +249,9 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
         }
     }
 
+    /**
+     * 列表中某个数据的位置
+     */
     fun getIndex(data: T): Int = list.indexOf(data)
 
     /**
@@ -358,17 +379,83 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      */
     open fun click(v: View?, position: Int): Boolean = false
 
-    private var lastClickTime: Long = 0
-
-    private fun fastClick(dur: Int): Boolean {
-        val time = SystemClock.elapsedRealtime()
-        val timeD = time - lastClickTime
-        if (timeD in 1 until dur) {
-            return true
-        }
-        lastClickTime = time
-        return false
+    interface OnItemClickListener {
+        fun onClick(v: View?, position: Int)
     }
 
+    /**
+     * 根据资源id获取颜色
+     */
+    protected open fun getColor(resId: Int): Int = ContextCompat.getColor(getContext(), resId)
+
+    /**
+     * 根据资源id获取图片
+     */
+    protected open fun getDrawable(resId: Int): Drawable? = ContextCompat.getDrawable(getContext(), resId)
+
+    /**
+     * 根据资源id获取图片
+     */
+    protected open fun getDrawableWithBounds(resId: Int): Drawable? {
+        val drawable = ContextCompat.getDrawable(getContext(), resId)
+        drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
+        return drawable
+    }
+
+    /**
+     * 设置TextView文字旁边的图标
+     * 0：文字左边图标
+     * 1：文字上边图标
+     * 2：文字右边图标
+     * 3：文字下边图标
+     */
+    protected open fun setCompoundDrawable(
+        view: TextView?,
+        resId: Int,
+        direction: Int
+    ) {
+        if (view != null) {
+            when (direction) {
+                0 -> view.setCompoundDrawables(getDrawableWithBounds(resId), null, null, null)
+                1 -> view.setCompoundDrawables(null, getDrawableWithBounds(resId), null, null)
+                2 -> view.setCompoundDrawables(null, null, getDrawableWithBounds(resId), null)
+                3 -> view.setCompoundDrawables(null, null, null, getDrawableWithBounds(resId))
+                else -> {
+                }
+            }
+        }
+    }
+
+    /**
+     * 设置控件显隐
+     */
+    fun View.setDisplay(visible: Boolean) {
+        this.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    fun View.setVisible(visible: Boolean) {
+        this.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
+    /**
+     * 某个view是否显示
+     */
+    fun View.isDisplay(view: View?): Boolean = view?.visibility == View.VISIBLE
+
+    private var lastClickTime: Long = 0
+
+    /**
+     * 防止重复点击
+     */
+    private fun fastClick(): Boolean {
+        val time = SystemClock.elapsedRealtime()
+        return if (time - lastClickTime < getClickDoubleTime()){
+            true
+        }else{
+            lastClickTime = time
+            false
+        }
+
+    }
 
 }

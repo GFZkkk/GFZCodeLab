@@ -21,4 +21,6 @@ abstract class BaseActivity : AppCompatActivity(){
     abstract fun initView()
 
     abstract fun initData()
+
+
 }
