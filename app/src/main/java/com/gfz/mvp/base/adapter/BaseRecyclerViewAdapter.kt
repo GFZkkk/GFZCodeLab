@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.gfz.mvp.callback.OnItemClickListener
 import com.gfz.mvp.data.App
 
 
@@ -356,10 +357,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      * @return 是否消费掉了此次点击事件
      */
     open fun click(v: View?, position: Int): Boolean = false
-
-    interface OnItemClickListener {
-        fun onClick(v: View?, position: Int)
-    }
 
     private var lastClickTime: Long = 0
 

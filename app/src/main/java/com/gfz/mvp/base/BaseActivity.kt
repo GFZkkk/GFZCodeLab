@@ -1,5 +1,6 @@
 package com.gfz.mvp.base
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
