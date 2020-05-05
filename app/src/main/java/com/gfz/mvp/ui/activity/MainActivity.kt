@@ -23,10 +23,12 @@ class MainActivity : BaseActivity() {
         val adapter = Test3Adapter()
         rvList.adapter = adapter
         rvList.layoutManager = LinearLayoutManager(this)
-        adapter.refresh(listOf(TestBean("cc")))
+        adapter.refresh(listOf(TestBean("日历试验区"),TestBean("滑动多选试验区"), TestBean("悬浮计时试验区")))
         adapter.setOnItemClickListener(OnItemClickListener { v, position ->
             when(position){
                 0 -> startActivity(Intent(this, TestCalendarActivity::class.java))
+                1 -> startActivity(Intent(this,TestMultiChooseActivity::class.java))
+                2 -> startActivity(Intent(this,TestCountDown::class.java))
             }
         })
     }
