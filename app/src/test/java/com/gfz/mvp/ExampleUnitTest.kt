@@ -11,11 +11,12 @@ import org.junit.Test
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        var list = mutableListOf<Int>(1,2,3,4,5)
-        list.move()
-        list.forEach{
-            print(it)
-        }
+        println(String.format("%.1f", 3.1))
+//        var list = mutableListOf<Int>(1,2,3,4,5)
+//        list.move()
+//        list.forEach{
+//            print(it)
+//        }
 
     }
 

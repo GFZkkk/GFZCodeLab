@@ -1,13 +1,12 @@
 package com.gfz.mvp.ui.activity
 
 import android.content.Intent
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.Test3Adapter
-import com.gfz.mvp.base.mvp.BaseActivity
+import com.gfz.mvp.base.BaseActivity
+import com.gfz.mvp.callback.OnItemClickListener
 import com.gfz.mvp.model.bean.TestBean
-import com.gfz.mvp.utils.TopLog
-import com.gfz.mvp.utils.getmColor
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -17,23 +16,21 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
-        tvText.setOnClickListener {
-            startActivity(Intent(this,TestCalendarActivity::class.java))
-        }
-        tvMultiChoose.setOnClickListener {
-            startActivity(Intent(this,TestMultiChooseActivity::class.java))
-        }
+
     }
 
     override fun initData() {
         val adapter = Test3Adapter()
         rvList.adapter = adapter
-        rvList.layoutManager = LinearLayoutManager(this,RecyclerView.HORIZONTAL,false)
-        tvText.setTextColor(getmColor(R.color.col_ff7d7d))
-        adapter.refresh(listOf(TestBean("aa"),TestBean("bb"),TestBean("cc"),TestBean("dd"),TestBean("ee")))
-        val helper = PagerSnapHelper()
-        helper.attachToRecyclerView(rvList)
-        TopLog.e("测试")
+        rvList.layoutManager = LinearLayoutManager(this)
+        adapter.refresh(listOf(TestBean("日历试验区"),TestBean("滑动多选试验区"), TestBean("悬浮计时试验区")))
+        adapter.setOnItemClickListener(OnItemClickListener { v, position ->
+            when(position){
+                0 -> startActivity(Intent(this, TestCalendarActivity::class.java))
+                1 -> startActivity(Intent(this,TestMultiChooseActivity::class.java))
+                2 -> startActivity(Intent(this,TestCountDown::class.java))
+            }
+        })
     }
 
 
