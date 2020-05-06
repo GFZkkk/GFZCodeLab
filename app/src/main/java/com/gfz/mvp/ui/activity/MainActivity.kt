@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.recyclerview.widget.*
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.Test3Adapter
-import com.gfz.mvp.base.BaseActivity
+import com.gfz.mvp.base.mvp.BaseActivity
 import com.gfz.mvp.model.bean.TestBean
 import com.gfz.mvp.utils.TopLog
 import com.gfz.mvp.utils.getmColor

@@ -1,4 +1,4 @@
-package com.gfz.mvp.base
+package com.gfz.mvp.base.mvp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -3,8 +3,9 @@ package com.gfz.mvp.ui.activity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestCalendarAdapter
-import com.gfz.mvp.base.BaseActivity
+import com.gfz.mvp.base.mvp.BaseActivity
 import kotlinx.android.synthetic.main.activity_calendar.*
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * created by gfz on 2020/4/6
@@ -16,7 +17,6 @@ class TestCalendarActivity: BaseActivity() {
     }
 
     override fun initView() {
-
         rv_calendar.layoutManager = GridLayoutManager(this,7)
         rv_calendar.adapter = adapter
         tv_pre.setOnClickListener {
