@@ -4,7 +4,8 @@ import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.Test3Adapter
-import com.gfz.mvp.base.BaseActivity
+import com.gfz.mvp.base.mvp.BaseActivity
+
 import com.gfz.mvp.callback.OnItemClickListener
 import com.gfz.mvp.model.bean.TestBean
 import kotlinx.android.synthetic.main.activity_main.*

@@ -41,8 +41,8 @@ class DrawOverService : Service() {
     private val handler = Handler()
 
     private var sum = 0
-    private var key = 100
     private var start = false
+    private var isReady = false
 
     private var timeText : TextView? = null
     private var tvSum : TextView? = null
@@ -80,7 +80,7 @@ class DrawOverService : Service() {
 
     private fun initData(){
         TopLog.e("初始化")
-        stop()
+        reset()
 
     }
 
@@ -147,8 +147,9 @@ class DrawOverService : Service() {
                     windowManager?.updateViewLayout(countDownLayout,params)
                 }
                 MotionEvent.ACTION_OUTSIDE -> {
-                    TopLog.e("窗口外点击")
-                    stop()
+                    if (isReady){
+                        start()
+                    }
                 }
             }
 
@@ -160,28 +161,28 @@ class DrawOverService : Service() {
         }
         tvStart?.setOnClickListener {
             if (start){
-                stop()
+                reset()
             }else{
-                key = 100
+                sum = 100
                 start()
             }
         }
         tvBoth?.setOnClickListener {
             if (!start){
-                key = 100
-                start()
+                sum = 100
+                resume()
             }
         }
         tvFirst?.setOnClickListener {
             if (!start){
-                key = 95
-                start()
+                sum = 95
+                resume()
             }
         }
         tvSecond?.setOnClickListener {
             if (!start){
-                key = 105
-                start()
+                sum = 105
+                resume()
             }
         }
         handler.post(updateTime)
@@ -192,11 +193,11 @@ class DrawOverService : Service() {
         override fun run() {
             handler.postDelayed(this,100)
             timeText?.text = simpleDateFormat.format(Date())
-            if (start){
-                sum++
+            if (start && sum > 0){
+                sum--
                 tvSum?.text = String.format("%.1f", sum / 10.0f)
-                if (sum == key){
-                    stop()
+                if (sum == 0){
+                    reset()
                 }
 
             }
@@ -208,20 +209,21 @@ class DrawOverService : Service() {
         tvStart?.text = "暂停"
         tvStart?.setTextColor(getmColor(R.color.colorAccent))
         start = true
+        isReady = false
         status(false)
     }
 
-    private fun end(){
-        sum = 0
-        tvStart?.text = "开始"
+    private fun resume(){
+        tvStart?.text = "准备中"
         tvStart?.setTextColor(getmColor(R.color.colorPrimary))
         start = false
+        isReady = true
         status(false)
     }
 
-    private fun stop(){
-        sum = 0
+    private fun reset(){
         start = false
+        isReady = false
         status(true)
     }
 
