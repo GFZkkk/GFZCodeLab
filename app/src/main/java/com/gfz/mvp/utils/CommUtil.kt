@@ -9,18 +9,18 @@ import com.gfz.mvp.data.App
 /**
  * 根据资源id获取颜色
  */
-fun getmColor(resId: Int) = ContextCompat.getColor(App.appContext, resId)
+fun Context.getCompatColor(resId: Int) = ContextCompat.getColor(this, resId)
 
 /**
  * 根据资源id获取图片
  */
-fun getmDrawable(resId: Int): Drawable? = ContextCompat.getDrawable(App.appContext, resId)
+fun Context.getCompatDrawable(resId: Int) = ContextCompat.getDrawable(this, resId)
 
 /**
  * 根据资源id获取图片
  */
-fun getDrawableWithBounds(resId: Int): Drawable? {
-    val drawable = ContextCompat.getDrawable(App.appContext, resId)
+fun Context.getDrawableWithBounds(resId: Int): Drawable? {
+    val drawable = this.getCompatDrawable(resId)
     drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
     return drawable
 }

@@ -416,6 +416,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
             2 -> this?.setCompoundDrawables(null, null, getDrawableWithBounds(resId), null)
             3 -> this?.setCompoundDrawables(null, null, null, getDrawableWithBounds(resId))
             else -> {
+                this?.setCompoundDrawables(null, null, null, null)
             }
         }
     }

@@ -207,7 +207,7 @@ class DrawOverService : Service() {
 
     private fun start(){
         tvStart?.text = "暂停"
-        tvStart?.setTextColor(getmColor(R.color.colorAccent))
+        tvStart?.setTextColor(getCompatColor(R.color.colorAccent))
         start = true
         isReady = false
         status(false)
@@ -215,7 +215,7 @@ class DrawOverService : Service() {
 
     private fun resume(){
         tvStart?.text = "准备中"
-        tvStart?.setTextColor(getmColor(R.color.colorPrimary))
+        tvStart?.setTextColor(getCompatColor(R.color.colorPrimary))
         start = false
         isReady = true
         status(false)
