@@ -28,8 +28,6 @@ class TestCalendarAdapter(sDate: String, eDate: String):
     inner class ViewHolder(view: View) : BaseRecyclerViewHolder<BaseCalendarBean>(view) {
         override fun onBindViewHolder(data: BaseCalendarBean, position: Int) {
             itemView.tv_date.text = data.date.getDay().toString()
-            var textView : TextView? = null
-            textView.setIcon(R.drawable.bg_switch_thumb,2)
         }
     }
 }
