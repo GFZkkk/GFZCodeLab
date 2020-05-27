@@ -1,6 +1,5 @@
 package com.gfz.mvp.base.adapter
 
-import android.view.View
 import com.gfz.mvp.utils.DateUtil
 import com.gfz.mvp.utils.DateUtil.getCurStandardShortDate
 import com.gfz.mvp.utils.TopLog
@@ -19,7 +18,7 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
                                       eDate: String,
                                       nDate: String = getCurStandardShortDate(),
                                       layoutId: Int,
-                                      private val partLimit: Int = 12,
+                                      private val partLimit: Int = 10,
                                       private val loadNextLimit: Int = 3) :
     BaseRecyclerViewAdapter<T>(layoutId = layoutId) {
 
@@ -188,7 +187,7 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
                 if(partFocusIndex <= loadNextLimit && focusMonth / partLimit != 0){
                     TopLog.e("数据区后移")
                     monthList.move(true)
-                    loadDataList(start, 0, partLimit )
+                    loadDataList(start, 0, partLimit)
                     partFocusIndex += partLimit
                 }else if(partFocusIndex >= partLimit * 2 - loadNextLimit && focusMonth / partLimit != monthNum / partLimit){
                     TopLog.e("数据区前移")
@@ -198,7 +197,7 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
                 }
             }else{
                 //如果下标靠前且不是第一序列则数据区加载到后半部分
-                if (focusMonth > partLimit && partFocusIndex % partLimit < partLimit /2){
+                if (focusMonth > partLimit && partFocusIndex % partLimit < partLimit / 2){
                     loadDataList(start - partLimit, 0, partLimit * 2)
                 }else{
                     loadDataList(start, 0, partLimit * 2)
