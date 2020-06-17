@@ -17,7 +17,6 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initView() {
-
     }
 
     override fun initData() {

@@ -9,15 +9,83 @@ import org.junit.Test
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
     @Test
     fun addition_isCorrect() {
-        println(String.format("%.1f", 3.1))
-//        var list = mutableListOf<Int>(1,2,3,4,5)
-//        list.move()
-//        list.forEach{
-//            print(it)
-//        }
+        buildApi(listOf(
+            ApiBean("/experience/get_latest_exp_list.do","心得")
+        ))
 
+    }
+
+    private fun buildApi(url: List<ApiBean>){
+        url.forEach {
+            buildApi(it)
+        }
+        println()
+        url.forEach {
+            bulidApiIml(it)
+        }
+
+    }
+
+    private fun buildApi(bean: ApiBean){
+        val url = bean.url
+        val tip = bean.tip
+        val funName = getFunNameByUrl(url)
+        val api = "/**\n" +
+                "     * $tip\n" +
+                "     */\n" +
+                "    @FormUrlEncoded\n" +
+                "    @POST(\"$url\")\n" +
+                "    Single<ResponseBody> $funName(@FieldMap Map<String,Object> params);"
+        println(api)
+        println()
+    }
+
+    private fun bulidApiIml(bean: ApiBean){
+        val url = bean.url
+        val tip = bean.tip
+        val funName = getFunNameByUrl(url)
+        val apiIml =" /**\n" +
+                "     * $tip\n" +
+                "     */\n" +
+                "    public Subscription $funName(Map<String, Object> map , SingleSubscriber<String> observer){\n" +
+                "        return ApiManager.baseInstance().$funName(map)\n" +
+                "                .map(new Func1<ResponseBody, String>() {\n" +
+                "                    @Override\n" +
+                "                    public String call(ResponseBody responseBody) {\n" +
+                "                        return handleResponse(responseBody);\n" +
+                "                    }\n" +
+                "                })\n" +
+                "                .subscribeOn(Schedulers.io())\n" +
+                "                .observeOn(AndroidSchedulers.mainThread())\n" +
+                "                .subscribe(observer);\n" +
+                "    }"
+        println(apiIml)
+        println()
+    }
+
+    private fun getFunNameByUrl(url: String): String{
+        val funNameList = url.split("/")
+        val snake = funNameList[funNameList.size - 1].split(".")[0]
+        return getLowerCamelCase(snake)
+    }
+
+    private fun getLowerCamelCase(str: String): String{
+        val word = str.toLowerCase().split("_")
+        var result = ""
+        word.forEach {
+            if(it.isNotBlank()){
+                if (result.isNotBlank()){
+                    result += it[0] - 32
+                    result += it.substring(1)
+                }else{
+                    result += it
+                }
+            }
+        }
+        return result
     }
 
     fun MutableList<Int>.move(isNext: Boolean = true){
@@ -29,4 +97,6 @@ class ExampleUnitTest {
             this[index + partNum] = v
         }
     }
+
+    data class ApiBean(val url: String, val tip: String)
 }
