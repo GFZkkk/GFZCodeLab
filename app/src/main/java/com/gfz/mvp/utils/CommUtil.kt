@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.gfz.mvp.data.App
+import java.util.*
 
 /**
  * 根据资源id获取颜色
@@ -51,35 +52,20 @@ fun Int.toPX(context: Context = App.appContext): Int = (this * context.resources
  */
 fun Int.toDP(context: Context = App.appContext): Int = (this / context.resources.displayMetrics.density + 0.5f).toInt()
 
-fun getCamelCase(underScoreCase: String): String? {
-    val str = underScoreCase.split("_").toTypedArray()
-    val stringBuilder = StringBuilder()
-    for (i in str.indices) {
-        val s = str[i]
-        if (s.isNotEmpty()) {
-            if (i == 0) {
-                stringBuilder.append(s)
-            } else {
-                stringBuilder.append(stringChange(s))
+fun getLowerCamelCase(str: String): String{
+    val word = str.toLowerCase(Locale.getDefault()).split("_")
+    val result = StringBuilder()
+    word.forEach {
+        if(it.isNotBlank()){
+            if (result.isNotBlank()){
+                result.append(it[0] - 32)
+                result.append(it.substring(1))
+            }else{
+                result.append(it)
             }
         }
     }
-    return stringBuilder.toString()
+    return result.toString()
 }
 
-fun stringChange(s: String): String? {
-    val c = s.toCharArray()
-    for (i in s.indices) {
-        if (i == 0) {
-            if (c[i] in 'a'..'z') {
-                c[i] = Character.toUpperCase(c[i])
-            }
-        } else {
-            if (c[i] in 'A'..'Z') {
-                c[i] = Character.toLowerCase(c[i])
-            }
-        }
-    }
-    return String(c)
-}
 

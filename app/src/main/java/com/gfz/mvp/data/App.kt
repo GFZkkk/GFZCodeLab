@@ -2,6 +2,7 @@ package com.gfz.mvp.data
 
 import android.app.Application
 import android.content.Context
+import com.gfz.mvp.utils.TopLog
 import kotlin.properties.Delegates
 
 /**
@@ -16,5 +17,6 @@ class App: Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = this
+        TopLog.init(true)
     }
 }

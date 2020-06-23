@@ -1,5 +1,6 @@
 package com.gfz.mvp
 
+import com.gfz.mvp.utils.stringChange
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
@@ -15,7 +16,6 @@ class ExampleUnitTest {
         buildApi(listOf(
             ApiBean("/experience/get_latest_exp_list.do","心得")
         ))
-
     }
 
     private fun buildApi(url: List<ApiBean>){
@@ -74,18 +74,34 @@ class ExampleUnitTest {
 
     private fun getLowerCamelCase(str: String): String{
         val word = str.toLowerCase().split("_")
-        var result = ""
+        var result = StringBuilder()
         word.forEach {
             if(it.isNotBlank()){
                 if (result.isNotBlank()){
-                    result += it[0] - 32
-                    result += it.substring(1)
+                    result.append(it[0] - 32)
+                    result.append(it.substring(1))
                 }else{
-                    result += it
+                    result.append(it)
                 }
             }
         }
-        return result
+        return result.toString()
+    }
+
+    fun getCamelCase(underScoreCase: String): String? {
+        val str = underScoreCase.split("_").toTypedArray()
+        val stringBuilder = StringBuilder()
+        for (i in str.indices) {
+            val s = str[i]
+            if (s.isNotEmpty()) {
+                if (i == 0) {
+                    stringBuilder.append(s)
+                } else {
+                    stringBuilder.append(stringChange(s))
+                }
+            }
+        }
+        return stringBuilder.toString()
     }
 
     fun MutableList<Int>.move(isNext: Boolean = true){
