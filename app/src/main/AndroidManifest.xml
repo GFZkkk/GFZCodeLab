@@ -30,6 +30,7 @@
         <activity android:name=".ui.activity.TestMultiChooseActivity" />
         <activity android:name=".ui.activity.TestCountDownActivity" />
         <activity android:name=".ui.activity.TestClockActivity" />
+        <activity android:name=".ui.activity.TestMoveActivity" />
 
         <service android:name=".service.DrawOverService" />
     </application>
