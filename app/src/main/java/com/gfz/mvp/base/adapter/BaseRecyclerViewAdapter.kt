@@ -363,6 +363,10 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      */
     open fun isItemIndex(position: Int): Boolean = position in 0 until itemCount
 
+    open fun isFirstData(position: Int) = position == 0
+
+    open fun isLastData(position: Int) = position == length - 1
+
     /**
      * item点击间隔
      */
@@ -429,8 +433,9 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     }
 
     fun View?.setVisible(visible: Boolean) {
-        this?.visibility = if (visible) View.VISIBLE else View.GONE
+        this?.visibility = if (visible) View.VISIBLE else View.INVISIBLE
     }
+
 
     /**
      * 某个view是否显示

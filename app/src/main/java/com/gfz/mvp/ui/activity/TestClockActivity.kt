@@ -1,0 +1,82 @@
+package com.gfz.mvp.ui.activity
+
+import android.app.Service
+import android.os.Build
+import android.os.SystemClock
+import android.os.VibrationEffect
+import android.os.VibrationEffect.DEFAULT_AMPLITUDE
+import android.os.Vibrator
+import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.gfz.mvp.R
+import com.gfz.mvp.adapter.TestClockAdapter
+import com.gfz.mvp.base.BaseActivity
+import com.gfz.mvp.utils.TopLog
+import com.gfz.mvp.utils.toPX
+import kotlinx.android.synthetic.main.activity_clock.*
+import kotlin.math.abs
+
+/**
+ * Created by gaofengze on 2020/7/2.
+ */
+class TestClockActivity: BaseActivity() {
+
+    val adapter by lazy {
+        TestClockAdapter(this)
+    }
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_clock
+    }
+
+
+    override fun initView() {
+        val vibrator: Vibrator = this.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator
+
+        var sum = 0
+        var now = 0
+        rv_list.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL,false)
+        rv_list.adapter = adapter
+        if (vibrator.hasVibrator()) {
+            rv_list.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    sum += dx
+                    if (abs(now - sum) > 12.toPX()){
+                        now = sum
+                        if (!fastClick()){
+                            vibrator.vibrate(100)
+                        }
+                    }
+                }
+            })
+        }else{
+            TopLog.e("不支持震动")
+        }
+    }
+
+    override fun initData() {
+        val dataList: MutableList<String> = ArrayList()
+        for (i in 1 .. 12){
+            dataList.add((i * 5).toString())
+        }
+        adapter.refresh(dataList)
+    }
+
+    private var lastClickTime: Long = 0
+
+    /**
+     * 防止重复点击
+     */
+    private fun fastClick(): Boolean {
+        val time = SystemClock.elapsedRealtime()
+        return if (time - lastClickTime < 300){
+            true
+        }else{
+            lastClickTime = time
+            false
+        }
+
+    }
+}

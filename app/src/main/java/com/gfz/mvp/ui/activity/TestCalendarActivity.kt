@@ -3,15 +3,16 @@ package com.gfz.mvp.ui.activity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestCalendarAdapter
-import com.gfz.mvp.base.mvp.BaseActivity
+import com.gfz.mvp.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_calendar.*
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * created by gfz on 2020/4/6
  **/
 class TestCalendarActivity: BaseActivity() {
+
     private val adapter = TestCalendarAdapter("2019-04-05","2020-06-05")
+
     override fun getLayoutId(): Int {
         return R.layout.activity_calendar
     }

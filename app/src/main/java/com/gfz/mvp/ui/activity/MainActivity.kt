@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.Test3Adapter
-import com.gfz.mvp.base.mvp.BaseActivity
+import com.gfz.mvp.base.BaseActivity
 
 import com.gfz.mvp.callback.OnItemClickListener
 import com.gfz.mvp.model.bean.TestBean
@@ -23,12 +23,13 @@ class MainActivity : BaseActivity() {
         val adapter = Test3Adapter()
         rvList.adapter = adapter
         rvList.layoutManager = LinearLayoutManager(this)
-        adapter.refresh(listOf(TestBean("日历试验区"),TestBean("滑动多选试验区"), TestBean("悬浮计时试验区")))
+        adapter.refresh(listOf(TestBean("日历试验区"),TestBean("滑动多选试验区"), TestBean("悬浮计时试验区"), TestBean("时钟试验区")))
         adapter.setOnItemClickListener(OnItemClickListener { v, position ->
             when(position){
                 0 -> startActivity(Intent(this, TestCalendarActivity::class.java))
                 1 -> startActivity(Intent(this,TestMultiChooseActivity::class.java))
-                2 -> startActivity(Intent(this,TestCountDown::class.java))
+                2 -> startActivity(Intent(this,TestCountDownActivity::class.java))
+                3 -> startActivity(Intent(this,TestClockActivity::class.java))
             }
         })
     }

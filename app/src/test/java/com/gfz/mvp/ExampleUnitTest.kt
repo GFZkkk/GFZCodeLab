@@ -1,7 +1,5 @@
 package com.gfz.mvp
 
-import com.gfz.mvp.utils.stringChange
-import org.junit.Assert.assertEquals
 import org.junit.Test
 
 /**
@@ -14,7 +12,7 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         buildApi(listOf(
-            ApiBean("/experience/get_latest_exp_list.do","心得")
+            ApiBean("/devil_camp/get_dc_qrcode.do","获取魔鬼营微信群二维码")
         ))
     }
 
@@ -50,17 +48,17 @@ class ExampleUnitTest {
         val apiIml =" /**\n" +
                 "     * $tip\n" +
                 "     */\n" +
-                "    public Subscription $funName(Map<String, Object> map , SingleSubscriber<String> observer){\n" +
-                "        return ApiManager.baseInstance().$funName(map)\n" +
-                "                .map(new Func1<ResponseBody, String>() {\n" +
-                "                    @Override\n" +
-                "                    public String call(ResponseBody responseBody) {\n" +
-                "                        return handleResponse(responseBody);\n" +
-                "                    }\n" +
-                "                })\n" +
-                "                .subscribeOn(Schedulers.io())\n" +
-                "                .observeOn(AndroidSchedulers.mainThread())\n" +
-                "                .subscribe(observer);\n" +
+                "    public void $funName(Map<String, Object> map,SingleObserver<String> observer){\n" +
+                "        ApiManager.baseInstance().$funName(map)\n" +
+                "            .map(new Function<ResponseBody, String>() {\n" +
+                "                @Override\n" +
+                "                public String apply(ResponseBody responseBody) {\n" +
+                "                    return handleResponse(responseBody);\n" +
+                "                }\n" +
+                "            })\n" +
+                "            .subscribeOn(Schedulers.io())\n" +
+                "            .observeOn(AndroidSchedulers.mainThread())\n" +
+                "            .subscribe(observer);\n" +
                 "    }"
         println(apiIml)
         println()
@@ -74,7 +72,7 @@ class ExampleUnitTest {
 
     private fun getLowerCamelCase(str: String): String{
         val word = str.toLowerCase().split("_")
-        var result = StringBuilder()
+        val result = StringBuilder()
         word.forEach {
             if(it.isNotBlank()){
                 if (result.isNotBlank()){
@@ -86,22 +84,6 @@ class ExampleUnitTest {
             }
         }
         return result.toString()
-    }
-
-    fun getCamelCase(underScoreCase: String): String? {
-        val str = underScoreCase.split("_").toTypedArray()
-        val stringBuilder = StringBuilder()
-        for (i in str.indices) {
-            val s = str[i]
-            if (s.isNotEmpty()) {
-                if (i == 0) {
-                    stringBuilder.append(s)
-                } else {
-                    stringBuilder.append(stringChange(s))
-                }
-            }
-        }
-        return stringBuilder.toString()
     }
 
     fun MutableList<Int>.move(isNext: Boolean = true){

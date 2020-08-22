@@ -3,7 +3,7 @@ package com.gfz.mvp.ui.activity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestMutilChooseAdapter
-import com.gfz.mvp.base.mvp.BaseActivity
+import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.model.bean.MultipleChooseBean
 import kotlinx.android.synthetic.main.activity_multi_choose.*
 import java.util.*
