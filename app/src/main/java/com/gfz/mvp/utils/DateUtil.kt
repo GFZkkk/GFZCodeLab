@@ -1,6 +1,5 @@
 package com.gfz.mvp.utils
 
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -10,9 +9,11 @@ object DateUtil {
      */
     private const val shortDateFormatStr = "yyyy-MM-dd"
 
+    /**
+     * 获取当前年月日
+     */
     fun getCurStandardShortDate(): String {
-        val df: DateFormat = SimpleDateFormat(shortDateFormatStr, Locale.getDefault())
-        return df.format(Date())
+        return SimpleDateFormat(shortDateFormatStr, Locale.getDefault()).format(Date())
     }
 
     /**

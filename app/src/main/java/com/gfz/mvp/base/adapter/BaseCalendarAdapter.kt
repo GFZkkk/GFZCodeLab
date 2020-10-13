@@ -7,7 +7,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * 日历适配器基p=-
+ * 日历适配器基类
  * 一般只需要实现生成bean的方法就可以用了。
  * 当加载的月份超过[partLimit]的两倍，将自动启动分布加载策略，也可以在后续手动设置[needLoadPartition]为false来关闭分步加载。
  * 分步加载将月的容器[monthList]为分两部分，每一部分大小为[partLimit]，当前在使用的为数据区，没被使用的为备用区。
