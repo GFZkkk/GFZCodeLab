@@ -10,7 +10,6 @@ object TopLog {
     const val W = 4
     const val E = 5
 
-    //什么作用？
     private var IS_SHOW_LOG: Boolean = true
 
     fun init(isShowLog: Boolean) {

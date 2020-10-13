@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
+import android.os.SystemClock
 import android.view.*
 import android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
 import android.view.WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -13,7 +14,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.gfz.mvp.R
-import com.gfz.mvp.utils.*
+import com.gfz.mvp.utils.TopLog
+import com.gfz.mvp.utils.getCompatColor
+import com.gfz.mvp.utils.setDisplay
+import com.gfz.mvp.utils.toPX
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -155,10 +159,12 @@ class DrawOverService : Service() {
 
             false
         }
+
         ivClose?.setOnClickListener {
             TopLog.e("停止服务")
             stopSelf()
         }
+
         tvStart?.setOnClickListener {
             if (start){
                 reset()
@@ -167,32 +173,37 @@ class DrawOverService : Service() {
                 start()
             }
         }
+
         tvBoth?.setOnClickListener {
             if (!start){
                 sum = 100
                 resume()
             }
         }
+
         tvFirst?.setOnClickListener {
             if (!start){
                 sum = 95
                 resume()
             }
         }
+
         tvSecond?.setOnClickListener {
             if (!start){
                 sum = 105
                 resume()
             }
         }
-        handler.post(updateTime)
+
+        updateTime.run()
 
     }
 
     private val updateTime = object : Runnable {
         override fun run() {
-            handler.postDelayed(this,100)
-            timeText?.text = simpleDateFormat.format(Date())
+            val str =  simpleDateFormat.format(Date())
+            timeText?.text = str
+
             if (start && sum > 0){
                 sum--
                 tvSum?.text = String.format("%.1f", sum / 10.0f)
@@ -201,6 +212,11 @@ class DrawOverService : Service() {
                 }
 
             }
+
+            val now = SystemClock.uptimeMillis()
+            val next = now + (100 - now % 100)
+
+            handler.postAtTime(this, next)
 
         }
     }
