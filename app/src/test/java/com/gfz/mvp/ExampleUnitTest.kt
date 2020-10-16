@@ -1,5 +1,9 @@
 package com.gfz.mvp
 
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 /**
@@ -11,9 +15,19 @@ class ExampleUnitTest {
 
     @Test
     fun addition_isCorrect() {
-        buildApi(listOf(
+        /*buildApi(listOf(
             ApiBean("/devil_camp/get_dc_qrcode.do","获取魔鬼营微信群二维码")
-        ))
+        ))*/
+        thread()
+    }
+
+    fun thread() = runBlocking{
+        val job = GlobalScope.launch { // 在后台启动一个新的协程并继续
+            delay(1000L) // 非阻塞的等待 1 秒钟（默认时间单位是毫秒）
+            println("World!") // 在延迟后打印输出
+        }
+        println("Hello,") // 协程已在等待时主线程还在继续
+        job.join() // 阻塞主线程 2 秒钟来保证 JVM 存活
     }
 
     private fun buildApi(url: List<ApiBean>){

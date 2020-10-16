@@ -12,7 +12,7 @@ import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.mvp.callback.OnItemClickListener
-import com.gfz.mvp.data.App
+import com.gfz.mvp.data.KTApp
 
 
 /**
@@ -20,7 +20,7 @@ import com.gfz.mvp.data.App
  * created by gaofengze on 2020-01-19
  */
 
-abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clickIndex: Int = -1) :
+abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     RecyclerView.Adapter<BaseRecyclerViewHolder<T>>() {
 
     /**
@@ -63,13 +63,11 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
 
     init {
         addAllData(dataList)
-        setClickIndex(clickIndex)
     }
 
     constructor(dataList: List<T?> = ArrayList(),
-                clickIndex: Int = -1,
                 layoutId: Int
-    ) : this(dataList, clickIndex){
+    ) : this(dataList){
         setLayoutId(layoutId)
     }
 
@@ -139,7 +137,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * @return 绑定的数据集合
      */
-    fun getData(): List<T?>? = list
+    fun getData(): List<T?> = list
 
     /**
      * @return 绑定的某个位置的数据
@@ -375,7 +373,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * 拿一个全局context用来加载资源
      */
-    private fun getAppContext(): Context = App.appContext
+    private fun getAppContext(): Context = KTApp.appContext
 
     /**
      * 处理内部点击事件

@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MVPkotlin.iml" filepath="$PROJECT_DIR$/.idea/modules/MVPkotlin.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MVPkotlin.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MVPkotlin.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/recyclerview/MVPkotlin.recyclerview.iml" filepath="$PROJECT_DIR$/.idea/modules/recyclerview/MVPkotlin.recyclerview.iml" />
     </modules>
   </component>
 </project>

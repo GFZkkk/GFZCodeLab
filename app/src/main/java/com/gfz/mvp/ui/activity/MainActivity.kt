@@ -40,5 +40,9 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        showToast("欢迎回来")
 
+    }
 }

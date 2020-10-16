@@ -10,7 +10,7 @@ import kotlin.properties.Delegates
  * created by gaofengze on 2020-01-19
  */
 
-class App: Application() {
+class KTApp: Application() {
     companion object{
         var appContext: Context by Delegates.notNull()
     }

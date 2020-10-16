@@ -7,8 +7,8 @@ import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.model.bean.TestBean
 import kotlinx.android.synthetic.main.item_test.view.*
 
-class Test3Adapter(list: MutableList<TestBean?> = ArrayList(), clickIndex: Int = -1) :
-    BaseRecyclerViewAdapter<TestBean>(list, clickIndex, R.layout.item_test) {
+class Test3Adapter(list: MutableList<TestBean?> = ArrayList()) :
+    BaseRecyclerViewAdapter<TestBean>(list, R.layout.item_test) {
 
     override fun getViewHolder(view: View, viewType: Int): BaseRecyclerViewHolder<TestBean> {
         return ViewHolder(view)

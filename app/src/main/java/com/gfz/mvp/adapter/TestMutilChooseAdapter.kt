@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.item_multiple_choose.view.*
  * created by gaofengze on 2020/4/14
  */
 
-class TestMutilChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList(), clickIndex: Int = -1) :
-    BaseMultipleChooseAdapter<MultipleChooseBean>(dataList, clickIndex, R.layout.item_multiple_choose) {
+class TestMutilChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList()) :
+    BaseMultipleChooseAdapter<MultipleChooseBean>(dataList, R.layout.item_multiple_choose) {
     var groupId = -1
     private var chooseTitleItem: SparseBooleanArray? = null
 

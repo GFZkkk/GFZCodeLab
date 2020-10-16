@@ -3,9 +3,8 @@ package com.gfz.mvp.utils
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.gfz.mvp.data.App
+import com.gfz.mvp.data.KTApp
 import java.util.*
 
 /**
@@ -46,12 +45,12 @@ fun View?.isDisplay(): Boolean = this?.visibility == View.VISIBLE
 /**
  * 根据手机的分辨率从 dx(像素) 的单位 转成为 px
  */
-fun Int.toPX(context: Context = App.appContext): Int = (this * context.resources.displayMetrics.density + 0.5f).toInt()
+fun Int.toPX(context: Context = KTApp.appContext): Int = (this * context.resources.displayMetrics.density + 0.5f).toInt()
 
 /**
  * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
  */
-fun Int.toDP(context: Context = App.appContext): Int = (this / context.resources.displayMetrics.density + 0.5f).toInt()
+fun Int.toDP(context: Context = KTApp.appContext): Int = (this / context.resources.displayMetrics.density + 0.5f).toInt()
 
 fun getLowerCamelCase(str: String): String{
     val word = str.toLowerCase(Locale.getDefault()).split("_")
