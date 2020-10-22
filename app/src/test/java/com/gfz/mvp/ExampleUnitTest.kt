@@ -15,10 +15,9 @@ class ExampleUnitTest {
 
     @Test
     fun addition_isCorrect() {
-        /*buildApi(listOf(
-            ApiBean("/devil_camp/get_dc_qrcode.do","获取魔鬼营微信群二维码")
-        ))*/
-        thread()
+        buildApi(listOf(
+            ApiBean("/mm_complex_page/get_svr_trial_info.do","三天词汇自由计划")
+        ))
     }
 
     fun thread() = runBlocking{
