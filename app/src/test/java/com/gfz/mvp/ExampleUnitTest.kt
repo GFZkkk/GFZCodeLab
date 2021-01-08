@@ -16,7 +16,7 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         buildApi(listOf(
-            ApiBean("/mm_complex_page/get_svr_trial_info.do","三天词汇自由计划")
+            ApiBean("mi/save_mi_reg_id.do","保存小米推送regId")
         ))
     }
 

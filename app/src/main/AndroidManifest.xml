@@ -32,6 +32,7 @@
         <activity android:name=".ui.activity.TestCountDownActivity" />
         <activity android:name=".ui.activity.TestClockActivity" />
         <activity android:name=".ui.activity.TestMoveActivity" />
+        <activity android:name=".ui.activity.TestAnimationActivity" />
 
         <service android:name=".service.DrawOverService" />
     </application>

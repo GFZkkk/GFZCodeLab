@@ -27,7 +27,8 @@ class MainActivity : BaseActivity() {
             TestBean("滑动多选试验区"),
             TestBean("悬浮计时试验区"),
             TestBean("时钟试验区"),
-            TestBean("移动列表实验区")
+            TestBean("移动列表实验区"),
+            TestBean("自定义动画实验区")
         ))
         adapter.setOnItemClickListener(OnItemClickListener { v, position ->
             when(position){
@@ -36,13 +37,14 @@ class MainActivity : BaseActivity() {
                 2 -> startActivity(Intent(this,TestCountDownActivity::class.java))
                 3 -> startActivity(Intent(this,TestClockActivity::class.java))
                 4 -> startActivity(Intent(this,TestMoveActivity::class.java))
+                5 -> startActivity(Intent(this,TestAnimationActivity::class.java))
             }
         })
     }
 
     override fun onResume() {
         super.onResume()
-        showToast("欢迎回来")
+//        showToast("欢迎回来")
 
     }
 }
