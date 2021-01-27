@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestClockAdapter
 import com.gfz.mvp.base.BaseActivity
+import com.gfz.mvp.databinding.ActivityClockBinding
 import com.gfz.mvp.utils.TopLog
 import com.gfz.mvp.utils.toPX
-import kotlinx.android.synthetic.main.activity_clock.*
+import com.gfz.mvp.utils.viewBind
 import kotlin.math.abs
 
 /**
@@ -22,24 +23,20 @@ import kotlin.math.abs
  */
 class TestClockActivity: BaseActivity() {
 
+    private val binding: ActivityClockBinding by viewBind()
     val adapter by lazy {
         TestClockAdapter(this)
     }
-
-    override fun getLayoutId(): Int {
-        return R.layout.activity_clock
-    }
-
 
     override fun initView() {
         val vibrator: Vibrator = this.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator
 
         var sum = 0
         var now = 0
-        rv_list.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL,false)
-        rv_list.adapter = adapter
+        binding.rvList.layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL,false)
+        binding.rvList.adapter = adapter
         if (vibrator.hasVibrator()) {
-            rv_list.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            binding.rvList.addOnScrollListener(object: RecyclerView.OnScrollListener(){
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     sum += dx

@@ -1,26 +1,26 @@
 package com.gfz.mvp.ui.activity
 
+import androidx.viewbinding.ViewBinding
 import com.gfz.mvp.R
 import com.gfz.mvp.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_record.*
+import com.gfz.mvp.databinding.ActivityAnimationBinding
+import com.gfz.mvp.utils.viewBind
 
 /**
  * Created by gaofengze on 2020/9/15.
  */
 class TestAnimationActivity : BaseActivity()  {
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_record
-    }
-
-    override fun initView() {
-
-    }
+    private val binding : ActivityAnimationBinding by viewBind()
 
     override fun initData() {
-        fw.start()
-        fw.setOnClickListener {
+        with(binding){
             fw.start()
+            fw.setOnClickListener {
+                fw.start()
+            }
         }
     }
+
+
 }

@@ -2,27 +2,22 @@ package com.gfz.mvp.ui.activity
 
 import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gfz.mvp.R
 import com.gfz.mvp.adapter.Test3Adapter
 import com.gfz.mvp.base.BaseActivity
 
 import com.gfz.mvp.callback.OnItemClickListener
+import com.gfz.mvp.databinding.ActivityMainBinding
 import com.gfz.mvp.model.bean.TestBean
-import kotlinx.android.synthetic.main.activity_main.*
+import com.gfz.mvp.utils.viewBind
 
 class MainActivity : BaseActivity() {
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_main
-    }
-
-    override fun initView() {
-    }
+    private val binding: ActivityMainBinding by viewBind()
 
     override fun initData() {
         val adapter = Test3Adapter()
-        rvList.adapter = adapter
-        rvList.layoutManager = LinearLayoutManager(this)
+        binding.rvList.adapter = adapter
+        binding.rvList.layoutManager = LinearLayoutManager(this)
         adapter.refresh(listOf(TestBean("日历试验区"),
             TestBean("滑动多选试验区"),
             TestBean("悬浮计时试验区"),
@@ -40,11 +35,5 @@ class MainActivity : BaseActivity() {
                 5 -> startActivity(Intent(this,TestAnimationActivity::class.java))
             }
         })
-    }
-
-    override fun onResume() {
-        super.onResume()
-//        showToast("欢迎回来")
-
     }
 }

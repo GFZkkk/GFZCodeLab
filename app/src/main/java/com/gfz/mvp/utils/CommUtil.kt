@@ -1,11 +1,27 @@
 package com.gfz.mvp.utils
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.view.LayoutInflater
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.viewbinding.ViewBinding
 import com.gfz.mvp.data.KTApp
 import java.util.*
+
+inline fun <reified VB : ViewBinding> Activity.viewBind() = lazy {
+    inflateBinding<VB>(layoutInflater).apply { setContentView(root) }
+}
+
+inline fun <reified VB : ViewBinding> Dialog.viewBind() = lazy {
+    inflateBinding<VB>(layoutInflater).apply { setContentView(root) }
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInflater) =
+    VB::class.java.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
 
 /**
  * 根据资源id获取颜色

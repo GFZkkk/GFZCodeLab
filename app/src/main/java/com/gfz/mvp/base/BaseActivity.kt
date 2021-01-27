@@ -1,9 +1,8 @@
 package com.gfz.mvp.base
 
 import android.os.Bundle
-import android.widget.Toast
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
-import com.gfz.mvp.data.KTApp
 import com.gfz.mvp.utils.TimeCell
 import com.gfz.mvp.utils.ToastUtil
 
@@ -13,6 +12,10 @@ import com.gfz.mvp.utils.ToastUtil
 
 abstract class BaseActivity : AppCompatActivity(){
 
+    val handler by lazy{
+        Handler()
+    }
+
     private val timeCell: TimeCell by lazy {
         TimeCell()
     }
@@ -21,17 +24,15 @@ abstract class BaseActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getLayoutId())
         initView()
         initData()
     }
 
-    protected abstract fun getLayoutId() : Int
-
-    protected abstract fun initView()
+    protected open fun initView(){}
 
     protected abstract fun initData()
 
+    protected fun getContent() = this
     /**
      * 显示吐司
      */

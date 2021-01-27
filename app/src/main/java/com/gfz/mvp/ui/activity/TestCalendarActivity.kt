@@ -4,35 +4,37 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestCalendarAdapter
 import com.gfz.mvp.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_calendar.*
+import com.gfz.mvp.databinding.ActivityCalendarBinding
+import com.gfz.mvp.utils.viewBind
 
 /**
  * created by gfz on 2020/4/6
  **/
 class TestCalendarActivity: BaseActivity() {
 
+    private val binding: ActivityCalendarBinding by viewBind()
+
     private val adapter = TestCalendarAdapter("2019-04-05","2020-06-05")
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_calendar
-    }
-
     override fun initView() {
-        rv_calendar.layoutManager = GridLayoutManager(this,7)
-        rv_calendar.adapter = adapter
-        tv_pre.setOnClickListener {
-            adapter.preMonth()
-            tv_now.text = adapter.getDateTime()
+        with(binding){
+            rvCalendar.layoutManager = GridLayoutManager(getContent(),7)
+            rvCalendar.adapter = adapter
+            tvPre.setOnClickListener {
+                adapter.preMonth()
+                tvNow.text = adapter.getDateTime()
+            }
+            tvNext.setOnClickListener {
+                adapter.laterMonth()
+                tvNow.text = adapter.getDateTime()
+            }
         }
-        tv_next.setOnClickListener {
-            adapter.laterMonth()
-            tv_now.text = adapter.getDateTime()
-        }
+
     }
 
     override fun initData() {
         adapter.show()
-        tv_now.text = adapter.getDateTime()
+        binding.tvNow.text = adapter.getDateTime()
 
     }
 }

@@ -5,21 +5,19 @@ import android.provider.Settings
 import android.widget.Toast
 import com.gfz.mvp.R
 import com.gfz.mvp.base.BaseActivity
+import com.gfz.mvp.databinding.ActivityCountdownBinding
 import com.gfz.mvp.service.DrawOverService
-import kotlinx.android.synthetic.main.activity_countdown.*
+import com.gfz.mvp.utils.viewBind
 
 /**
  * created by gfz on 2020/5/5
  **/
 class TestCountDownActivity: BaseActivity() {
-    override fun getLayoutId(): Int = R.layout.activity_countdown
 
-    override fun initView() {
-
-    }
+    private val binding: ActivityCountdownBinding by viewBind()
 
     override fun initData() {
-        switch_check.setOnCheckedChangeListener { compoundButton, b ->
+        binding.switchCheck.setOnCheckedChangeListener { compoundButton, b ->
             if (b){
                 openService()
             }else{

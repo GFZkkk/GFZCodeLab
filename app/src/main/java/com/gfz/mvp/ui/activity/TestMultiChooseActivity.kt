@@ -4,8 +4,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestMutilChooseAdapter
 import com.gfz.mvp.base.BaseActivity
+import com.gfz.mvp.databinding.ActivityMultiChooseBinding
 import com.gfz.mvp.model.bean.MultipleChooseBean
-import kotlinx.android.synthetic.main.activity_multi_choose.*
+import com.gfz.mvp.utils.viewBind
 import java.util.*
 
 
@@ -15,15 +16,10 @@ import java.util.*
 
 class TestMultiChooseActivity : BaseActivity() {
 
-    override fun getLayoutId(): Int = R.layout.activity_multi_choose
-
-    override fun initView() {
-
-    }
+    private val binding: ActivityMultiChooseBinding by viewBind()
 
     override fun initData() {
-        val rvList = rv_list
-        rvList.layoutManager = LinearLayoutManager(this)
+        binding.rvList.layoutManager = LinearLayoutManager(this)
         val adapter = TestMutilChooseAdapter()
 
         adapter.addAll(object : ArrayList<MultipleChooseBean>() {
@@ -55,6 +51,6 @@ class TestMultiChooseActivity : BaseActivity() {
             }
         })
 
-        rvList.adapter = adapter
+        binding.rvList.adapter = adapter
     }
 }
