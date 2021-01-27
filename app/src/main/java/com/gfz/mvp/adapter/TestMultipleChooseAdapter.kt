@@ -14,7 +14,7 @@ import com.gfz.mvp.utils.viewBind
  * created by gaofengze on 2020/4/14
  */
 
-class TestMutilChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList()) :
+class TestMultipleChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList()) :
     BaseMultipleChooseAdapter<MultipleChooseBean>(dataList) {
     var groupId = -1
     private var chooseTitleItem: SparseBooleanArray? = null

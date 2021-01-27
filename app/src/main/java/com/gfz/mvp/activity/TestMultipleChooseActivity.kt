@@ -1,7 +1,7 @@
 package com.gfz.mvp.activity
 
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gfz.mvp.adapter.TestMutilChooseAdapter
+import com.gfz.mvp.adapter.TestMultipleChooseAdapter
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.databinding.ActivityMultiChooseBinding
 import com.gfz.mvp.model.bean.MultipleChooseBean
@@ -19,7 +19,7 @@ class TestMultipleChooseActivity : BaseActivity() {
 
     override fun initData() {
         binding.rvList.layoutManager = LinearLayoutManager(this)
-        val adapter = TestMutilChooseAdapter()
+        val adapter = TestMultipleChooseAdapter()
 
         adapter.addAll(object : ArrayList<MultipleChooseBean>() {
             init {

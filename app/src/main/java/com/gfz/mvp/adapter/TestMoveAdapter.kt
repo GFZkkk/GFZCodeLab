@@ -2,14 +2,16 @@ package com.gfz.mvp.adapter
 
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.mvp.R
 import com.gfz.mvp.base.adapter.BaseRecyclerViewAdapter
 import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
+import com.gfz.mvp.databinding.ItemMoveBinding
 import com.gfz.mvp.model.bean.MoveBean
 import com.gfz.mvp.utils.TopLog
-import kotlinx.android.synthetic.main.item_move.view.*
+import com.gfz.mvp.utils.viewBind
 import java.util.*
 
 /**
@@ -24,11 +26,10 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
     init {
         callBack = RecycItemTouchHelper(this)
         helper = ItemTouchHelper(callBack!!)
-        setLayoutId(R.layout.item_move)
     }
 
-    override fun getViewHolder(view: View, viewType: Int): BaseRecyclerViewHolder<MoveBean> {
-        return ViewHolder(view)
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<MoveBean> {
+        return ViewHolder(viewBind(parent))
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -39,21 +40,24 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
         callBack?.setCanMove(canMove)
     }
 
-    inner class ViewHolder(view: View) : BaseRecyclerViewHolder<MoveBean>(view) {
+    inner class ViewHolder(private val binding: ItemMoveBinding) : BaseRecyclerViewHolder<MoveBean>(binding) {
 
         override fun onBindViewHolder(data: MoveBean, position: Int) {
-            itemView.tv_name.text = data.name
+            with(binding){
+                tvName.text = data.name
 
-            itemView.iv_move.setOnLongClickListener {
-                setCanMove(true)
-                true
-            }
-            itemView.iv_move.setOnTouchListener { v, event ->
-                if(event.action == MotionEvent.ACTION_UP){
-                    setCanMove(false)
+                ivMove.setOnLongClickListener {
+                    setCanMove(true)
+                    true
                 }
-                false
+                ivMove.setOnTouchListener { v, event ->
+                    if(event.action == MotionEvent.ACTION_UP){
+                        setCanMove(false)
+                    }
+                    false
+                }
             }
+
         }
     }
 

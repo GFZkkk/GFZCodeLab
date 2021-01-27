@@ -2,12 +2,15 @@ package com.gfz.mvp.adapter
 
 import android.content.Context
 import android.view.View
-import androidx.recyclerview.widget.LinearSnapHelper
+import android.view.ViewGroup
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.gfz.mvp.R
 import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.base.adapter.CenterRecyclerviewAdapter
-import kotlinx.android.synthetic.main.item_clock.view.*
+import com.gfz.mvp.databinding.ItemClockBinding
+import com.gfz.mvp.utils.setDisplay
+import com.gfz.mvp.utils.setVisible
+import com.gfz.mvp.utils.viewBind
 
 /**
  * Created by gaofengze on 2020/7/2.
@@ -15,24 +18,23 @@ import kotlinx.android.synthetic.main.item_clock.view.*
 class TestClockAdapter(context: Context? = null
 ): CenterRecyclerviewAdapter<String>(context, PagerSnapHelper()) {
 
-    init {
-        setLayoutId(R.layout.item_clock)
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<String> {
+        return ViewHolder(viewBind(parent))
     }
 
-    override fun getViewHolder(view: View, viewType: Int): BaseRecyclerViewHolder<String> {
-        return ViewHolder(view)
-    }
-
-    inner class ViewHolder(view: View): BaseRecyclerViewHolder<String>(view){
+    inner class ViewHolder(private val binding: ItemClockBinding): BaseRecyclerViewHolder<String>(binding){
 
         override fun onBindViewHolder(data: String, position: Int) {
-            itemView.v_clock1.setVisible(!isFirstData(position))
-            itemView.v_clock2.setVisible(!isFirstData(position))
-            itemView.v_clock4.setVisible(!isLastData(position))
-            itemView.v_clock5.setVisible(!isLastData(position))
-            itemView.v_left.setDisplay(isFirstData(position))
-            itemView.v_right.setDisplay(isLastData(position))
-            itemView.tv_clock_time.text = data
+            with(binding){
+                vClock1.setVisible(!isFirstData(position))
+                vClock2.setVisible(!isFirstData(position))
+                vClock4.setVisible(!isLastData(position))
+                vClock5.setVisible(!isLastData(position))
+                vLeft.setDisplay(isFirstData(position))
+                vRight.setDisplay(isLastData(position))
+                tvClockTime.text = data
+            }
+
         }
 
     }

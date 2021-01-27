@@ -17,10 +17,9 @@ import kotlin.collections.ArrayList
 abstract class BaseCalendarAdapter<T>(sDate: String,
                                       eDate: String,
                                       nDate: String = getCurStandardShortDate(),
-                                      layoutId: Int,
                                       private val partLimit: Int = 10,
                                       private val loadNextLimit: Int = 3) :
-    BaseRecyclerViewAdapter<T>(layoutId = layoutId) {
+    BaseRecyclerViewAdapter<T>() {
 
     /**
      * 开始时间
