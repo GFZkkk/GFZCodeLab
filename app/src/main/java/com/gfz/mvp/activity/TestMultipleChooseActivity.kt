@@ -13,7 +13,7 @@ import java.util.*
  * created by gaofengze on 2020/4/14
  */
 
-class TestMultiChooseActivity : BaseActivity() {
+class TestMultipleChooseActivity : BaseActivity() {
 
     private val binding: ActivityMultiChooseBinding by viewBind()
 

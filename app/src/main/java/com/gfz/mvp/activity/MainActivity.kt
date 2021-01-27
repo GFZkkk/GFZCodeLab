@@ -28,7 +28,7 @@ class MainActivity : BaseActivity() {
         adapter.setOnItemClickListener(OnItemClickListener { v, position ->
             when(position){
                 0 -> startActivity(Intent(this, TestCalendarActivity::class.java))
-                1 -> startActivity(Intent(this,TestMultiChooseActivity::class.java))
+                1 -> startActivity(Intent(this,TestMultipleChooseActivity::class.java))
                 2 -> startActivity(Intent(this,TestCountDownActivity::class.java))
                 3 -> startActivity(Intent(this,TestClockActivity::class.java))
                 4 -> startActivity(Intent(this,TestMoveActivity::class.java))

@@ -180,7 +180,7 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
     /**
      * 检查每个月的数据
      */
-    fun checkMonthList() {
+    private fun checkMonthList() {
         if (needLoadPartition){
             val start = focusMonth - partFocusIndex % partLimit
             if (monthList.count() != 0){
@@ -214,11 +214,11 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
 
     /**
      * 加载持有的月份数据
-     * @param start 其开始月份下标
+     * @param start 开始月份下标
      * @param startIndex 填充的起始下标
      * @param endIndex 填充的结束下表
      */
-    fun loadDataList(start: Int = 0, startIndex: Int = 0, endIndex: Int = monthNum){
+    private fun loadDataList(start: Int = 0, startIndex: Int = 0, endIndex: Int = monthNum){
         val year = startDate.getYear()
         val startMonth = startDate.getMonth()
         for (i in startIndex until endIndex) {

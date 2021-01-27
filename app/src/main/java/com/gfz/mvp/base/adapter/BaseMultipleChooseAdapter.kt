@@ -12,8 +12,8 @@ import com.gfz.mvp.utils.TopLog
  * created by gaofengze on 2020/4/14
  */
 
-abstract class BaseMultipleChooseAdapter<T>(dataList: List<T?> = ArrayList(), layoutId: Int) :
-    BaseRecyclerViewAdapter<T>(dataList, layoutId){
+abstract class BaseMultipleChooseAdapter<T>(dataList: List<T?> = ArrayList()) :
+    BaseRecyclerViewAdapter<T>(dataList){
 
     private val chooseItem: SparseBooleanArray = SparseBooleanArray()
 
@@ -23,8 +23,6 @@ abstract class BaseMultipleChooseAdapter<T>(dataList: List<T?> = ArrayList(), la
     private var bound: ChooseBound? = null
     private var correction: Int = 0
     private var sureBoundByView = true
-
-    constructor(dataList: List<T?> = ArrayList()): this(dataList, 0)
 
     /**
      * 设置固定的选择范围

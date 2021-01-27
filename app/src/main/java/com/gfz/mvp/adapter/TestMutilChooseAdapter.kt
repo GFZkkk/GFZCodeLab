@@ -1,21 +1,21 @@
 package com.gfz.mvp.adapter
 
 import android.util.SparseBooleanArray
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.ViewGroup
 import com.gfz.mvp.R
 import com.gfz.mvp.base.adapter.BaseMultipleChooseAdapter
 import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
+import com.gfz.mvp.databinding.ItemMultipleChooseBinding
 import com.gfz.mvp.model.bean.MultipleChooseBean
-import kotlinx.android.synthetic.main.item_multiple_choose.view.*
+import com.gfz.mvp.utils.setDisplay
+import com.gfz.mvp.utils.viewBind
 
 /**
  * created by gaofengze on 2020/4/14
  */
 
 class TestMutilChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList()) :
-    BaseMultipleChooseAdapter<MultipleChooseBean>(dataList, R.layout.item_multiple_choose) {
+    BaseMultipleChooseAdapter<MultipleChooseBean>(dataList) {
     var groupId = -1
     private var chooseTitleItem: SparseBooleanArray? = null
 
@@ -29,43 +29,37 @@ class TestMutilChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList()) 
     }
 
     override fun getViewHolder(
-        view: View,
+        parent: ViewGroup,
         viewType: Int
     ): BaseRecyclerViewHolder<MultipleChooseBean> {
-        return ViewHolder(view)
+        return ViewHolder(viewBind(parent))
     }
-
-
 
     /**
      * 是否是新的一组
      */
     fun isNewGroup(position: Int): Boolean = if (position == 0) true else getData(position)?.groupId != getData(position - 1)?.groupId
 
-    inner class ViewHolder(itemView: View) : BaseRecyclerViewHolder<MultipleChooseBean>(itemView) {
+    inner class ViewHolder(private val binding: ItemMultipleChooseBinding) : BaseRecyclerViewHolder<MultipleChooseBean>(binding) {
 
         override fun onBindViewHolder(data: MultipleChooseBean, position: Int) {
-            val ivChoose: ImageView = itemView.iv_choose
+            with(binding){
+                clTitle.setDisplay(isNewGroup(position))
+                if (isMultipleChooseItem(position)) {
+                    ivChoose.setImageResource(R.drawable.selected)
+                } else {
+                    ivChoose.setImageResource(R.drawable.unselected)
+                }
 
-            val tvTitle: TextView = itemView.tv_title
-
-            val clTitleChoose: ImageView = itemView.cl_title_choose
-
-            itemView.cl_title.setDisplay(isNewGroup(position))
-            if (isMultipleChooseItem(position)) {
-                ivChoose.setImageResource(R.drawable.selected)
-            } else {
-                ivChoose.setImageResource(R.drawable.unselected)
+                if (isMultipleChooseItem(position)) {
+                    clTitleChoose.setImageResource(R.drawable.study_change_color_choose)
+                } else {
+                    clTitleChoose.setImageResource(R.drawable.study_change_color_unchoose)
+                }
+                tvTitle.text = data.title
+                setListener(ivChoose, position)
+                setListener(clTitleChoose, position)
             }
-
-            if (isMultipleChooseItem(position)) {
-                clTitleChoose.setImageResource(R.drawable.study_change_color_choose)
-            } else {
-                clTitleChoose.setImageResource(R.drawable.study_change_color_unchoose)
-            }
-            tvTitle.text = data.title
-            setListener(ivChoose, position)
-            setListener(clTitleChoose, position)
         }
     }
 }

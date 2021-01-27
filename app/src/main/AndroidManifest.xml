@@ -28,7 +28,7 @@
         </activity>
 
         <activity android:name="com.gfz.mvp.activity.TestCalendarActivity" />
-        <activity android:name="com.gfz.mvp.activity.TestMultiChooseActivity" />
+        <activity android:name="com.gfz.mvp.activity.TestMultipleChooseActivity" />
         <activity android:name="com.gfz.mvp.activity.TestCountDownActivity" />
         <activity android:name="com.gfz.mvp.activity.TestClockActivity" />
         <activity android:name="com.gfz.mvp.activity.TestMoveActivity" />
