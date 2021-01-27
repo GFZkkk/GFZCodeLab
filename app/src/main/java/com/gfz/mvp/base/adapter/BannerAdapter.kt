@@ -22,7 +22,7 @@ abstract class BannerAdapter<T>(context: Context, itemWidth: Int, private val ti
 
     init {
         setNeedChangeIndexAfterMoveEvent(true)
-        mOffset = (ScreenUtil.getScreenWidth(context) - itemWidth.toPX(context)) / 2
+        mOffset = (ScreenUtil.getScreenWidth(context) - itemWidth.toPX()) / 2
     }
 
     override fun onItemChange(position: Int) {
