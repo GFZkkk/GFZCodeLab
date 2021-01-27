@@ -1,7 +1,5 @@
-package com.gfz.mvp.ui.activity
+package com.gfz.mvp.activity
 
-import androidx.recyclerview.widget.GridLayoutManager
-import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestCalendarAdapter
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.databinding.ActivityCalendarBinding

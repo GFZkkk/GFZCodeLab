@@ -1,7 +1,5 @@
-package com.gfz.mvp.ui.activity
+package com.gfz.mvp.activity
 
-import androidx.viewbinding.ViewBinding
-import com.gfz.mvp.R
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.databinding.ActivityAnimationBinding
 import com.gfz.mvp.utils.viewBind

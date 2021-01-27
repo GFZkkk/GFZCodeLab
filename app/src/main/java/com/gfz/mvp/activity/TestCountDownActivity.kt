@@ -1,9 +1,8 @@
-package com.gfz.mvp.ui.activity
+package com.gfz.mvp.activity
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
-import com.gfz.mvp.R
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.databinding.ActivityCountdownBinding
 import com.gfz.mvp.service.DrawOverService

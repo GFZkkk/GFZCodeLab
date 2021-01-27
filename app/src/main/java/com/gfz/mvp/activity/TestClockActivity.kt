@@ -1,15 +1,10 @@
-package com.gfz.mvp.ui.activity
+package com.gfz.mvp.activity
 
 import android.app.Service
-import android.os.Build
 import android.os.SystemClock
-import android.os.VibrationEffect
-import android.os.VibrationEffect.DEFAULT_AMPLITUDE
 import android.os.Vibrator
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestClockAdapter
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.databinding.ActivityClockBinding

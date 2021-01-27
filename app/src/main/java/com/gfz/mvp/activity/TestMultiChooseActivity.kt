@@ -1,7 +1,6 @@
-package com.gfz.mvp.ui.activity
+package com.gfz.mvp.activity
 
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestMutilChooseAdapter
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.databinding.ActivityMultiChooseBinding

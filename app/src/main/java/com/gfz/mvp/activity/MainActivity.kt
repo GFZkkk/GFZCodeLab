@@ -1,4 +1,4 @@
-package com.gfz.mvp.ui.activity
+package com.gfz.mvp.activity
 
 import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
