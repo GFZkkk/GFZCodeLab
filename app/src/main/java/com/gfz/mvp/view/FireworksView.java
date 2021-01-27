@@ -1,6 +1,5 @@
 package com.gfz.mvp.view;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -24,7 +23,6 @@ import androidx.annotation.RequiresApi;
 
 import com.gfz.mvp.R;
 import com.gfz.mvp.utils.BitmapUtil;
-import com.gfz.mvp.utils.TopLog;
 
 import java.util.Random;
 
@@ -38,14 +36,7 @@ public class FireworksView extends View implements ValueAnimator.AnimatorUpdateL
     private int width = getPX(375);
     private int height = getPX(150);
 
-    /**
-     *     透明度渐变所占比例
-     *     开始透明度渐变时间比例，结束透明度渐变时间比例
-     */
-    private final int[] alphaKey = {6,2};
-
     private Paint paint;
-    private Paint paint1;
     private PathMeasure pathMeasure;
     private Matrix matrix;
 
@@ -110,8 +101,6 @@ public class FireworksView extends View implements ValueAnimator.AnimatorUpdateL
 
     //彩片绘制点
     private final float[][] dpoint = new float[paths.length][2];
-    //彩带的首部和尾部坐标点
-    private final float[][][] dpoint1 = new float[paths1.length][2][2];
     //彩带绘制路径
     private final Path[] dPath = new Path[paths1.length];
 
@@ -172,12 +161,11 @@ public class FireworksView extends View implements ValueAnimator.AnimatorUpdateL
     }
 
     private void init(){
-        paint = new Paint();
-        paint1 = new Paint();
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         matrix = new Matrix();
         paint.setStrokeWidth(getPX(3));
         paint.setStyle(Paint.Style.STROKE);
-        paint1.setStyle(Paint.Style.FILL);
+        paint.setStrokeCap(Paint.Cap.ROUND);
         pathMeasure = new PathMeasure();
 
         loadResource();
@@ -229,8 +217,6 @@ public class FireworksView extends View implements ValueAnimator.AnimatorUpdateL
                     pathMeasure.getLength() * (progress - colorLength[i]),
                     pathMeasure.getLength() * progress,
                     dPath[i], true);
-            pathMeasure.getPosTan(pathMeasure.getLength() * progress, dpoint1[i][0],null);
-            pathMeasure.getPosTan(Math.max(pathMeasure.getLength() * (progress - colorLength[i]), 0), dpoint1[i][1],null);
         }
         //更新视图
         invalidate();
@@ -253,11 +239,7 @@ public class FireworksView extends View implements ValueAnimator.AnimatorUpdateL
             //绘制彩带
             for (int i = 0; i < paths1.length; i++) {
                 paint.setColor(ribbonColor[i]);
-                paint1.setColor(ribbonColor[i]);
                 canvas.drawPath(dPath[i], paint);
-                //圆头彩带
-                canvas.drawCircle(dpoint1[i][0][0], dpoint1[i][0][1], paint.getStrokeWidth() / 2, paint1);
-                canvas.drawCircle(dpoint1[i][1][0], dpoint1[i][1][1], paint.getStrokeWidth() / 2, paint1);
             }
         }
     }
