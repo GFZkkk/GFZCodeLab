@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MVPkotlin.iml" filepath="$PROJECT_DIR$/.idea/modules/MVPkotlin.iml" group="MVPkotlin" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="MVPkotlin/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MVPkotlin.iml" filepath="$PROJECT_DIR$/.idea/modules/MVPkotlin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MVPkotlin.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MVPkotlin.app.iml" />
     </modules>
   </component>
 </project>

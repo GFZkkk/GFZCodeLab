@@ -1,33 +1,38 @@
 package com.gfz.mvp.adapter
 
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
+import androidx.viewbinding.ViewBinding
 import com.gfz.mvp.R
 import com.gfz.mvp.base.adapter.BaseCalendarAdapter
 import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
+import com.gfz.mvp.databinding.ItemCalendarBinding
 import com.gfz.mvp.model.bean.BaseCalendarBean
-import kotlinx.android.synthetic.main.item_calendar.view.*
+import com.gfz.mvp.utils.viewBind
 
 /**
  * created by gfz on 2020/4/6
  **/
 class TestCalendarAdapter(sDate: String, eDate: String):
-    BaseCalendarAdapter<BaseCalendarBean>(sDate, eDate, layoutId = R.layout.item_calendar){
+    BaseCalendarAdapter<BaseCalendarBean>(sDate, eDate){
 
     override fun getCalendarBean(year: Int, month: Int, day: Int): BaseCalendarBean {
         return BaseCalendarBean(intArrayOf(year,month,day))
     }
 
     override fun getViewHolder(
-        view: View,
+        parent: ViewGroup,
         viewType: Int
     ): BaseRecyclerViewHolder<BaseCalendarBean> {
-        return ViewHolder(view)
+        return ViewHolder(viewBind(parent))
     }
 
-    inner class ViewHolder(view: View) : BaseRecyclerViewHolder<BaseCalendarBean>(view) {
+    inner class ViewHolder(private val binding: ItemCalendarBinding): BaseRecyclerViewHolder<BaseCalendarBean>(binding){
         override fun onBindViewHolder(data: BaseCalendarBean, position: Int) {
-            itemView.tv_date.text = data.date.getDay().toString()
+            binding.tvDate.text = data.date.getDay().toString()
         }
+
     }
+
 }

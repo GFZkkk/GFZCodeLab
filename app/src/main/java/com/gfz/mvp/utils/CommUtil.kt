@@ -3,8 +3,9 @@ package com.gfz.mvp.utils
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.gfz.mvp.data.App
+import com.gfz.mvp.data.KTApp
 import java.util.*
 
 /**
@@ -21,9 +22,31 @@ fun Context.getCompatDrawable(resId: Int) = ContextCompat.getDrawable(this, resI
  * 根据资源id获取图片
  */
 fun Context.getDrawableWithBounds(resId: Int): Drawable? {
-    val drawable = this.getCompatDrawable(resId)
+    val drawable = getCompatDrawable(resId)
     drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
     return drawable
+}
+
+/**
+ * 设置TextView文字旁边的图标
+ * 0：文字左边图标
+ * 1：文字上边图标
+ * 2：文字右边图标
+ * 3：文字下边图标
+ */
+fun TextView?.setIcon(
+    resId: Int,
+    direction: Int
+) {
+    when (direction) {
+        0 -> this?.setCompoundDrawables(context.getDrawableWithBounds(resId), null, null, null)
+        1 -> this?.setCompoundDrawables(null, context.getDrawableWithBounds(resId), null, null)
+        2 -> this?.setCompoundDrawables(null, null, context.getDrawableWithBounds(resId), null)
+        3 -> this?.setCompoundDrawables(null, null, null, context.getDrawableWithBounds(resId))
+        else -> {
+            this?.setCompoundDrawables(null, null, null, null)
+        }
+    }
 }
 
 /**
@@ -45,12 +68,12 @@ fun View?.isDisplay(): Boolean = this?.visibility == View.VISIBLE
 /**
  * 根据手机的分辨率从 dx(像素) 的单位 转成为 px
  */
-fun Int.toPX(context: Context = App.appContext): Int = (this * context.resources.displayMetrics.density + 0.5f).toInt()
+fun Int.toPX(context: Context = KTApp.appContext): Int = (this * context.resources.displayMetrics.density + 0.5f).toInt()
 
 /**
  * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
  */
-fun Int.toDP(context: Context = App.appContext): Int = (this / context.resources.displayMetrics.density + 0.5f).toInt()
+fun Int.toDP(context: Context = KTApp.appContext): Int = (this / context.resources.displayMetrics.density + 0.5f).toInt()
 
 fun getLowerCamelCase(str: String): String{
     val word = str.toLowerCase(Locale.getDefault()).split("_")

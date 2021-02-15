@@ -12,7 +12,8 @@ import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.mvp.callback.OnItemClickListener
-import com.gfz.mvp.data.App
+import com.gfz.mvp.data.KTApp
+import com.gfz.mvp.utils.TimeCell
 
 
 /**
@@ -20,7 +21,7 @@ import com.gfz.mvp.data.App
  * created by gaofengze on 2020-01-19
  */
 
-abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clickIndex: Int = -1) :
+abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     RecyclerView.Adapter<BaseRecyclerViewHolder<T>>() {
 
     /**
@@ -56,26 +57,17 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      * 是否自动过滤空数据
      */
     private var needAutoFilterEmptyData = true
-    /**
-     * 存储ViewType和ViewLayout的关系
-     */
-    private val viewHolderLayoutIds: SparseArray<Int> = SparseArray(10)
+
+    private val timeCell: TimeCell by lazy {
+        TimeCell()
+    }
 
     init {
         addAllData(dataList)
-        setClickIndex(clickIndex)
     }
 
-    constructor(dataList: List<T?> = ArrayList(),
-                clickIndex: Int = -1,
-                layoutId: Int
-    ) : this(dataList, clickIndex){
-        setLayoutId(layoutId)
-    }
-
-    @NonNull
-    override fun onCreateViewHolder(@NonNull parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
-        val holder = getViewHolder(getViewByViewType(parent, viewType), viewType)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
+        val holder = getViewHolder(parent, viewType)
         setHolderListener(holder)
         return holder
     }
@@ -91,28 +83,8 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * 抽象方法得到子类viewHolder
      */
-    abstract fun getViewHolder(view: View, viewType: Int): BaseRecyclerViewHolder<T>
+    abstract fun getViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T>
 
-    /**
-     * 添加view类型以及对应的视图id
-     * @param type 视图类型
-     * @param layoutId 视图布局id
-     */
-    protected fun addItemType(type: Int, layoutId: Int) {
-        viewHolderLayoutIds.append(type, layoutId)
-    }
-
-    /**
-     * 设置单布局样式
-     */
-    protected fun setLayoutId(layoutId: Int) {
-        viewHolderLayoutIds.append(0, layoutId)
-    }
-
-    /**
-     * 获取多布局某个type的布局layoutId
-     */
-    protected fun getLayoutId(type: Int): Int = viewHolderLayoutIds.get(type, -1)
     /**
      * 列表长度
      */
@@ -139,7 +111,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * @return 绑定的数据集合
      */
-    fun getData(): List<T?>? = list
+    fun getData(): List<T?> = list
 
     /**
      * @return 绑定的某个位置的数据
@@ -321,13 +293,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     }
 
     /**
-     * 根据viewType获取view
-     */
-    protected fun getViewByViewType(viewGroup: ViewGroup, viewType: Int): View {
-        return getView(viewGroup, viewHolderLayoutIds[viewType])
-    }
-
-    /**
      * 获取一个可用的context
      */
     fun getContext(): Context = context?: getAppContext()
@@ -363,6 +328,10 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
      */
     open fun isItemIndex(position: Int): Boolean = position in 0 until itemCount
 
+    open fun isFirstData(position: Int) = position == 0
+
+    open fun isLastData(position: Int) = position == length - 1
+
     /**
      * item点击间隔
      */
@@ -371,7 +340,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     /**
      * 拿一个全局context用来加载资源
      */
-    private fun getAppContext(): Context = App.appContext
+    private fun getAppContext(): Context = KTApp.appContext
 
     /**
      * 处理内部点击事件
@@ -381,76 +350,10 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList(), clic
     open fun click(v: View?, position: Int): Boolean = false
 
     /**
-     * 根据资源id获取颜色
-     */
-    protected open fun getColor(resId: Int): Int = ContextCompat.getColor(getContext(), resId)
-
-    /**
-     * 根据资源id获取图片
-     */
-    protected open fun getDrawable(resId: Int): Drawable? = ContextCompat.getDrawable(getContext(), resId)
-
-    /**
-     * 根据资源id获取图片
-     */
-    protected open fun getDrawableWithBounds(resId: Int): Drawable? {
-        val drawable = ContextCompat.getDrawable(getContext(), resId)
-        drawable?.setBounds(0, 0, drawable.intrinsicWidth, drawable.intrinsicHeight)
-        return drawable
-    }
-
-    /**
-     * 设置TextView文字旁边的图标
-     * 0：文字左边图标
-     * 1：文字上边图标
-     * 2：文字右边图标
-     * 3：文字下边图标
-     */
-    fun TextView?.setIcon(
-        resId: Int,
-        direction: Int
-    ) {
-        when (direction) {
-            0 -> this?.setCompoundDrawables(getDrawableWithBounds(resId), null, null, null)
-            1 -> this?.setCompoundDrawables(null, getDrawableWithBounds(resId), null, null)
-            2 -> this?.setCompoundDrawables(null, null, getDrawableWithBounds(resId), null)
-            3 -> this?.setCompoundDrawables(null, null, null, getDrawableWithBounds(resId))
-            else -> {
-                this?.setCompoundDrawables(null, null, null, null)
-            }
-        }
-    }
-
-    /**
-     * 设置控件显隐
-     */
-    fun View?.setDisplay(visible: Boolean) {
-        this?.visibility = if (visible) View.VISIBLE else View.GONE
-    }
-
-    fun View?.setVisible(visible: Boolean) {
-        this?.visibility = if (visible) View.VISIBLE else View.GONE
-    }
-
-    /**
-     * 某个view是否显示
-     */
-    fun View?.isDisplay(): Boolean = this?.visibility == View.VISIBLE
-
-    private var lastClickTime: Long = 0
-
-    /**
      * 防止重复点击
      */
     private fun fastClick(): Boolean {
-        val time = SystemClock.elapsedRealtime()
-        return if (time - lastClickTime < getClickDoubleTime()){
-            true
-        }else{
-            lastClickTime = time
-            false
-        }
-
+        return timeCell.fastClick(0,500)
     }
 
 }

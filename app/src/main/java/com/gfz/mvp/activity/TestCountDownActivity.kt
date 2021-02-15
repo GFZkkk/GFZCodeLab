@@ -1,25 +1,22 @@
-package com.gfz.mvp.ui.activity
+package com.gfz.mvp.activity
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
-import com.gfz.mvp.R
-import com.gfz.mvp.base.mvp.BaseActivity
+import com.gfz.mvp.base.BaseActivity
+import com.gfz.mvp.databinding.ActivityCountdownBinding
 import com.gfz.mvp.service.DrawOverService
-import kotlinx.android.synthetic.main.activity_countdown.*
+import com.gfz.mvp.utils.viewBind
 
 /**
  * created by gfz on 2020/5/5
  **/
-class TestCountDown: BaseActivity() {
-    override fun getLayoutId(): Int = R.layout.activity_countdown
+class TestCountDownActivity: BaseActivity() {
 
-    override fun initView() {
-
-    }
+    private val binding: ActivityCountdownBinding by viewBind()
 
     override fun initData() {
-        switch_check.setOnCheckedChangeListener { compoundButton, b ->
+        binding.switchCheck.setOnCheckedChangeListener { compoundButton, b ->
             if (b){
                 openService()
             }else{

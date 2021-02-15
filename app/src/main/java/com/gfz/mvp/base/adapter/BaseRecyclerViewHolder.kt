@@ -2,13 +2,14 @@ package com.gfz.mvp.base.adapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 
 /**
  * #BaseRecyclerViewAdapter
  * created by gaofengze on 2020-01-19
  */
 
-abstract class BaseRecyclerViewHolder<T>(view: View) : RecyclerView.ViewHolder(view) {
+abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
     /**
      * 空数据将不被显示
      */

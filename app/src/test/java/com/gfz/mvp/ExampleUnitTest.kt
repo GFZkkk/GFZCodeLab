@@ -1,7 +1,9 @@
 package com.gfz.mvp
 
-import com.gfz.mvp.utils.stringChange
-import org.junit.Assert.assertEquals
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 /**
@@ -14,8 +16,17 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         buildApi(listOf(
-            ApiBean("/experience/get_latest_exp_list.do","心得")
+            ApiBean("mi/save_mi_reg_id.do","保存小米推送regId")
         ))
+    }
+
+    fun thread() = runBlocking{
+        val job = GlobalScope.launch { // 在后台启动一个新的协程并继续
+            delay(1000L) // 非阻塞的等待 1 秒钟（默认时间单位是毫秒）
+            println("World!") // 在延迟后打印输出
+        }
+        println("Hello,") // 协程已在等待时主线程还在继续
+        job.join() // 阻塞主线程 2 秒钟来保证 JVM 存活
     }
 
     private fun buildApi(url: List<ApiBean>){
@@ -50,17 +61,17 @@ class ExampleUnitTest {
         val apiIml =" /**\n" +
                 "     * $tip\n" +
                 "     */\n" +
-                "    public Subscription $funName(Map<String, Object> map , SingleSubscriber<String> observer){\n" +
-                "        return ApiManager.baseInstance().$funName(map)\n" +
-                "                .map(new Func1<ResponseBody, String>() {\n" +
-                "                    @Override\n" +
-                "                    public String call(ResponseBody responseBody) {\n" +
-                "                        return handleResponse(responseBody);\n" +
-                "                    }\n" +
-                "                })\n" +
-                "                .subscribeOn(Schedulers.io())\n" +
-                "                .observeOn(AndroidSchedulers.mainThread())\n" +
-                "                .subscribe(observer);\n" +
+                "    public void $funName(Map<String, Object> map,SingleObserver<String> observer){\n" +
+                "        ApiManager.baseInstance().$funName(map)\n" +
+                "            .map(new Function<ResponseBody, String>() {\n" +
+                "                @Override\n" +
+                "                public String apply(ResponseBody responseBody) {\n" +
+                "                    return handleResponse(responseBody);\n" +
+                "                }\n" +
+                "            })\n" +
+                "            .subscribeOn(Schedulers.io())\n" +
+                "            .observeOn(AndroidSchedulers.mainThread())\n" +
+                "            .subscribe(observer);\n" +
                 "    }"
         println(apiIml)
         println()
@@ -74,7 +85,7 @@ class ExampleUnitTest {
 
     private fun getLowerCamelCase(str: String): String{
         val word = str.toLowerCase().split("_")
-        var result = StringBuilder()
+        val result = StringBuilder()
         word.forEach {
             if(it.isNotBlank()){
                 if (result.isNotBlank()){
@@ -86,22 +97,6 @@ class ExampleUnitTest {
             }
         }
         return result.toString()
-    }
-
-    fun getCamelCase(underScoreCase: String): String? {
-        val str = underScoreCase.split("_").toTypedArray()
-        val stringBuilder = StringBuilder()
-        for (i in str.indices) {
-            val s = str[i]
-            if (s.isNotEmpty()) {
-                if (i == 0) {
-                    stringBuilder.append(s)
-                } else {
-                    stringBuilder.append(stringChange(s))
-                }
-            }
-        }
-        return stringBuilder.toString()
     }
 
     fun MutableList<Int>.move(isNext: Boolean = true){

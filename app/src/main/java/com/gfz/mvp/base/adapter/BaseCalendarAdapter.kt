@@ -7,7 +7,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * 日历适配器基p=-
+ * 日历适配器基类
  * 一般只需要实现生成bean的方法就可以用了。
  * 当加载的月份超过[partLimit]的两倍，将自动启动分布加载策略，也可以在后续手动设置[needLoadPartition]为false来关闭分步加载。
  * 分步加载将月的容器[monthList]为分两部分，每一部分大小为[partLimit]，当前在使用的为数据区，没被使用的为备用区。
@@ -17,10 +17,9 @@ import kotlin.collections.ArrayList
 abstract class BaseCalendarAdapter<T>(sDate: String,
                                       eDate: String,
                                       nDate: String = getCurStandardShortDate(),
-                                      layoutId: Int,
                                       private val partLimit: Int = 10,
                                       private val loadNextLimit: Int = 3) :
-    BaseRecyclerViewAdapter<T>(layoutId = layoutId) {
+    BaseRecyclerViewAdapter<T>() {
 
     /**
      * 开始时间
@@ -180,7 +179,7 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
     /**
      * 检查每个月的数据
      */
-    fun checkMonthList() {
+    private fun checkMonthList() {
         if (needLoadPartition){
             val start = focusMonth - partFocusIndex % partLimit
             if (monthList.count() != 0){
@@ -214,11 +213,11 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
 
     /**
      * 加载持有的月份数据
-     * @param start 其开始月份下标
+     * @param start 开始月份下标
      * @param startIndex 填充的起始下标
      * @param endIndex 填充的结束下表
      */
-    fun loadDataList(start: Int = 0, startIndex: Int = 0, endIndex: Int = monthNum){
+    private fun loadDataList(start: Int = 0, startIndex: Int = 0, endIndex: Int = monthNum){
         val year = startDate.getYear()
         val startMonth = startDate.getMonth()
         for (i in startIndex until endIndex) {
