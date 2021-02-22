@@ -28,5 +28,9 @@ abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.Vi
         itemView.visibility = View.INVISIBLE
     }
 
-    abstract fun onBindViewHolder(data : T, position : Int)
+    open fun getHolderPosition(): Int {
+        return layoutPosition
+    }
+
+    abstract fun onBindViewHolder(data: T, position: Int)
 }
