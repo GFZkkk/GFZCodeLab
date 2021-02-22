@@ -1,10 +1,6 @@
 package com.gfz.mvp.adapter
 
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.viewbinding.ViewBinding
-import com.gfz.mvp.R
 import com.gfz.mvp.base.adapter.BaseCalendarAdapter
 import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.databinding.ItemCalendarBinding

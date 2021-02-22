@@ -1,11 +1,9 @@
 package com.gfz.mvp.adapter
 
 import android.view.MotionEvent
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.mvp.R
 import com.gfz.mvp.base.adapter.BaseRecyclerViewAdapter
 import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.databinding.ItemMoveBinding

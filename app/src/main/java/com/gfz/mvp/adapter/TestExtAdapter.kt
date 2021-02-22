@@ -5,7 +5,6 @@ import com.gfz.mvp.base.adapter.BaseExtLayoutAdapter
 import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.databinding.ItemExtDataBinding
 import com.gfz.mvp.databinding.LayoutHeaderTestBinding
-import com.gfz.mvp.utils.TopLog
 import com.gfz.mvp.utils.toLog
 import com.gfz.mvp.utils.viewBind
 
