@@ -1,13 +1,10 @@
 package com.gfz.mvp.activity
 
-import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.gfz.mvp.R
 import com.gfz.mvp.adapter.TestExtAdapter
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.databinding.ActivityExtlayoutBinding
 import com.gfz.mvp.databinding.LayoutHeaderTestBinding
-import com.gfz.mvp.utils.inflateBinding
 import com.gfz.mvp.utils.viewBind
 import java.util.*
 

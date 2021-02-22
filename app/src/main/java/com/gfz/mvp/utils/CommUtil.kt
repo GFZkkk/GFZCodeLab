@@ -91,4 +91,8 @@ fun getLowerCamelCase(str: String): String{
     return result.toString()
 }
 
+fun Any.toLog(type: Int = 5, tag: String? = null){
+    TopLog.printLog(5, tag, this)
+}
+
 

@@ -1,11 +1,12 @@
 package com.gfz.mvp.adapter
 
-import android.view.View
 import android.view.ViewGroup
 import com.gfz.mvp.base.adapter.BaseExtLayoutAdapter
-import com.gfz.mvp.base.adapter.BaseRecyclerViewAdapter
 import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.databinding.ItemExtDataBinding
+import com.gfz.mvp.databinding.LayoutHeaderTestBinding
+import com.gfz.mvp.utils.TopLog
+import com.gfz.mvp.utils.toLog
 import com.gfz.mvp.utils.viewBind
 
 /**
@@ -22,6 +23,9 @@ class TestExtAdapter : BaseExtLayoutAdapter<Number>() {
         override fun onBindViewHolder(data: Number, position: Int) {
             binding.apply {
                 tvTest.text = data.toString()
+            }
+            (headerViewBinding as? LayoutHeaderTestBinding)?.apply {
+                (tvHeader.text.toString()+position.toString()).toLog()
             }
         }
 
