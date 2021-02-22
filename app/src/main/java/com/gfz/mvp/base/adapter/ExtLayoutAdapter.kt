@@ -17,15 +17,15 @@ import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder as BaseRecyclerViewHolder
  *
  * created by gaofengze on 2021/1/27
  */
-abstract class ExtLayoutAdapter<T>(
-    list: List<T?> = ArrayList()) : BaseRecyclerViewAdapter<T>(list) {
+abstract class ExtLayoutAdapter<T>(list: List<T?> = ArrayList())
+    : BaseRecyclerViewAdapter<T>(list) {
 
     protected val EMPTY = -1
     protected val FOOT = -2
     protected val HEAD = -3
-    private var footerView: View? = null
-    private var emptyView: View? = null
-    private var headerView: View? = null
+    protected var footerView: View? = null
+    protected var emptyView: View? = null
+    protected var headerView: View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
         val holder = getExtViewHolder(parent, viewType)
@@ -35,7 +35,7 @@ abstract class ExtLayoutAdapter<T>(
         return holder
     }
 
-    fun getExtViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
+    private fun getExtViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
         return when (viewType) {
             EMPTY -> getEmptyViewHolder(parent)
             FOOT -> getFooterViewHolder(parent)
@@ -73,18 +73,6 @@ abstract class ExtLayoutAdapter<T>(
         return position
     }
 
-    fun setFooterView(view: View?) {
-        footerView = view
-    }
-
-    fun setEmptyView(emptyView: View?) {
-        this.emptyView = emptyView
-    }
-
-    fun setHeaderView(headerView: View?) {
-        this.headerView = headerView
-    }
-
     fun notifyAllDataChanged() {
         if (isHaveHead()) {
             notifyItemRangeChanged(1, getDataItemCount())
@@ -108,19 +96,19 @@ abstract class ExtLayoutAdapter<T>(
         return getData().size
     }
 
-    protected fun getEFItemViewType(position: Int): Int {
+    open fun getEFItemViewType(position: Int): Int {
         return 0
     }
 
-    protected fun getEmptyLayoutId(): Int {
+    open fun getEmptyLayoutId(): Int {
         return 0
     }
 
-    protected fun getFooterLayoutId(): Int {
+    open fun getFooterLayoutId(): Int {
         return 0
     }
 
-    protected fun getHeaderLayoutId(): Int {
+    open fun getHeaderLayoutId(): Int {
         return 0
     }
 
@@ -134,65 +122,65 @@ abstract class ExtLayoutAdapter<T>(
     /**
      * 是否是数据的位置
      */
-    protected fun isDataPosition(adapterPosition: Int): Boolean {
+    fun isDataPosition(adapterPosition: Int): Boolean {
         return !isExtView(adapterPosition)
     }
 
     /**
      * 是否有足布局
      */
-    protected fun isHaveHead(): Boolean {
+    fun isHaveHead(): Boolean {
         return getHeaderLayoutId() != 0 || headerView != null
     }
 
     /**
      * 是否有头布局
      */
-    protected fun isHaveFoot(): Boolean {
+    fun isHaveFoot(): Boolean {
         return getFooterLayoutId() != 0 || footerView != null
     }
 
     /**
      * 是否有空布局
      */
-    private fun isHaveEmpty(): Boolean {
+    fun isHaveEmpty(): Boolean {
         return getEmptyLayoutId() != 0 || emptyView != null
     }
 
     /**
      * 是否是空布局
      */
-    protected fun isEmptyView(): Boolean {
+    fun isEmptyView(): Boolean {
         return isHaveEmpty() && getDataItemCount() == 0
     }
 
     /**
      * 是否是足布局
      */
-    protected fun isFootView(adapterPosition: Int): Boolean {
+    fun isFootView(adapterPosition: Int): Boolean {
         return isHaveFoot() && getDataItemCount() == adapterPosition
     }
 
     /**
      * 是否是头布局
      */
-    protected fun isHeadView(adapterPosition: Int): Boolean {
+    fun isHeadView(adapterPosition: Int): Boolean {
         return isHaveHead() && adapterPosition == 0
     }
 
-    protected fun isExtView(adapterPosition: Int): Boolean {
+    fun isExtView(adapterPosition: Int): Boolean {
         return isHeadView(adapterPosition) || isFootView(adapterPosition) || isEmptyView()
     }
 
-    fun getHeaderViewHolder(view: ViewGroup): HeaderViewHolder<T> {
+    open fun getHeaderViewHolder(view: ViewGroup): HeaderViewHolder<T> {
         return HeaderViewHolder(viewBind(view))
     }
 
-    fun getFooterViewHolder(view: ViewGroup): FooterViewHolder<T> {
+    open fun getFooterViewHolder(view: ViewGroup): FooterViewHolder<T> {
         return FooterViewHolder(viewBind(view))
     }
 
-    fun getEmptyViewHolder(view: ViewGroup): EmptyViewHolder<T> {
+    open fun getEmptyViewHolder(view: ViewGroup): EmptyViewHolder<T> {
         return EmptyViewHolder(viewBind(view))
     }
 
