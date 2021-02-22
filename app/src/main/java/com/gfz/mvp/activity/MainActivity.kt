@@ -23,7 +23,8 @@ class MainActivity : BaseActivity() {
             TestBean("悬浮计时试验区"),
             TestBean("时钟试验区"),
             TestBean("移动列表实验区"),
-            TestBean("自定义动画实验区")
+            TestBean("自定义动画实验区"),
+            TestBean("扩展布局实验区")
         ))
         adapter.setOnItemClickListener(OnItemClickListener { v, position ->
             when(position){
@@ -33,6 +34,7 @@ class MainActivity : BaseActivity() {
                 3 -> startActivity(Intent(this,TestClockActivity::class.java))
                 4 -> startActivity(Intent(this,TestMoveActivity::class.java))
                 5 -> startActivity(Intent(this,TestAnimationActivity::class.java))
+                6 -> startActivity(Intent(this,TestExtAdapterActivity::class.java))
             }
         })
     }

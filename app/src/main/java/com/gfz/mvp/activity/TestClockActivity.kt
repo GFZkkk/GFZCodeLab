@@ -5,7 +5,7 @@ import android.os.SystemClock
 import android.os.Vibrator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.mvp.adapter.TestClockAdapterBase
+import com.gfz.mvp.adapter.TestClockAdapter
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.databinding.ActivityClockBinding
 import com.gfz.mvp.utils.TopLog
@@ -20,7 +20,7 @@ class TestClockActivity: BaseActivity() {
 
     private val binding: ActivityClockBinding by viewBind()
     val adapter by lazy {
-        TestClockAdapterBase(this)
+        TestClockAdapter(this)
     }
 
     override fun initView() {

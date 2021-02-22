@@ -17,15 +17,15 @@ import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder as BaseRecyclerViewHolder
  *
  * created by gaofengze on 2021/1/27
  */
-abstract class ExtLayoutAdapter<T>(list: List<T?> = ArrayList())
+abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList())
     : BaseRecyclerViewAdapter<T>(list) {
 
     protected val EMPTY = -1
     protected val FOOT = -2
     protected val HEAD = -3
-    protected var footerView: View? = null
-    protected var emptyView: View? = null
-    protected var headerView: View? = null
+    var footerViewBinding: ViewBinding? = null
+    var emptyViewBinding: ViewBinding? = null
+    var headerViewBinding: ViewBinding? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
         val holder = getExtViewHolder(parent, viewType)
@@ -37,9 +37,9 @@ abstract class ExtLayoutAdapter<T>(list: List<T?> = ArrayList())
 
     private fun getExtViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
         return when (viewType) {
-            EMPTY -> getEmptyViewHolder(parent)
-            FOOT -> getFooterViewHolder(parent)
-            HEAD -> getHeaderViewHolder(parent)
+            EMPTY -> getEmptyViewHolder(emptyViewBinding!!)
+            FOOT -> getFooterViewHolder(footerViewBinding!!)
+            HEAD -> getHeaderViewHolder(headerViewBinding!!)
             else -> getViewHolder(parent, viewType)
         }
     }
@@ -48,8 +48,6 @@ abstract class ExtLayoutAdapter<T>(list: List<T?> = ArrayList())
         val dataPosition = getDataPosition(position)
         holder.bindViewHolder(getData(dataPosition), dataPosition)
     }
-
-    abstract fun onCreateDataViewHolder(view: View?, viewType: Int): DataViewHolder<T>
 
     override fun getItemCount(): Int {
         if (isHaveEmpty() && getDataItemCount() == 0) return 1
@@ -100,18 +98,6 @@ abstract class ExtLayoutAdapter<T>(list: List<T?> = ArrayList())
         return 0
     }
 
-    open fun getEmptyLayoutId(): Int {
-        return 0
-    }
-
-    open fun getFooterLayoutId(): Int {
-        return 0
-    }
-
-    open fun getHeaderLayoutId(): Int {
-        return 0
-    }
-
     /**
      * 是否是数据的类型
      */
@@ -130,21 +116,21 @@ abstract class ExtLayoutAdapter<T>(list: List<T?> = ArrayList())
      * 是否有足布局
      */
     fun isHaveHead(): Boolean {
-        return getHeaderLayoutId() != 0 || headerView != null
+        return headerViewBinding != null
     }
 
     /**
      * 是否有头布局
      */
     fun isHaveFoot(): Boolean {
-        return getFooterLayoutId() != 0 || footerView != null
+        return footerViewBinding != null
     }
 
     /**
      * 是否有空布局
      */
     fun isHaveEmpty(): Boolean {
-        return getEmptyLayoutId() != 0 || emptyView != null
+        return emptyViewBinding != null
     }
 
     /**
@@ -172,16 +158,16 @@ abstract class ExtLayoutAdapter<T>(list: List<T?> = ArrayList())
         return isHeadView(adapterPosition) || isFootView(adapterPosition) || isEmptyView()
     }
 
-    open fun getHeaderViewHolder(view: ViewGroup): HeaderViewHolder<T> {
-        return HeaderViewHolder(viewBind(view))
+    open fun getHeaderViewHolder(binding: ViewBinding): HeaderViewHolder<T> {
+        return HeaderViewHolder(binding)
     }
 
-    open fun getFooterViewHolder(view: ViewGroup): FooterViewHolder<T> {
-        return FooterViewHolder(viewBind(view))
+    open fun getFooterViewHolder(binding: ViewBinding): FooterViewHolder<T> {
+        return FooterViewHolder(binding)
     }
 
-    open fun getEmptyViewHolder(view: ViewGroup): EmptyViewHolder<T> {
-        return EmptyViewHolder(viewBind(view))
+    open fun getEmptyViewHolder(binding: ViewBinding): EmptyViewHolder<T> {
+        return EmptyViewHolder(binding)
     }
 
     /**

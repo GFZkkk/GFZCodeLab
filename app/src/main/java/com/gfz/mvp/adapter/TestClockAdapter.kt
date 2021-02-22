@@ -12,7 +12,7 @@ import com.gfz.mvp.utils.viewBind
 /**
  * Created by gaofengze on 2020/7/2.
  */
-class TestClockAdapterBase(context: Context)
+class TestClockAdapter(context: Context)
     : BaseCenterAdapter<String>(context, true) {
 
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<String> {

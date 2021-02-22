@@ -25,7 +25,7 @@ class TestCountDownActivity: BaseActivity() {
         }
     }
 
-    fun openService(){
+    private fun openService(){
         if (Build.VERSION.SDK_INT >= 23) {
             if (Settings.canDrawOverlays(this)) {
                 val intent = Intent(this, DrawOverService::class.java)

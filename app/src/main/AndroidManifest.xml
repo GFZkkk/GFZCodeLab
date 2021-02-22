@@ -33,6 +33,7 @@
         <activity android:name="com.gfz.mvp.activity.TestClockActivity" />
         <activity android:name="com.gfz.mvp.activity.TestMoveActivity" />
         <activity android:name="com.gfz.mvp.activity.TestAnimationActivity" />
+        <activity android:name="com.gfz.mvp.activity.TestExtAdapterActivity" />
 
         <service android:name=".service.DrawOverService" />
     </application>

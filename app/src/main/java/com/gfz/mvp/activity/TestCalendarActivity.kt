@@ -17,7 +17,7 @@ class TestCalendarActivity: BaseActivity() {
 
     override fun initView() {
         with(binding){
-            rvCalendar.layoutManager = GridLayoutManager(getContent(),7)
+            rvCalendar.layoutManager = GridLayoutManager(getContext(),7)
             rvCalendar.adapter = adapter
             tvPre.setOnClickListener {
                 adapter.preMonth()
