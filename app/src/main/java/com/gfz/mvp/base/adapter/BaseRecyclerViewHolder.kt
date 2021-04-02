@@ -14,9 +14,12 @@ abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.Vi
      * 空数据将不被显示
      */
     fun bindViewHolder(data: T?, position: Int) {
+
         if (data != null){
+            itemView.visibility = View.VISIBLE
             onBindViewHolder(data, position)
         }else{
+            itemView.visibility = View.INVISIBLE
             bindNoDataViewHolder()
         }
     }
@@ -25,7 +28,7 @@ abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.Vi
      * 隐藏没有数据的viewholder
      */
     open fun bindNoDataViewHolder(){
-        itemView.visibility = View.INVISIBLE
+
     }
 
     open fun getHolderPosition(): Int {

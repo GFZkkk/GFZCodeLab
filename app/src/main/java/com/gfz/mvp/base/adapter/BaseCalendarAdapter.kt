@@ -149,7 +149,6 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
                 focusMonth--
                 show()
             }
-
         }
     }
 
