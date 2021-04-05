@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.gfz.mvp.data.KTApp
 
 /**
- *
+ * 管理小窗口布局
  * created by gaofengze on 2021/2/22
  */
 object OverlayManager {

@@ -22,7 +22,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.gfz.mvp.R;
-import com.gfz.mvp.utils.BitmapUtil;
 
 import java.util.Random;
 
