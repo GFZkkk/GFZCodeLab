@@ -11,8 +11,8 @@ import com.gfz.mvp.utils.toPX
  * 轮播图
  * created by gaofengze on 2021/1/27
  */
-abstract class BannerAdapter<T>(context: Context, itemWidth: Int, private val time: Int) :
-    CenterRecyclerviewAdapter<T>(context, true) {
+abstract class BaseBannerAdapter<T>(context: Context, itemWidth: Int, private val time: Int) :
+    BaseCenterAdapter<T>(context, true) {
     private var isEnd = false
     private var bannerNum = 0
     private val mHandler: Handler by lazy {

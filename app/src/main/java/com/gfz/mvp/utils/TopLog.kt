@@ -41,7 +41,7 @@ object TopLog {
         printLog(E, tag, msg)
     }
 
-    private fun printLog(
+    fun printLog(
         type: Int,
         tagStr: String?,
         msg: Any

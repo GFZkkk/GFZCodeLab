@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
  * 可以滚动到中间的适配器
  * created by gfz on 2019-12-30
  */
-abstract class CenterRecyclerviewAdapter<T> @JvmOverloads constructor(
+abstract class BaseCenterAdapter<T> @JvmOverloads constructor(
     context: Context,
     needStopCenter: Boolean = false
 ) : BaseRecyclerViewAdapter<T>() {
@@ -63,7 +63,7 @@ abstract class CenterRecyclerviewAdapter<T> @JvmOverloads constructor(
         fun onItemChange(position: Int)
     }
 
-    fun setOnItemChangeListener(onItemChangeListener: CenterRecyclerviewAdapter.OnItemChangeListener?) {
+    fun setOnItemChangeListener(onItemChangeListener: BaseCenterAdapter.OnItemChangeListener?) {
         this.onItemChangeListener = onItemChangeListener
     }
 

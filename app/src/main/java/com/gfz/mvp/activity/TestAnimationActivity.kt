@@ -13,11 +13,13 @@ class TestAnimationActivity : BaseActivity()  {
 
     override fun initData() {
         with(binding){
-            fw.start()
+//            fw.start()
             fw.setOnClickListener {
                 fw.start()
             }
+            interpolatorView.start()
         }
+
     }
 
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.gfz.mvp.base.FragmentBindingDelegate
+import com.gfz.mvp.data.KTApp
 
 /**
  *
@@ -27,6 +28,11 @@ inline fun <reified VB : ViewBinding> Dialog.viewBind() = lazy {
 inline fun <reified VB : ViewBinding> viewBind(parent: ViewGroup):VB {
     val method = VB::class.java.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
     return method.invoke(null, LayoutInflater.from(parent.context), parent, false) as VB
+}
+
+inline fun <reified VB : ViewBinding> viewBind():VB {
+    val method = VB::class.java.getMethod("inflate", LayoutInflater::class.java)
+    return method.invoke(null, LayoutInflater.from(KTApp.appContext)) as VB
 }
 
 @Suppress("UNCHECKED_CAST")

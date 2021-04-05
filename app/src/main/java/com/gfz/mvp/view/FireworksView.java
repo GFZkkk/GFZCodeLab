@@ -249,12 +249,12 @@ public class FireworksView extends View implements ValueAnimator.AnimatorUpdateL
      */
     private void loadResource(){
         //加载图片
-        Bitmap star = BitmapUtil.getVectorBitmap(getContext(), R.drawable.ic_word_salute_star);
-        Bitmap heart = BitmapUtil.getVectorBitmap(getContext(), R.drawable.ic_word_salute_heart);
-        Bitmap round = BitmapUtil.getVectorBitmap(getContext(), R.drawable.ic_word_salute_round);
-        Bitmap triangle = BitmapUtil.getVectorBitmap(getContext(), R.drawable.ic_word_salute_triangle);
-        Bitmap yellowdiamond = BitmapUtil.getVectorBitmap(getContext(), R.drawable.ic_word_salute_yellowdiamond);
-        Bitmap bluediamond = BitmapUtil.getVectorBitmap(getContext(), R.drawable.ic_word_salute_bluediamond);
+        Bitmap star = BitmapUtil.INSTANCE.getVectorBitmap(getContext(), R.drawable.ic_word_salute_star);
+        Bitmap heart = BitmapUtil.INSTANCE.getVectorBitmap(getContext(), R.drawable.ic_word_salute_heart);
+        Bitmap round = BitmapUtil.INSTANCE.getVectorBitmap(getContext(), R.drawable.ic_word_salute_round);
+        Bitmap triangle = BitmapUtil.INSTANCE.getVectorBitmap(getContext(), R.drawable.ic_word_salute_triangle);
+        Bitmap yellowdiamond = BitmapUtil.INSTANCE.getVectorBitmap(getContext(), R.drawable.ic_word_salute_yellowdiamond);
+        Bitmap bluediamond = BitmapUtil.INSTANCE.getVectorBitmap(getContext(), R.drawable.ic_word_salute_bluediamond);
         bitmaps = new Bitmap[]{heart, round, triangle, heart, yellowdiamond
                 , star, triangle, star, bluediamond, heart, round, bluediamond, star
                 , round, heart, triangle, yellowdiamond, heart, heart, star, yellowdiamond};

@@ -2,9 +2,8 @@ package com.gfz.mvp.adapter
 
 import android.content.Context
 import android.view.ViewGroup
-import androidx.recyclerview.widget.PagerSnapHelper
 import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
-import com.gfz.mvp.base.adapter.CenterRecyclerviewAdapter
+import com.gfz.mvp.base.adapter.BaseCenterAdapter
 import com.gfz.mvp.databinding.ItemClockBinding
 import com.gfz.mvp.utils.setDisplay
 import com.gfz.mvp.utils.setVisible
@@ -14,7 +13,7 @@ import com.gfz.mvp.utils.viewBind
  * Created by gaofengze on 2020/7/2.
  */
 class TestClockAdapter(context: Context)
-    : CenterRecyclerviewAdapter<String>(context, true) {
+    : BaseCenterAdapter<String>(context, true) {
 
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<String> {
         return ViewHolder(viewBind(parent))

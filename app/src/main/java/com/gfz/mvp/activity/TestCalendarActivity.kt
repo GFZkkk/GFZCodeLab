@@ -1,5 +1,6 @@
 package com.gfz.mvp.activity
 
+import androidx.recyclerview.widget.GridLayoutManager
 import com.gfz.mvp.adapter.TestCalendarAdapter
 import com.gfz.mvp.base.BaseActivity
 import com.gfz.mvp.databinding.ActivityCalendarBinding
@@ -16,7 +17,7 @@ class TestCalendarActivity: BaseActivity() {
 
     override fun initView() {
         with(binding){
-            rvCalendar.layoutManager = GridLayoutManager(getContent(),7)
+            rvCalendar.layoutManager = GridLayoutManager(getContext(),7)
             rvCalendar.adapter = adapter
             tvPre.setOnClickListener {
                 adapter.preMonth()

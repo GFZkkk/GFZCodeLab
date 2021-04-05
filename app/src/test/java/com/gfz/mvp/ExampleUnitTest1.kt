@@ -5,18 +5,19 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import java.util.ArrayList
 
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class ExampleUnitTest {
+class ExampleUnitTest1 {
 
     @Test
     fun addition_isCorrect() {
         buildApi(listOf(
-            ApiBean("mi/save_mi_reg_id.do","保存小米推送regId")
+            ApiBean("product/get_product_package_info_v2.do","获取新版大礼包产品信息")
         ))
     }
 

@@ -314,7 +314,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     protected fun setHolderListener(holder: BaseRecyclerViewHolder<*>) {
         val view = holder.itemView
         view.setOnClickListener {
-            clickEvent(view, holder.layoutPosition)
+            clickEvent(view, holder.getHolderPosition())
         }
     }
 

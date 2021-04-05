@@ -28,19 +28,19 @@ abstract class BaseActivity : AppCompatActivity(){
         initData()
     }
 
-    protected open fun initView(){}
+    open fun initView(){}
 
-    protected abstract fun initData()
+    abstract fun initData()
 
-    protected fun getContent() = this
+    fun getContext() = this
     /**
      * 显示吐司
      */
-    protected fun showToast(text: String){
+    fun showToast(text: String){
         ToastUtil.showToast(text)
     }
 
-    protected fun showToast(textRes: Int){
+    fun showToast(textRes: Int){
         showToast(getString(textRes))
     }
 
@@ -50,12 +50,12 @@ abstract class BaseActivity : AppCompatActivity(){
      * @param dur 调用间隔
      * @return 是否连续调用
      */
-    protected fun fastClick(dur: Int) = timeCell.fastClick(FAST_TAG_DEFAULT, dur)
+    fun fastClick(dur: Int) = timeCell.fastClick(FAST_TAG_DEFAULT, dur)
 
     /**
      * @param tag 调用群组标记
      */
-    protected fun fastClick(tag: Int, dur: Int) = timeCell.fastClick(tag, dur)
+    fun fastClick(tag: Int, dur: Int) = timeCell.fastClick(tag, dur)
 
 
 
