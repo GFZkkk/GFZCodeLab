@@ -31,7 +31,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 获取数据长度
      */
-    val length
+    protected val length
         get() = list.size
     /**
      * 当前点击的position

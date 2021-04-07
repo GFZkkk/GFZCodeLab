@@ -4,25 +4,23 @@ import android.content.Context
 import android.os.Handler
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.mvp.utils.ScreenUtil
-import com.gfz.mvp.utils.toPX
 
 /**
  * 轮播图
  * created by gaofengze on 2021/1/27
  */
-abstract class BaseBannerAdapter<T>(context: Context, itemWidth: Int, private val time: Int) :
+abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
     BaseCenterAdapter<T>(context, true) {
-    private var isEnd = false
-    private var bannerNum = 0
     private val mHandler: Handler by lazy {
         Handler()
     }
-    private val mOffset: Int
+
+    private var isEnd = false
+    private var bannerNum = 0
+    private var action = 0
 
     init {
         setNeedChangeIndexAfterMoveEvent(true)
-        mOffset = (ScreenUtil.getScreenWidth(context) - itemWidth.toPX()) / 2
     }
 
     override fun onItemChange(position: Int) {
@@ -31,7 +29,10 @@ abstract class BaseBannerAdapter<T>(context: Context, itemWidth: Int, private va
         addMoveEvent()
     }
 
-    fun readyData(data: List<T?>) {
+    open fun readyData(data: List<T?>) {
+        if (data.isEmpty()) {
+            return
+        }
         bannerNum = data.size
         clear()
         addData(data[data.size - 1])
@@ -40,14 +41,36 @@ abstract class BaseBannerAdapter<T>(context: Context, itemWidth: Int, private va
         notifyDataSetChanged()
     }
 
+    open fun getBannerNum(): Int {
+        return bannerNum
+    }
+
+    override fun setOnItemScrollListener(onItemScrollListener: OnItemScrollListener) {
+        super.setOnItemScrollListener(object : OnItemScrollListener {
+            override fun onItemScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                onItemScrollListener.onItemScrolled(
+                    getBannerIndex(position),
+                    positionOffset,
+                    positionOffsetPixels
+                )
+            }
+        })
+    }
+
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
         recyclerView.setOnTouchListener { v, event ->
-            when (event.action) {
+            action = event.action
+            when (action) {
                 MotionEvent.ACTION_DOWN -> {
                     removeMoveEvent()
                 }
                 MotionEvent.ACTION_MOVE -> {
+                    updatePosition()
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     addMoveEvent()
@@ -72,14 +95,24 @@ abstract class BaseBannerAdapter<T>(context: Context, itemWidth: Int, private va
         }
     }
 
-    fun start() {
+    open fun start() {
         isEnd = false
         addMoveEvent()
     }
 
-    fun end() {
+    open fun end() {
         isEnd = true
         removeMoveEvent()
+    }
+
+    /**
+     * 动起来
+     */
+    open operator fun next() {
+        if (itemCount != 0 && action != 2) {
+            val next = (getClickIndex() + 1) % itemCount
+            smoothScrollToPosition(next)
+        }
     }
 
     /**
@@ -89,16 +122,21 @@ abstract class BaseBannerAdapter<T>(context: Context, itemWidth: Int, private va
     private fun checkBoundsNext() {
         val nowIndex = getClickIndex()
         if (nowIndex > bannerNum) {
-            scrollToPosition(1, mOffset)
+            scrollToCenterPosition(1)
         } else if (nowIndex == 0) {
-            scrollToPosition(bannerNum, mOffset)
+            scrollToCenterPosition(bannerNum)
         }
     }
 
-    var scrollToNext = Runnable {
-        if (itemCount != 0) {
-            val next = (getClickIndex() + 1) % itemCount
-            smoothScrollToPosition(next)
+    private fun getBannerIndex(position: Int): Int {
+        return if (isFirstData(position)) {
+            bannerNum - 1
+        } else if (isLastData(position)) {
+            0
+        } else {
+            position - 1
         }
     }
+
+    var scrollToNext = Runnable { next() }
 }

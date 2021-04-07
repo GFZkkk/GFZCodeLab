@@ -20,9 +20,9 @@ import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder as BaseRecyclerViewHolder
 abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList())
     : BaseRecyclerViewAdapter<T>(list) {
 
-    protected val EMPTY = -1
-    protected val FOOT = -2
-    protected val HEAD = -3
+    private val EMPTY = -1
+    private val FOOT = -2
+    private val HEAD = -3
     var footerViewBinding: ViewBinding? = null
     var emptyViewBinding: ViewBinding? = null
     var headerViewBinding: ViewBinding? = null
