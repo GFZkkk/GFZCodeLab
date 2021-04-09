@@ -8,19 +8,22 @@ import android.view.View
 import android.view.WindowManager
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.gfz.mvp.data.KTApp
+import com.gfz.mvp.utils.*
 
 /**
  * 管理小窗口布局
  * created by gaofengze on 2021/2/22
  */
-object OverlayManager {
+class OverlayManager {
     //要引用的布局文件.
     private var rootView: View? = null
+    private var lastX = 0
+    private var lastY = 0
+    private var width = 180.toPX()
+    private var height = 120.toPX()
 
     //布局参数.
-    private val params: WindowManager.LayoutParams by lazy {
-        WindowManager.LayoutParams()
-    }
+    private val params: WindowManager.LayoutParams = WindowManager.LayoutParams()
 
     //实例化的WindowManager.
     private val windowManager: WindowManager by lazy {
@@ -37,18 +40,16 @@ object OverlayManager {
         //设置flags.不可聚焦及不可使用按钮对悬浮窗进行操控.
         params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
         //设置窗口初始停靠位置.
-        params.gravity = Gravity.RIGHT or Gravity.TOP
+        params.gravity = Gravity.LEFT or Gravity.TOP
+        params.width = 180.toPX()
+        params.height = 120.toPX()
+
     }
 
     fun showWindow(view: View){
         rootView = view
-        //主动计算出当前View的宽高信息.
-        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-        view.post {
-            params.width = view.measuredWidth
-            params.height = view.measuredHeight
-        }
-        addMoveEvent()
+        lastX = 0
+        lastY = 0
         windowManager.addView(rootView, params)
     }
 
@@ -56,33 +57,39 @@ object OverlayManager {
         windowManager.removeView(rootView)
     }
 
-    private fun addMoveEvent(){
-        var lastX = 0
-        var lastY = 0
-        //移动悬浮窗
-        rootView?.setOnTouchListener{
-                view, motionEvent ->
-            when (motionEvent.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    lastX = 0
-                    lastY = 0
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    val nowX = motionEvent.rawX.toInt()
-                    val nowY = motionEvent.rawY.toInt()
-                    if (lastX != 0 && lastY != 0){
-                        params?.apply {
-                            x += nowX - lastX
-                            y += nowY - lastY
-                        }
-                        windowManager.updateViewLayout(rootView, params)
-                    }
-                    lastX = nowX
-                    lastY = nowY
-                }
+    fun handlerMoveEvent(motionEvent: MotionEvent){
+        when (motionEvent.action) {
+            MotionEvent.ACTION_DOWN -> {
+                lastX = 0
+                lastY = 0
             }
+            MotionEvent.ACTION_MOVE -> {
+                val nowX = motionEvent.rawX.toInt()
+                val nowY = motionEvent.rawY.toInt()
+                if (lastX != 0 && lastY != 0){
+                    var x = params.x + nowX - lastX
+                    var y = params.y + nowY - lastY
+                    // 处理超出屏幕
+                    val maxX = ScreenUtil.getScreenWidth() - width
+                    val maxY = ScreenUtil.getScreenHeight() - height
+                    if (x < 0){
+                        x = 0
+                    }else if(x > maxX){
+                        x = maxX
+                    }
+                    if (y < 0){
+                        y = 0
+                    }else if(y > maxY){
+                        y = maxY
+                    }
 
-            false
+                    params.x = x
+                    params.y = y
+                    windowManager.updateViewLayout(rootView, params)
+                }
+                lastX = nowX
+                lastY = nowY
+            }
         }
     }
 }

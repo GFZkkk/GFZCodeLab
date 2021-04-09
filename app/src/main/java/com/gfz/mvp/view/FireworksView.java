@@ -1,5 +1,6 @@
 package com.gfz.mvp.view;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -33,9 +34,6 @@ import java.util.Random;
  */
 public class FireworksView extends View implements ValueAnimator.AnimatorUpdateListener {
     //绘制范围
-    private int width = getPX(375);
-    private int height = getPX(150);
-
     private Paint paint;
     private PathMeasure pathMeasure;
     private Matrix matrix;
@@ -148,11 +146,9 @@ public class FireworksView extends View implements ValueAnimator.AnimatorUpdateL
     public void start(){
         end();
         Random random = new Random();
-
         for (int i = 0; i < rotate.length; i++) {
             rotate[i] = random.nextBoolean() ? 1 : -1;
         }
-
         animatorSet.start();
     }
 
@@ -191,11 +187,13 @@ public class FireworksView extends View implements ValueAnimator.AnimatorUpdateL
         scale.addUpdateListener(this);
 
         //开始阶段透明度动画
-        alphaStar = ObjectAnimator.ofFloat(FireworksView.this,"alpha", 0f,1f).setDuration(400);
+        alphaStar = ObjectAnimator.ofFloat(FireworksView.this,"alpha", 0f,1f)
+                .setDuration(400);
         alphaStar.setInterpolator(linearInterpolator);
 
         //结束阶段透明度动画
-        alphaEnd = ObjectAnimator.ofFloat(FireworksView.this,"alpha", 1f,0f).setDuration(200);
+        alphaEnd = ObjectAnimator.ofFloat(FireworksView.this,"alpha", 1f,0f)
+                .setDuration(200);
         alphaEnd.setStartDelay(1200);
         alphaEnd.setInterpolator(linearInterpolator);
 
@@ -314,8 +312,8 @@ public class FireworksView extends View implements ValueAnimator.AnimatorUpdateL
         this.scaleProgress = scaleProgress;
     }
 
-    private int getPX(int dp){
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
+    private float getPX(int dp){
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 }
 

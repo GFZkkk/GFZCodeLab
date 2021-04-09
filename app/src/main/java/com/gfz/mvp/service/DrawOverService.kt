@@ -1,18 +1,11 @@
 package com.gfz.mvp.service
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.view.*
-import android.view.WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
-import android.view.WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.viewbinding.ViewBinding
 import com.gfz.mvp.R
 import com.gfz.mvp.databinding.LayoutCountDownBinding
 import com.gfz.mvp.module.OverlayManager
@@ -29,7 +22,7 @@ class DrawOverService : Service() {
     //状态栏高度.（接下来会用到）
     private var statusBarHeight = -1
 
-    private val handler = Handler()
+    private var handler: Handler? = null
 
     private var sum = 0
     private var start = false
@@ -39,29 +32,33 @@ class DrawOverService : Service() {
 
     private val binding: LayoutCountDownBinding = viewBind()
 
+    private val overlayManager: OverlayManager = OverlayManager()
+
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
 
     override fun onCreate() {
         super.onCreate()
-        OverlayManager.showWindow(binding.root)
+        overlayManager.showWindow(binding.root)
         reset()
         initEvent()
-        handler.post(updateTime)
+        handler = Looper.myLooper()?.let { Handler(it) }
+        handler?.post(updateTime)
     }
 
     override fun onDestroy() {
-        handler.removeCallbacks(updateTime)
-        OverlayManager.close()
+        handler?.removeCallbacks(updateTime)
+        overlayManager.close()
         super.onDestroy()
     }
 
     private fun initEvent(){
-        binding.apply {
+        with(binding) {
             //移动悬浮窗
             clBody.setOnTouchListener{
                     view, motionEvent ->
+                overlayManager.handlerMoveEvent(motionEvent)
                 when (motionEvent.action) {
                     //点击屏幕外区域
                     MotionEvent.ACTION_OUTSIDE -> {
@@ -70,7 +67,6 @@ class DrawOverService : Service() {
                         }
                     }
                 }
-
                 false
             }
             ivClose.setOnClickListener {
@@ -108,7 +104,7 @@ class DrawOverService : Service() {
 
     private val updateTime = object : Runnable {
         override fun run() {
-            handler.postDelayed(this,100)
+            handler?.postDelayed(this,100)
             binding.tvTime.text = simpleDateFormat.format(Date())
             if (start && sum > 0){
                 sum--
@@ -116,9 +112,7 @@ class DrawOverService : Service() {
                 if (sum == 0){
                     reset()
                 }
-
             }
-
         }
     }
 
@@ -145,7 +139,7 @@ class DrawOverService : Service() {
     }
 
     private fun status(start: Boolean){
-        binding.apply {
+        with(binding) {
             tvStart.setDisplay(!start)
             tvBoth.setDisplay(start)
             tvSecond.setDisplay(start)

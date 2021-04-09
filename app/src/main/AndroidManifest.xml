@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gfz.mvp">
-    <uses-permission android:name="android.permission.INTERNET"/>
 
-    <!--悬浮窗-->
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW"/>
-
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 悬浮窗 -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
     <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
+        android:name=".data.KTApp"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".data.KTApp"
-        android:theme="@style/AppTheme"
-        android:allowBackup="false">
+        android:theme="@style/AppTheme">
+
         <meta-data
             android:name="design_width_in_dp"
-            android:value="375"/>
-        <activity android:name="com.gfz.mvp.activity.MainActivity">
+            android:value="375" />
+
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.gfz.mvp.activity.TestCalendarActivity" />
-        <activity android:name="com.gfz.mvp.activity.TestMultipleChooseActivity" />
-        <activity android:name="com.gfz.mvp.activity.TestCountDownActivity" />
-        <activity android:name="com.gfz.mvp.activity.TestClockActivity" />
-        <activity android:name="com.gfz.mvp.activity.TestMoveActivity" />
-        <activity android:name="com.gfz.mvp.activity.TestAnimationActivity" />
-        <activity android:name="com.gfz.mvp.activity.TestExtAdapterActivity" />
+        <activity android:name=".activity.TestCalendarActivity" />
+        <activity android:name=".activity.TestMultipleChooseActivity" />
+        <activity android:name=".activity.TestCountDownActivity" />
+        <activity android:name=".activity.TestClockActivity" />
+        <activity android:name=".activity.TestMoveActivity" />
+        <activity android:name=".activity.TestAnimationActivity" />
+        <activity android:name=".activity.TestExtAdapterActivity" />
 
         <service android:name=".service.DrawOverService" />
     </application>

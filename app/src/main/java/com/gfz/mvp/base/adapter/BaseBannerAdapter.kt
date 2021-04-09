@@ -29,7 +29,7 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
         addMoveEvent()
     }
 
-    open fun readyData(data: List<T?>) {
+    open fun loadData(data: List<T?>) {
         if (data.isEmpty()) {
             return
         }
@@ -45,6 +45,9 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
         return bannerNum
     }
 
+    /**
+     * 这里需要对返回的position进行处理，返回图片的下标
+     */
     override fun setOnItemScrollListener(onItemScrollListener: OnItemScrollListener) {
         super.setOnItemScrollListener(object : OnItemScrollListener {
             override fun onItemScrolled(
@@ -122,19 +125,26 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
     private fun checkBoundsNext() {
         val nowIndex = getClickIndex()
         if (nowIndex > bannerNum) {
-            scrollToCenterPosition(1)
+            scrollToPosition(1)
         } else if (nowIndex == 0) {
-            scrollToCenterPosition(bannerNum)
+            scrollToPosition(bannerNum)
         }
     }
 
+    /**
+     * 通过位置获取图片的下标，具体实现与轮播原理相关
+     */
     private fun getBannerIndex(position: Int): Int {
-        return if (isFirstData(position)) {
-            bannerNum - 1
-        } else if (isLastData(position)) {
-            0
-        } else {
-            position - 1
+        return when {
+            isFirstData(position) -> {
+                bannerNum - 1
+            }
+            isLastData(position) -> {
+                0
+            }
+            else -> {
+                position - 1
+            }
         }
     }
 

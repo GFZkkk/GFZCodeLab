@@ -20,8 +20,6 @@ abstract class BaseActivity : AppCompatActivity(){
         TimeCell()
     }
 
-    private val FAST_TAG_DEFAULT = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initView()
@@ -50,13 +48,5 @@ abstract class BaseActivity : AppCompatActivity(){
      * @param dur 调用间隔
      * @return 是否连续调用
      */
-    fun fastClick(dur: Int) = timeCell.fastClick(FAST_TAG_DEFAULT, dur)
-
-    /**
-     * @param tag 调用群组标记
-     */
-    fun fastClick(tag: Int, dur: Int) = timeCell.fastClick(tag, dur)
-
-
-
+    fun fastClick(tag: Int = 0, dur: Int = 500) = timeCell.fastClick(tag, dur)
 }

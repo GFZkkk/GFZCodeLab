@@ -14,7 +14,7 @@ class TimeCell(size: Int = 10) {
     /**
      * 是否是重复点击
      */
-    fun fastClick(tag: Int = 0, dur: Long): Boolean {
+    fun fastClick(tag: Int = 0, dur: Int): Boolean {
         val now = getNowTime()
         val last = getLastTime(tag)
         if (!overTimeInterval(now, last, dur)) {
@@ -34,7 +34,7 @@ class TimeCell(size: Int = 10) {
     /**
      * 是否超时
      */
-    fun overTime(tag: Int = 0, dur: Long): Boolean {
+    fun overTime(tag: Int = 0, dur: Int): Boolean {
         return overTimeInterval(getNowTime(), getLastTime(tag), dur)
     }
 
@@ -49,7 +49,7 @@ class TimeCell(size: Int = 10) {
     /**
      * 判断两个时间的间隔是否已经超过条件
      */
-    private fun overTimeInterval(now: Long, last: Long, dur: Long): Boolean {
+    private fun overTimeInterval(now: Long, last: Long, dur: Int): Boolean {
         return now - last > dur
     }
 

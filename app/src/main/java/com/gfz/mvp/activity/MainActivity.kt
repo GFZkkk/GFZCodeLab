@@ -26,7 +26,7 @@ class MainActivity : BaseActivity() {
             TestBean("自定义动画实验区"),
             TestBean("扩展布局实验区")
         ))
-        adapter.setOnItemClickListener(OnItemClickListener { v, position ->
+        adapter.setOnItemClickListener(OnItemClickListener { _, position ->
             when(position){
                 0 -> startActivity(Intent(this, TestCalendarActivity::class.java))
                 1 -> startActivity(Intent(this,TestMultipleChooseActivity::class.java))

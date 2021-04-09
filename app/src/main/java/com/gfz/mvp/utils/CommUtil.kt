@@ -27,6 +27,11 @@ fun Context.getDrawableWithBounds(resId: Int): Drawable? {
     return drawable
 }
 
+const val LEFT: Int = 0
+const val TOP: Int = 1
+val RIGHT: Int = 2
+val BOTTOM: Int = 3
+
 /**
  * 设置TextView文字旁边的图标
  * 0：文字左边图标
@@ -39,10 +44,10 @@ fun TextView?.setIcon(
     direction: Int
 ) {
     when (direction) {
-        0 -> this?.setCompoundDrawables(context.getDrawableWithBounds(resId), null, null, null)
-        1 -> this?.setCompoundDrawables(null, context.getDrawableWithBounds(resId), null, null)
-        2 -> this?.setCompoundDrawables(null, null, context.getDrawableWithBounds(resId), null)
-        3 -> this?.setCompoundDrawables(null, null, null, context.getDrawableWithBounds(resId))
+        LEFT -> this?.setCompoundDrawables(context.getDrawableWithBounds(resId), null, null, null)
+        TOP -> this?.setCompoundDrawables(null, context.getDrawableWithBounds(resId), null, null)
+        RIGHT -> this?.setCompoundDrawables(null, null, context.getDrawableWithBounds(resId), null)
+        BOTTOM -> this?.setCompoundDrawables(null, null, null, context.getDrawableWithBounds(resId))
         else -> {
             this?.setCompoundDrawables(null, null, null, null)
         }
@@ -92,7 +97,7 @@ fun getLowerCamelCase(str: String): String{
 }
 
 fun Any.toLog(type: Int = 5, tag: String? = null){
-    TopLog.printLog(5, tag, this)
+    TopLog.printLog(type, tag, this)
 }
 
 

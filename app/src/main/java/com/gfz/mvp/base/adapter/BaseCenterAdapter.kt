@@ -51,12 +51,11 @@ abstract class BaseCenterAdapter<T> constructor(
             mItemScrollListener?.apply {
                 updateScrolledInfo(this, recyclerView)
             }
-
         }
     }
     private var firstVisiblePosition = -1
     private var needChangeIndexAfterMoveEvent = false
-    private var offset = 0
+    private val offset: Int
     private val CHECK_TAG = 101
 
     interface OnItemChangeListener {
@@ -71,7 +70,13 @@ abstract class BaseCenterAdapter<T> constructor(
         if (needStopCenter) {
             snapHelper = PagerSnapHelper()
         }
-        offset = (ScreenUtil.getScreenWidth(context) - getItemWidth().toPX(context)) / 2
+
+        val itemWidth = getItemWidth()
+        offset = if (itemWidth > 0){
+            (ScreenUtil.getScreenWidth(context) - itemWidth.toPX()) / 2
+        }else{
+            0
+        }
     }
 
     fun setNeedChangeIndexAfterMoveEvent(needChangeIndexAfterMoveEvent: Boolean) {
@@ -95,60 +100,47 @@ abstract class BaseCenterAdapter<T> constructor(
     }
 
     open fun smoothScrollToPosition(position: Int) {
-        if (isItemIndex(position)) {
-            mLayoutManager?.apply {
-                this.startSmoothScroll(mScroller)
-                mScroller.targetPosition = position
-                if (!needChangeIndexAfterMoveEvent) {
-                    setClickIndex(position)
-                }
-            }
-        }
-    }
-
-    open fun scrollToCenterPosition(position: Int) {
-        if (mRecyclerView != null && isItemIndex(position) && mLayoutManager != null) {
-            mLayoutManager?.scrollToPositionWithOffset(position, offset)
-            mRecyclerView?.post {
-                mQuickScroller.targetPosition = position
-                mLayoutManager?.startSmoothScroll(mQuickScroller)
-                if (!needChangeIndexAfterMoveEvent) {
-                    setClickIndex(position)
-                }
+        mLayoutManager?.apply {
+            mScroller.targetPosition = position
+            startSmoothScroll(mScroller)
+            if (!needChangeIndexAfterMoveEvent) {
+                setClickIndex(position)
             }
         }
     }
 
     open fun scrollToPosition(position: Int) {
-        if (isItemIndex(position)) {
-            mRecyclerView?.apply {
+        mLayoutManager?.apply {
+            if (offset > 0) {
+                scrollToPositionWithOffset(position, offset)
+            } else {
                 scrollToPosition(position)
-                post {
-                    mQuickScroller.targetPosition = position
-                    mLayoutManager?.startSmoothScroll(mQuickScroller)
-                    if (!needChangeIndexAfterMoveEvent) {
-                        setClickIndex(position)
-                    }
+            }
+            //滑动结束后快速接近
+            mRecyclerView?.post {
+                mQuickScroller.targetPosition = position
+                startSmoothScroll(mQuickScroller)
+                if (!needChangeIndexAfterMoveEvent) {
+                    setClickIndex(position)
                 }
             }
-
         }
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        mLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
         mRecyclerView = recyclerView
-        if (mLayoutManager != null) {
-            recyclerView.removeOnScrollListener(onScrollListener)
-            recyclerView.addOnScrollListener(onScrollListener)
-        } else {
-            TopLog.i("LayoutManager为空，设置OnScrollListener失败")
-        }
+
+        mLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
+        mRecyclerView?.removeOnScrollListener(onScrollListener)
+        mRecyclerView?.addOnScrollListener(onScrollListener)
         snapHelper?.attachToRecyclerView(recyclerView)
     }
 
-    private fun updateScrolledInfo(onItemScrollListener : OnItemScrollListener, recyclerView: RecyclerView) {
+    private fun updateScrolledInfo(
+        onItemScrollListener: OnItemScrollListener,
+        recyclerView: RecyclerView
+    ) {
         mLayoutManager?.apply {
             if (firstVisiblePosition == RecyclerView.NO_POSITION) {
                 onItemScrollListener.onItemScrolled(0, 0f, 0)
@@ -172,7 +164,7 @@ abstract class BaseCenterAdapter<T> constructor(
             }
             val decoratedHeight = firstVisibleView.height + topDecorations + bottomDecorations
             val decoratedWidth = firstVisibleView.width + leftDecorations + rightDecorations
-            val isHorizontal = mLayoutManager?.orientation == LinearLayoutManager.HORIZONTAL
+            val isHorizontal = orientation == LinearLayoutManager.HORIZONTAL
             val start: Int
             val sizePx: Int
             if (isHorizontal) {
@@ -189,7 +181,6 @@ abstract class BaseCenterAdapter<T> constructor(
             val mOffset: Float = if (sizePx == 0) 0F else mOffsetPx.toFloat() / sizePx
             onItemScrollListener.onItemScrolled(firstVisiblePosition, mOffset, mOffsetPx)
         }
-
     }
 
     open fun getItemWidth(): Int {
@@ -199,12 +190,12 @@ abstract class BaseCenterAdapter<T> constructor(
     private fun checkPosition() {
         timeCell.start(CHECK_TAG)
         mLayoutManager?.apply {
-            snapHelper?.findSnapView(mLayoutManager)?.let {
+            val position = snapHelper?.findSnapView(this)?.let {
                 getPosition(it)
-            } ?: findFirstCompletelyVisibleItemPosition().let {
-                if (firstVisiblePosition != it) {
-                    onItemChange(it)
-                }
+            } ?: findFirstCompletelyVisibleItemPosition()
+
+            if (firstVisiblePosition != position) {
+                onItemChange(position)
             }
         }
     }
