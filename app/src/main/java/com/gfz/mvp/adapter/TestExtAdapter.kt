@@ -14,22 +14,24 @@ import com.gfz.mvp.utils.viewBind
  */
 class TestExtAdapter : BaseExtLayoutAdapter<Number>() {
 
+
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<Number> {
+
         return ViewHolder(viewBind(parent))
+
     }
 
     inner class ViewHolder(private val binding: ItemExtDataBinding) : DataViewHolder<Number>(binding){
+
         override fun onBindViewHolder(data: Number, position: Int) {
-            binding.apply {
+            /*binding.apply {
                 tvTest.text = data.toString()
-            }
+            }*/
+            binding.tvTest.text = ""
             (headerViewBinding as? LayoutHeaderTestBinding)?.apply {
                 (tvHeader.text.toString()+position.toString()).toLog()
             }
         }
 
     }
-
-
-
 }
