@@ -17,7 +17,7 @@ class ExampleUnitTest1 {
     @Test
     fun addition_isCorrect() {
         buildApi(listOf(
-            ApiBean("product/get_product_package_info_v2.do","获取新版大礼包产品信息")
+            ApiBean("ext_data/query_ext_example_by_senseId.do","根据释义ID查询补充例句")
         ))
     }
 
