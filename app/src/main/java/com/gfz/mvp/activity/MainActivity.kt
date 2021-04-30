@@ -1,6 +1,7 @@
 package com.gfz.mvp.activity
 
 import android.content.Intent
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.mvp.adapter.Test3Adapter
 import com.gfz.mvp.base.BaseActivity
@@ -17,7 +18,7 @@ class MainActivity : BaseActivity() {
     override fun initData() {
         val adapter = Test3Adapter()
         binding.rvList.adapter = adapter
-        binding.rvList.layoutManager = LinearLayoutManager(this)
+        binding.rvList.layoutManager = GridLayoutManager(this, 2)
         adapter.refresh(listOf(TestBean("日历试验区"),
             TestBean("滑动多选试验区"),
             TestBean("悬浮计时试验区"),
