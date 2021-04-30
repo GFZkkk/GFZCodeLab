@@ -9,14 +9,13 @@
         android:id="@+id/suv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="15dp"
-        android:paddingHorizontal="5dp"
-        android:gravity="center"
+        android:paddingHorizontal="30dp"
+        android:paddingTop="3dp"
+        android:gravity="center_horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="#11000000"
         android:text="punch"
         android:textSize="34dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,17 +1,12 @@
 package com.gfz.mvp.activity
 
-import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.mvp.adapter.TestExtAdapter
-import com.gfz.mvp.adapter.TestListAdapter
 import com.gfz.mvp.base.BaseActivity
-import com.gfz.mvp.callback.OnItemClickListener
 import com.gfz.mvp.databinding.ActivityExtlayoutBinding
 import com.gfz.mvp.databinding.LayoutHeaderTestBinding
-import com.gfz.mvp.utils.toLog
 import com.gfz.mvp.utils.viewBind
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  *

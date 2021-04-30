@@ -202,7 +202,7 @@ abstract class BaseCenterAdapter<T> constructor(
 
     //需要避免检查过于频繁
     protected open fun updatePosition() {
-        if (timeCell.overTime(CHECK_TAG, 50)) {
+        if (timeCell.overTime(50, CHECK_TAG)) {
             checkPosition()
         }
     }

@@ -45,7 +45,7 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
     private Paint paintDotted;
     PathEffect pathEffectNext = new DashPathEffect(new float[]{dottedLength, dottedSpace}, dottedLength / 2);
     Path path = new Path();
-    boolean show = false;
+    boolean show = true;
 
     // 配置参数
     int fontLevel = 0;
@@ -76,13 +76,13 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
         paintDotted.setStyle(Paint.Style.STROKE);
         paintDotted.setStrokeWidth(dottedHeight);
         paintDotted.setColor(ContextCompat.getColor(context, R.color.col_94949B));
-        paintDotted.setAlpha((int) (255 * 0.2));
+        paintDotted.setAlpha((int) (255 * 0.6));
 
         paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(underlineHeight);
         paint.setColor(ContextCompat.getColor(context, R.color.col_00b19b));
-        paint.setAlpha((int) (255 * 0.2));
+        paint.setAlpha((int) (255 * 0.6));
 
         updateSize(0);
     }
@@ -101,7 +101,7 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
         super.setTextColor(color);
 
         paint.setColor(color);
-        paint.setAlpha((int) (255 * 0.2));
+        paint.setAlpha((int) (255 * 0.6));
     }
 
     @Override

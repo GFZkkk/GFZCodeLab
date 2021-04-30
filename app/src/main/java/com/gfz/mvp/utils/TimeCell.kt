@@ -32,9 +32,18 @@ class TimeCell(size: Int = 10) {
     }
 
     /**
+     * 结束计时
+     */
+    fun end(tag: Int = 0): Long{
+        val time = getNowTime() - getLastTime(tag)
+        start(tag)
+        return time
+    }
+
+    /**
      * 是否超时
      */
-    fun overTime(tag: Int = 0, dur: Int): Boolean {
+    fun overTime(dur: Int, tag: Int = 0): Boolean {
         return overTimeInterval(getNowTime(), getLastTime(tag), dur)
     }
 
