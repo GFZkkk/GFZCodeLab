@@ -21,37 +21,36 @@ object BitmapUtil {
      * 将view的内容绘制成Bitmap
      */
     fun convertViewToBitmap(view: View?): Bitmap? {
-        if (view == null) {
-            return null
+        return view?.let {
+            val w = it.measuredWidth
+            val h = it.measuredHeight
+            if (w <= 0 || h <= 0) {
+                return null
+            }
+            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+            //利用bitmap生成画布
+            val canvas = Canvas(bitmap)
+            //把view中的内容绘制在画布上
+            it.draw(canvas)
+            bitmap
         }
-        val w = view.measuredWidth
-        val h = view.measuredHeight
-        if (w <= 0 || h <= 0) {
-            return null
-        }
-        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        //利用bitmap生成画布
-        val canvas = Canvas(bitmap)
-        //把view中的内容绘制在画布上
-        view.draw(canvas)
-        return bitmap
     }
 
     @JvmOverloads
     fun bmpToByteArray(bmp: Bitmap?, quality: Int = 100): ByteArray? {
-        if (bmp == null) {
-            return null
+
+        return bmp?.let {
+            val output = ByteArrayOutputStream()
+            bmp.compress(Bitmap.CompressFormat.JPEG, quality, output)
+            bmp.recycle()
+            val result = output.toByteArray()
+            try {
+                output.close()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            result
         }
-        val output = ByteArrayOutputStream()
-        bmp.compress(Bitmap.CompressFormat.JPEG, quality, output)
-        bmp.recycle()
-        val result = output.toByteArray()
-        try {
-            output.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return result
     }
 
     /**
@@ -65,20 +64,20 @@ object BitmapUtil {
      * 获取矢量图
      */
     fun getVectorBitmap(context: Context, resId: Int): Bitmap? {
-        var bitmap: Bitmap? = null
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            var vectorDrawable: Drawable? = null
-            vectorDrawable = context.getDrawable(resId)
-            bitmap = Bitmap.createBitmap(
-                vectorDrawable!!.intrinsicWidth,
-                vectorDrawable.intrinsicHeight, Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(bitmap)
-            vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
-            vectorDrawable.draw(canvas)
+        // 矢量图需要在21之后的版本处理
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            context.getCompatDrawable(resId)?.let {
+                val bitmap = Bitmap.createBitmap(
+                    it.intrinsicWidth,
+                    it.intrinsicHeight, Bitmap.Config.ARGB_8888
+                )
+                val canvas = Canvas(bitmap)
+                it.setBounds(0, 0, canvas.width, canvas.height)
+                it.draw(canvas)
+                bitmap
+            }
         } else {
-            bitmap = BitmapFactory.decodeResource(context.resources, resId)
+            BitmapFactory.decodeResource(context.resources, resId)
         }
-        return bitmap
     }
 }
