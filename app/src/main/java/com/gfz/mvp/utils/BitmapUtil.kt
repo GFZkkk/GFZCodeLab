@@ -13,6 +13,7 @@ import android.view.View
 import java.io.ByteArrayOutputStream
 
 /**
+ * 图片处理工具类
  * created by gfz on 2021/2/15
  **/
 object BitmapUtil {
