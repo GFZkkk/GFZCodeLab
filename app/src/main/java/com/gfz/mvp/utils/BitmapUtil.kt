@@ -11,6 +11,7 @@ import android.renderscript.RenderScript
 import android.renderscript.ScriptIntrinsicBlur
 import android.view.View
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 /**
  * 图片处理工具类
@@ -35,6 +36,10 @@ object BitmapUtil {
             it.draw(canvas)
             bitmap
         }
+    }
+
+    fun saveBitmapToFile(fileName: String){
+        val file = File(fileName)
     }
 
     @JvmOverloads

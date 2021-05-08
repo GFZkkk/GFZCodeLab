@@ -41,4 +41,13 @@ class MainActivity : BaseActivity() {
             }
         })
     }
+
+    override fun onBackPressed() {
+        if(fastClick(-1, 500)){
+            super.onBackPressed()
+        }else{
+            showToast("再按一次退出")
+        }
+
+    }
 }

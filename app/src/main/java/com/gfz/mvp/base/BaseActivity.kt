@@ -2,9 +2,15 @@ package com.gfz.mvp.base
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import com.gfz.mvp.R
 import com.gfz.mvp.utils.TimeCell
 import com.gfz.mvp.utils.ToastUtil
+import com.gfz.mvp.utils.getCompatColor
+
 
 /**
  * created by gaofengze on 2020-01-19
@@ -13,7 +19,7 @@ import com.gfz.mvp.utils.ToastUtil
 abstract class BaseActivity : AppCompatActivity(){
 
     val handler by lazy{
-        Handler()
+        Handler(Looper.getMainLooper())
     }
 
     private val timeCell: TimeCell by lazy {
@@ -22,6 +28,10 @@ abstract class BaseActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val window: Window = window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = getCompatColor(R.color.white)
+        window.decorView.systemUiVisibility
         initView()
         initData()
     }
