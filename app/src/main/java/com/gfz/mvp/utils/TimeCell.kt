@@ -3,6 +3,9 @@ package com.gfz.mvp.utils
 import android.os.SystemClock
 import android.util.SparseArray
 
+/**
+ * 时间间隔工具类
+ */
 class TimeCell(size: Int = 10) {
 
     private val timeArray: SparseArray<Long> by lazy {

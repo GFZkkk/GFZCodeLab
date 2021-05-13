@@ -8,11 +8,10 @@ import android.os.Looper
 import android.view.*
 import com.gfz.mvp.R
 import com.gfz.mvp.databinding.LayoutCountDownBinding
-import com.gfz.mvp.module.OverlayManager
+import com.gfz.mvp.utils.OverlayUtil
 import com.gfz.mvp.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 /**
  * created by gfz on 2020/5/5
@@ -32,7 +31,7 @@ class DrawOverService : Service() {
 
     private val binding: LayoutCountDownBinding = viewBind()
 
-    private val overlayManager: OverlayManager = OverlayManager()
+    private val overlayManager: OverlayUtil = OverlayUtil()
 
     override fun onBind(p0: Intent?): IBinder? {
         return null

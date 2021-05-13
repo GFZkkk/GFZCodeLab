@@ -1,4 +1,4 @@
-package com.gfz.mvp.module
+package com.gfz.mvp.utils
 
 import android.content.Context
 import android.os.Build
@@ -14,7 +14,7 @@ import com.gfz.mvp.utils.*
  * 管理小窗口布局
  * created by gaofengze on 2021/2/22
  */
-class OverlayManager {
+class OverlayUtil {
     //要引用的布局文件.
     private var rootView: View? = null
     private var lastX = 0

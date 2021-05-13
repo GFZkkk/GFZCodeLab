@@ -11,6 +11,7 @@ import kotlin.properties.Delegates
  */
 
 class KTApp: Application() {
+
     companion object{
         var appContext: Context by Delegates.notNull()
     }
