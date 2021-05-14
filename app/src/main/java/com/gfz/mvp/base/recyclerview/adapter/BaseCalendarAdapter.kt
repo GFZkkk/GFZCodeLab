@@ -1,4 +1,4 @@
-package com.gfz.mvp.base.adapter
+package com.gfz.mvp.base.recyclerview.adapter
 
 import com.gfz.mvp.utils.DateUtil
 import com.gfz.mvp.utils.DateUtil.getCurStandardShortDate

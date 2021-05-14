@@ -3,6 +3,7 @@ package com.gfz.mvp.data
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import com.gfz.mvp.base.KTCatchException
 import com.gfz.mvp.utils.TopLog
 import kotlin.properties.Delegates
 
@@ -20,6 +21,7 @@ class KTApp: Application() {
         super.onCreate()
         appContext = this
         TopLog.init(true)
+        KTCatchException.init(this)
     }
 
     override fun attachBaseContext(base: Context?) {

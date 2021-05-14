@@ -1,6 +1,10 @@
-package com.gfz.mvp.base.adapter
+package com.gfz.mvp.base.recyclerview.adapter
 
+import android.content.Context
 import android.view.View
+import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 
@@ -10,6 +14,14 @@ import androidx.viewbinding.ViewBinding
  */
 
 abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+
+    var context: Context? = null
+
+    init {
+        context = binding.root.context
+    }
+
+    // region 加载方法
     /**
      * 空数据将不被显示
      */
@@ -36,4 +48,14 @@ abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.Vi
     }
 
     abstract fun onBindViewHolder(data: T, position: Int)
+    // endregion
+
+    // region 工具方法
+    fun TextView.setTextColorRes(@ColorRes color: Int){
+        this.setTextColor(ContextCompat.getColor(context, color))
+    }
+    // endregion
+
+    // region 判断方法
+    // endregion
 }

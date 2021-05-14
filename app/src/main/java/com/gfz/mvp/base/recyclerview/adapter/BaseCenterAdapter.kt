@@ -1,4 +1,4 @@
-package com.gfz.mvp.base.adapter
+package com.gfz.mvp.base.recyclerview.adapter
 
 import android.content.Context
 import android.util.DisplayMetrics
@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.mvp.utils.ScreenUtil
 import com.gfz.mvp.utils.TimeCell
-import com.gfz.mvp.utils.TopLog
 import com.gfz.mvp.utils.toPX
 
 /**

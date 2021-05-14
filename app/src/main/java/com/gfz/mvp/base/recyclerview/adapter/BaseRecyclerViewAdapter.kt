@@ -1,15 +1,10 @@
-package com.gfz.mvp.base.adapter
+package com.gfz.mvp.base.recyclerview.adapter
 
 import android.content.Context
-import android.graphics.drawable.Drawable
-import android.os.SystemClock
-import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.annotation.NonNull
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.mvp.callback.OnItemClickListener
 import com.gfz.mvp.data.KTApp
@@ -98,7 +93,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 主动设置选中的itemIndex
      */
-    protected open fun setClickIndex(clickIndex: Int) {
+    open fun setClickIndex(clickIndex: Int) {
         if (!isItemIndex(clickIndex)) return
         val preClickIndex = this.clickIndex
         this.clickIndex = clickIndex

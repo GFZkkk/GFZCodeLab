@@ -1,8 +1,8 @@
 package com.gfz.mvp.adapter
 
 import android.view.ViewGroup
-import com.gfz.mvp.base.adapter.BaseRecyclerViewAdapter
-import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
+import com.gfz.mvp.base.recyclerview.adapter.BaseRecyclerViewAdapter
+import com.gfz.mvp.base.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.databinding.ItemTestBinding
 import com.gfz.mvp.model.bean.TestBean
 import com.gfz.mvp.utils.viewBind

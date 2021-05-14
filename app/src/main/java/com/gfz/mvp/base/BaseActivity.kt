@@ -16,7 +16,7 @@ import com.gfz.mvp.utils.getCompatColor
  * created by gaofengze on 2020-01-19
  */
 
-abstract class BaseActivity : AppCompatActivity(){
+abstract class BaseActivity : AppCompatActivity(), BasePageTools{
 
     val handler by lazy{
         Handler(Looper.getMainLooper())
@@ -28,27 +28,31 @@ abstract class BaseActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setWindowStatus()
+        initView()
+        initData()
+    }
+
+    private fun setWindowStatus(){
         val window: Window = window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = getCompatColor(R.color.white)
-        window.decorView.systemUiVisibility
-        initView()
-        initData()
     }
 
     open fun initView(){}
 
     abstract fun initData()
 
+    // region 工具方法
     fun getContext() = this
     /**
      * 显示吐司
      */
-    fun showToast(text: String){
+    override fun showToast(text: String){
         ToastUtil.showToast(text)
     }
 
-    fun showToast(textRes: Int){
+    override fun showToast(textRes: Int){
         showToast(getString(textRes))
     }
 
@@ -58,5 +62,6 @@ abstract class BaseActivity : AppCompatActivity(){
      * @param dur 调用间隔
      * @return 是否连续调用
      */
-    fun fastClick(tag: Int = 0, dur: Int = 500) = timeCell.fastClick(tag, dur)
+    override fun fastClick(tag: Int, dur: Int) = timeCell.fastClick(tag, dur)
+    // endregion
 }

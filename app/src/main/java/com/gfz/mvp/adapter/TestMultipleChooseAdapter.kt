@@ -3,8 +3,8 @@ package com.gfz.mvp.adapter
 import android.util.SparseBooleanArray
 import android.view.ViewGroup
 import com.gfz.mvp.R
-import com.gfz.mvp.base.adapter.BaseMultipleChooseAdapter
-import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
+import com.gfz.mvp.base.recyclerview.adapter.BaseMultipleChooseAdapter
+import com.gfz.mvp.base.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.databinding.ItemMultipleChooseBinding
 import com.gfz.mvp.model.bean.MultipleChooseBean
 import com.gfz.mvp.utils.setDisplay

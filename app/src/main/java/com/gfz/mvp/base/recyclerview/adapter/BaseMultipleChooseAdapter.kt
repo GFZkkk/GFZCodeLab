@@ -1,10 +1,9 @@
-package com.gfz.mvp.base.adapter
+package com.gfz.mvp.base.recyclerview.adapter
 
 import android.util.SparseBooleanArray
 import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.mvp.utils.TopLog
 
 /**
  * 多选recyclerview 基类

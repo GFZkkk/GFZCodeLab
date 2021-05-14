@@ -1,4 +1,4 @@
-package com.gfz.mvp.base.adapter
+package com.gfz.mvp.base.recyclerview.adapter
 
 import android.content.Context
 import android.os.Handler

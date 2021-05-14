@@ -37,6 +37,7 @@
         <activity android:name=".activity.TestAnimationActivity" />
         <activity android:name=".activity.TestExtAdapterActivity" />
         <activity android:name=".activity.TestUnderlineActivity"/>
+        <activity android:name=".activity.TabMainActivity" />
 
 
         <service android:name=".service.DrawOverService" />

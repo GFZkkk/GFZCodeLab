@@ -1,6 +1,5 @@
-package com.gfz.mvp.base.adapter
+package com.gfz.mvp.base.recyclerview.adapter
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.GridLayoutManager
@@ -8,10 +7,8 @@ import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewbinding.ViewBinding
-import com.gfz.mvp.utils.viewBind
-import java.util.*
 import kotlin.collections.ArrayList
-import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder as BaseRecyclerViewHolder
+import com.gfz.mvp.base.recyclerview.adapter.BaseRecyclerViewHolder as BaseRecyclerViewHolder
 
 /**
  *

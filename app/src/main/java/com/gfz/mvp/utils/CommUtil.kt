@@ -18,6 +18,8 @@ fun Context.getCompatColor(resId: Int) = ContextCompat.getColor(this, resId)
  */
 fun Context.getCompatDrawable(resId: Int) = ContextCompat.getDrawable(this, resId)
 
+fun Context.getScreenWidth() = ScreenUtil.getScreenWidth(this)
+
 /**
  * 根据资源id获取图片
  */

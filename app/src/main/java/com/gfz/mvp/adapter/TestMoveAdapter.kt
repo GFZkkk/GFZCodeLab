@@ -4,8 +4,8 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.mvp.base.adapter.BaseRecyclerViewAdapter
-import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
+import com.gfz.mvp.base.recyclerview.adapter.BaseRecyclerViewAdapter
+import com.gfz.mvp.base.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.databinding.ItemMoveBinding
 import com.gfz.mvp.model.bean.MoveBean
 import com.gfz.mvp.utils.TopLog

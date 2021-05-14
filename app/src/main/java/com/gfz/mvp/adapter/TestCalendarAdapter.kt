@@ -1,8 +1,8 @@
 package com.gfz.mvp.adapter
 
 import android.view.ViewGroup
-import com.gfz.mvp.base.adapter.BaseCalendarAdapter
-import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
+import com.gfz.mvp.base.recyclerview.adapter.BaseCalendarAdapter
+import com.gfz.mvp.base.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.mvp.databinding.ItemCalendarBinding
 import com.gfz.mvp.model.bean.BaseCalendarBean
 import com.gfz.mvp.utils.TopLog

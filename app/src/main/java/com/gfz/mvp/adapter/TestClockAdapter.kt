@@ -2,8 +2,8 @@ package com.gfz.mvp.adapter
 
 import android.content.Context
 import android.view.ViewGroup
-import com.gfz.mvp.base.adapter.BaseRecyclerViewHolder
-import com.gfz.mvp.base.adapter.BaseCenterAdapter
+import com.gfz.mvp.base.recyclerview.adapter.BaseRecyclerViewHolder
+import com.gfz.mvp.base.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.mvp.databinding.ItemClockBinding
 import com.gfz.mvp.utils.setDisplay
 import com.gfz.mvp.utils.setVisible

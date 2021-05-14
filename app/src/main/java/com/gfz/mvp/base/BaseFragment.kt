@@ -2,17 +2,25 @@ package com.gfz.mvp.base
 
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.gfz.mvp.data.KTApp
+import com.gfz.mvp.utils.TimeCell
 
 /**
  * created by gaofengze on 2020/4/30
  */
 
-abstract class BaseFragment : Fragment(){
+abstract class BaseFragment : Fragment(), BasePageTools{
 
-    private val handler = Handler()
+    val handler by lazy{
+        Handler(Looper.getMainLooper())
+    }
+
+    private val timeCell: TimeCell by lazy {
+        TimeCell()
+    }
 
     var mActivity: BaseActivity? = null
 
@@ -25,14 +33,13 @@ abstract class BaseFragment : Fragment(){
 
     protected abstract fun loadData()
 
-
-
-    protected fun showToast(text: String){
-        Toast.makeText(KTApp.appContext, text, if(text.length > 10){ Toast.LENGTH_LONG }else{ Toast.LENGTH_SHORT }).show()
+    override fun showToast(text: String) {
+        mActivity?.showToast(text)
     }
 
-    protected fun showToast(textRes: Int){
-        showToast(KTApp.appContext.getString(textRes))
+    override fun showToast(textRes: Int) {
+        mActivity?.showToast(textRes)
     }
 
+    override fun fastClick(tag: Int, dur: Int) = timeCell.fastClick(tag, dur)
 }
