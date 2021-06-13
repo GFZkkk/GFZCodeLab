@@ -32,10 +32,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 当前点击的position
      */
     private var clickIndex: Int = -1
-    /**
-     * 持有的context
-     */
-    private var context: Context? = null
+
     /**
      * 点击事件
      */
@@ -112,13 +109,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * @return 绑定的某个位置的数据
      */
     fun getData(position: Int): T? = if (isDataIndex(position)) list[position] else null
-
-    /**
-     * 主动设置context
-     */
-    fun setContext(context: Context?) {
-        this.context = context
-    }
 
     /**
      * 绑定点击事件
@@ -281,16 +271,8 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 顺便取一下context
      */
     open fun getView(viewGroup: ViewGroup, layout: Int): View {
-        if (context == null) {
-            context = viewGroup.context
-        }
         return LayoutInflater.from(viewGroup.context).inflate(layout, viewGroup, false)
     }
-
-    /**
-     * 获取一个可用的context
-     */
-    fun getContext(): Context = context?: getAppContext()
 
     /**
      * 设置item中控件的点击事件

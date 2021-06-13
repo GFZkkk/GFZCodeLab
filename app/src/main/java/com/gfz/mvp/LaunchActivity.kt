@@ -12,7 +12,7 @@ import com.gfz.mvp.base.BaseActivity
 class LaunchActivity : BaseActivity(){
 
     override fun initData() {
-        startActivity(Intent(this, TabMainActivity::class.java))
+        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 }

@@ -56,7 +56,7 @@ class MultiRecyclerView : RecyclerView {
                             //记录第一个选中的item的groupId
                             if (groupId == -1) {
                                 groupId = multipleChooseAdapter.getGroupId(realPosition)
-                                check = multipleChooseAdapter.isMultipleChooseItem(realPosition)
+                                check = multipleChooseAdapter.isChooseItem(realPosition)
                             }
                             //只有同组的item才会在一次滑动中选中
                             if (groupId == multipleChooseAdapter.getGroupId(realPosition)) {
