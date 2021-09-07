@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    buildToolsVersion '30.0.3'
     defaultConfig {
         applicationId "com.gfz.mvp"
         minSdkVersion 21
@@ -22,9 +22,14 @@ android {
         }
     }
 
-    buildFeatures{
-        viewBinding = true
+    viewBinding {
+        enabled = true
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    ndkVersion '21.3.6528147'
 }
 
 dependencies {
@@ -36,17 +41,17 @@ dependencies {
     implementation 'me.jessyan:autosize:1.2.1'
 
     // kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.32"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.30"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2"
 
     // Jetpack
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
 
     // ui
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
     // 网络请求
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
