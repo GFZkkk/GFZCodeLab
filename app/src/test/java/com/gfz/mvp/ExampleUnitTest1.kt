@@ -17,7 +17,7 @@ class ExampleUnitTest1 {
     @Test
     fun addition_isCorrect() {
         buildApi(listOf(
-            ApiBean("ext_data/query_ext_example_by_senseId.do","根据释义ID查询补充例句")
+            ApiBean("mm_sync_data/save_user_speech_info_record.do","保存用户跟读打分使用记录")
         ))
     }
 

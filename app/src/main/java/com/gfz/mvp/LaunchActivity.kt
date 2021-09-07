@@ -1,8 +1,7 @@
 package com.gfz.mvp
 
 import android.content.Intent
-import com.gfz.mvp.activity.MainActivity
-import com.gfz.mvp.activity.TabMainActivity
+import com.gfz.mvp.activity.RootActivity
 import com.gfz.mvp.base.BaseActivity
 
 /**
@@ -12,7 +11,7 @@ import com.gfz.mvp.base.BaseActivity
 class LaunchActivity : BaseActivity(){
 
     override fun initData() {
-        startActivity(Intent(this, TabMainActivity::class.java))
+        startActivity(Intent(this, RootActivity::class.java))
         finish()
     }
 }

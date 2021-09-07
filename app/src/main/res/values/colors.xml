@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimary">#ff534d</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
@@ -20,6 +20,7 @@
     <color name="col_ff7d7d">#ff7d7d</color>
 
     <color name="col_fb6d59">#fb6d59</color>
+    <color name="col_ff534d">#ff534d</color>
     <color name="col_94949B">#94949B</color>
     <color name="col_00b19b">#00b19b</color>
 </resources>

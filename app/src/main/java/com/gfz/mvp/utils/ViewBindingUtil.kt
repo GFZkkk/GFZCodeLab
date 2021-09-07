@@ -14,7 +14,7 @@ import com.gfz.mvp.data.KTApp
  * created by gaofengze on 2021/1/27
  */
 
-inline fun <reified VB : ViewBinding> Fragment.bindView() =
+inline fun <reified VB : ViewBinding> Fragment.viewBind() =
     FragmentBindingDelegate(VB::class.java)
 
 inline fun <reified VB : ViewBinding> Activity.viewBind() = lazy {
