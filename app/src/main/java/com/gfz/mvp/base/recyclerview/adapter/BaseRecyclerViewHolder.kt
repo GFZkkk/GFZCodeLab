@@ -19,6 +19,7 @@ abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.Vi
 
     init {
         context = binding.root.context
+        initEvent()
     }
 
     // region 加载方法
@@ -47,6 +48,7 @@ abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.Vi
         return layoutPosition
     }
 
+    open fun initEvent(){}
     abstract fun onBindViewHolder(data: T, position: Int)
     // endregion
 

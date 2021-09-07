@@ -4,6 +4,8 @@ import android.util.SparseBooleanArray
 import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
+import com.gfz.mvp.model.bean.BaseMultipleChooseBean
+import com.gfz.mvp.utils.toLog
 
 /**
  * 多选recyclerview 基类
@@ -11,10 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
  * created by gaofengze on 2020/4/14
  */
 
-abstract class BaseMultipleChooseAdapter<T>(dataList: List<T?> = ArrayList()) :
+abstract class BaseMultipleChooseAdapter<T: BaseMultipleChooseBean>(dataList: List<T?> = ArrayList()) :
     BaseRecyclerViewAdapter<T>(dataList){
 
     private val chooseItem: SparseBooleanArray = SparseBooleanArray()
+    private val chooseTitleItem: SparseBooleanArray by lazy {
+        SparseBooleanArray()
+    }
 
     /**
      * 是否根据view确定多选框范围
@@ -67,12 +72,13 @@ abstract class BaseMultipleChooseAdapter<T>(dataList: List<T?> = ArrayList()) :
         return x >= bound.left - bound.flag && x <= bound.right + bound.flag
     }
 
+    // region 单选
     /**
      * 改变item的选中状态
      * @param position item的位置
      */
     fun chooseItem(position: Int) {
-        chooseItem(position, !isMultipleChooseItem(position))
+        chooseItem(position, !isChooseItem(position))
     }
 
     /**
@@ -84,17 +90,94 @@ abstract class BaseMultipleChooseAdapter<T>(dataList: List<T?> = ArrayList()) :
         if (isDataIndex(position)) {
             chooseItem.append(position, choose)
             notifyItemChanged(position)
+            checkGroupCheckStatus(position)
         }
     }
 
     /**
-     * 是否被多选
+     * 是否被选中
      */
-    fun isMultipleChooseItem(position: Int): Boolean {
+    fun isChooseItem(position: Int): Boolean {
         return if (isDataIndex(position)) {
-            chooseItem[position]
+            chooseItem.get(position, false)
         } else false
     }
+    // endregion
+
+    // region 多选
+    /**
+     * 是否是新的一组
+     */
+    fun isNewGroup(position: Int): Boolean =
+        if (position == 0)
+            true
+        else
+            getData(position)?.getBaseGroupId() != getData(position - 1)?.getBaseGroupId()
+
+    fun setTitleItemStatus(position: Int, change: Boolean){
+        val groupId = getGroupIdByPosition(position)
+        chooseTitleItem.append(groupId, change)
+        getData().forEachIndexed { index, t ->
+            if (t?.getBaseGroupId() == groupId && isNewGroup(index)){
+                notifyItemChanged(index)
+                return@forEachIndexed
+            }
+        }
+    }
+
+    fun updateMultipleItem(position: Int){
+        val groupId = getGroupIdByPosition(position)
+        val change = isMultipleChooseItem(position)
+        getData().forEachIndexed { index, multipleChooseBean ->
+            if (multipleChooseBean?.getBaseGroupId() == groupId){
+                if (change != isChooseItem(index)){
+                    chooseItem(index, change)
+                }
+            }
+        }
+    }
+
+    fun changeGroupChooseStatus(position: Int){
+        setTitleItemStatus(position, !isMultipleChooseItem(position))
+        updateMultipleItem(position)
+    }
+
+    fun checkGroupCheckStatus(position: Int){
+        val groupId = getGroupIdByPosition(position)
+        val multipleChoose: Boolean = isMultipleChooseItem(position)
+        var allChoose = true
+        getData().forEachIndexed { index, t ->
+            if (t?.getBaseGroupId() == groupId){
+                if (!isChooseItem(index)){
+                    allChoose = false
+                    """$index""".toLog()
+                    return@forEachIndexed
+                }
+
+            }
+        }
+        if (multipleChoose){
+            // 是全选状态，有未选中的，取消全选状态
+            if (!allChoose){
+                setTitleItemStatus(position, false)
+            }
+        }else{
+            // 不是全选状态，但是全部都被选中，修改全选状态为全选
+            if (allChoose){
+                setTitleItemStatus(position, true)
+            }
+        }
+        """$multipleChoose+$allChoose+$position""".toLog()
+
+    }
+
+    fun isMultipleChooseItem(position: Int): Boolean {
+        val groupId = getGroupIdByPosition(position)
+        return chooseTitleItem.get(groupId, false)
+    }
+
+    fun getGroupIdByPosition(position: Int) = getData(position)!!.getBaseGroupId()
+    // endregion
 
     fun isCheckBoundByView() = sureBoundByView
 
