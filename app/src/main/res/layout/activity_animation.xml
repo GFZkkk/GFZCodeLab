@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
-    <com.gfz.mvp.view.FireworksView
+    <com.gfz.lab.view.FireworksView
         android:id="@+id/fw"
         android:layout_width="375dp"
         android:layout_height="150dp"
@@ -13,7 +13,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-    <com.gfz.mvp.view.InterpolatorView
+    <com.gfz.lab.view.InterpolatorView
         android:id="@+id/interpolatorView"
         android:layout_width="375dp"
         android:layout_height="375dp"

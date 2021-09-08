@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.TestUnderlineActivity">
-    <com.gfz.mvp.view.SpellUnderlineView
+    <com.gfz.lab.view.SpellUnderlineView
         android:id="@+id/suv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
