@@ -20,7 +20,7 @@
             android:name="design_width_in_dp"
             android:value="375" />
 
-        <activity android:name="com.gfz.lab.LaunchActivity"
+        <activity android:name=".LaunchActivity"
             android:theme="@style/FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,19 +28,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"/>
-        <activity android:name="com.gfz.lab.activity.TestCalendarActivity" />
-        <activity android:name="com.gfz.lab.activity.TestMultipleChooseActivity" />
-        <activity android:name="com.gfz.lab.activity.TestCountDownActivity" />
-        <activity android:name="com.gfz.lab.activity.TestClockActivity" />
-        <activity android:name="com.gfz.lab.activity.TestMoveActivity" />
-        <activity android:name="com.gfz.lab.activity.TestAnimationActivity" />
-        <activity android:name="com.gfz.lab.activity.TestExtAdapterActivity" />
-        <activity android:name="com.gfz.lab.activity.TestUnderlineActivity"/>
-        <activity android:name="com.gfz.lab.activity.RootActivity" />
+<!--        <activity android:name=".activity.MainActivity"/>-->
+        <activity android:name=".activity.TestCalendarActivity" />
+        <activity android:name=".activity.TestMultipleChooseActivity" />
+        <activity android:name=".activity.TestCountDownActivity" />
+        <activity android:name=".activity.TestClockActivity" />
+        <activity android:name=".activity.TestMoveActivity" />
+        <activity android:name=".activity.TestAnimationActivity" />
+        <activity android:name=".activity.TestExtAdapterActivity" />
+        <activity android:name=".activity.TestUnderlineActivity"/>
+        <activity android:name=".activity.RootActivity" />
 
 
-        <service android:name="com.gfz.lab.service.DrawOverService" />
+        <service android:name=".service.DrawOverService" />
     </application>
 
 </manifest>

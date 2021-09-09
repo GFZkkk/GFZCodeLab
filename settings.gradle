@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name='MVPkotlin'
+rootProject.name='GFZCodeLab'
