@@ -1,7 +1,7 @@
 package com.gfz.lab.utils
 
 import android.content.Context
-import com.gfz.lab.data.KTApp
+import com.gfz.lab.app.KTApp
 
 /**
  * 屏幕相关操作

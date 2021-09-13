@@ -3,8 +3,8 @@ package com.gfz.lab.base.recyclerview
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import com.gfz.lab.ext.toPX
 import com.gfz.lab.utils.TopLog
-import com.gfz.lab.utils.toPX
 
 /**
  *

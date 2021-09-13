@@ -4,8 +4,8 @@ import android.util.SparseBooleanArray
 import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
+import com.gfz.lab.ext.toLog
 import com.gfz.lab.model.bean.BaseMultipleChooseBean
-import com.gfz.lab.utils.toLog
 
 /**
  * 多选recyclerview 基类

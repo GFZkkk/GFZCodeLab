@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.lab.base.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.lab.databinding.ItemClockBinding
-import com.gfz.lab.utils.setDisplay
-import com.gfz.lab.utils.setVisible
+import com.gfz.lab.ext.setDisplay
+import com.gfz.lab.ext.setVisible
 import com.gfz.lab.utils.viewBind
 
 /**

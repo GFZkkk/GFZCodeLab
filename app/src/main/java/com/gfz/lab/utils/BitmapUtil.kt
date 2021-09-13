@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.os.Build
 import android.view.View
+import com.gfz.lab.ext.getCompatDrawable
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -67,19 +68,16 @@ object BitmapUtil {
      */
     fun getVectorBitmap(context: Context, resId: Int): Bitmap? {
         // 矢量图需要在21之后的版本处理
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            context.getCompatDrawable(resId)?.let {
-                val bitmap = Bitmap.createBitmap(
-                    it.intrinsicWidth,
-                    it.intrinsicHeight, Bitmap.Config.ARGB_8888
-                )
-                val canvas = Canvas(bitmap)
-                it.setBounds(0, 0, canvas.width, canvas.height)
-                it.draw(canvas)
-                bitmap
-            }
-        } else {
-            BitmapFactory.decodeResource(context.resources, resId)
+        return context.getCompatDrawable(resId)?.let {
+            val bitmap = Bitmap.createBitmap(
+                it.intrinsicWidth,
+                it.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            it.setBounds(0, 0, canvas.width, canvas.height)
+            it.draw(canvas)
+            bitmap
         }
     }
 }

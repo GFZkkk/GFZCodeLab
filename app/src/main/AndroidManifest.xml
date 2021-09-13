@@ -2,42 +2,39 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gfz.lab">
 
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 悬浮窗 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 悬浮窗 -->
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
+    <!-- 震动 -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="com.gfz.lab.data.KTApp"
+        android:name="com.gfz.lab.app.KTApp"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <meta-data
             android:name="design_width_in_dp"
-            android:value="375" />
+            android:value="375"/>
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="665"/>
 
         <activity android:name=".LaunchActivity"
-            android:theme="@style/FullScreen">
+            android:theme="@style/FullScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <activity android:name=".activity.MainActivity"/>-->
-        <activity android:name=".activity.TestCalendarActivity" />
-        <activity android:name=".activity.TestMultipleChooseActivity" />
-        <activity android:name=".activity.TestCountDownActivity" />
-        <activity android:name=".activity.TestClockActivity" />
-        <activity android:name=".activity.TestMoveActivity" />
-        <activity android:name=".activity.TestAnimationActivity" />
-        <activity android:name=".activity.TestExtAdapterActivity" />
-        <activity android:name=".activity.TestUnderlineActivity"/>
-        <activity android:name=".activity.RootActivity" />
+        <activity android:name="com.gfz.lab.ui.activity.RootActivity" />
 
 
         <service android:name=".service.DrawOverService" />

@@ -1,8 +1,7 @@
 package com.gfz.lab
 
-import android.content.Intent
-import com.gfz.lab.activity.RootActivity
-import com.gfz.lab.base.BaseActivity
+import com.gfz.lab.ui.activity.RootActivity
+import com.gfz.lab.ui.base.BaseActivity
 
 /**
  * 启动页
@@ -10,8 +9,12 @@ import com.gfz.lab.base.BaseActivity
  */
 class LaunchActivity : BaseActivity(){
 
+    override fun loadView() {
+        // 无ui
+    }
+
     override fun initData() {
-        startActivity(Intent(this, RootActivity::class.java))
+        start(RootActivity::class.java)
         finish()
     }
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph_main"
+    app:startDestination="@id/tabMainFragment">
+
+    <fragment
+        android:id="@+id/tabMainFragment"
+        android:name="com.gfz.lab.ui.fragment.TabMainFragment"
+        android:label="TabMainFragment"
+        tools:layout="@layout/fragment_tab_main">
+
+        <action
+            android:id="@+id/to_testAnimationFragment"
+            app:destination="@id/testAnimationFragment" />
+        <action
+            android:id="@+id/to_testCalendarFragment"
+            app:destination="@id/testCalendarFragment" />
+        <action
+            android:id="@+id/to_testClockFragment"
+            app:destination="@id/testClockFragment" />
+        <action
+            android:id="@+id/to_testCountDownFragment"
+            app:destination="@id/testCountDownFragment" />
+        <action
+            android:id="@+id/to_testExtAdapterFragment"
+            app:destination="@id/testExtAdapterFragment" />
+        <action
+            android:id="@+id/to_testMoveFragment"
+            app:destination="@id/testMoveFragment" />
+        <action
+            android:id="@+id/to_testMultipleChooseFragment"
+            app:destination="@id/testMultipleChooseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/testAnimationFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestAnimationFragment"
+        android:label="TestAnimationFragment" />
+    <fragment
+        android:id="@+id/testCalendarFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestCalendarFragment"
+        android:label="TestCalendarFragment" />
+    <fragment
+        android:id="@+id/testClockFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestClockFragment"
+        android:label="TestClockFragment" />
+    <fragment
+        android:id="@+id/testCountDownFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestCountDownFragment"
+        android:label="TestCountDownFragment" />
+    <fragment
+        android:id="@+id/testExtAdapterFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestExtAdapterFragment"
+        android:label="TestExtAdapterFragment" />
+    <fragment
+        android:id="@+id/testMoveFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestMoveFragment"
+        android:label="TestMoveFragment" />
+    <fragment
+        android:id="@+id/testMultipleChooseFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestMultipleChooseFragment"
+        android:label="TestMultipleChooseFragment" />
+
+
+</navigation>

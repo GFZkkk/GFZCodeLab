@@ -5,8 +5,8 @@ import com.gfz.lab.R
 import com.gfz.lab.base.recyclerview.adapter.BaseMultipleChooseAdapter
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.lab.databinding.ItemMultipleChooseBinding
+import com.gfz.lab.ext.setDisplay
 import com.gfz.lab.model.bean.MultipleChooseBean
-import com.gfz.lab.utils.setDisplay
 import com.gfz.lab.utils.viewBind
 
 /**

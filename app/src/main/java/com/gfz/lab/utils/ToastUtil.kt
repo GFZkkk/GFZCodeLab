@@ -1,7 +1,7 @@
 package com.gfz.lab.utils
 
 import android.widget.Toast
-import com.gfz.lab.data.KTApp
+import com.gfz.lab.app.KTApp
 
 object ToastUtil{
 

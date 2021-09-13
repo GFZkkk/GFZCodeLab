@@ -1,0 +1,17 @@
+package com.gfz.lab.ui.fragment.mine
+
+import com.gfz.lab.databinding.FragmentMineBinding
+import com.gfz.lab.databinding.FragmentTabMainBinding
+import com.gfz.lab.ui.base.BaseFragment
+import com.gfz.lab.ui.base.BaseVBFragment
+
+/**
+ *
+ * created by gaofengze on 2021/5/14
+ */
+class MineFragment : BaseVBFragment<FragmentMineBinding>() {
+    override fun initView() {
+
+    }
+
+}

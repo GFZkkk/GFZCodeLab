@@ -6,7 +6,8 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import com.gfz.lab.data.KTApp
+import com.gfz.lab.app.KTApp
+import com.gfz.lab.ext.toPX
 
 /**
  * 管理小窗口布局
@@ -38,7 +39,7 @@ class OverlayUtil {
         //设置flags.不可聚焦及不可使用按钮对悬浮窗进行操控.
         params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
         //设置窗口初始停靠位置.
-        params.gravity = Gravity.LEFT or Gravity.TOP
+        params.gravity = Gravity.START or Gravity.TOP
         params.width = 180.toPX()
         params.height = 120.toPX()
 

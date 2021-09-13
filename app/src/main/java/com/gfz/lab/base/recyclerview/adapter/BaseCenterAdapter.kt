@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.gfz.lab.ext.toPX
 import com.gfz.lab.utils.ScreenUtil
 import com.gfz.lab.utils.TimeCell
-import com.gfz.lab.utils.toPX
 
 /**
  * 可以滚动到中间的适配器

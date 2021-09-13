@@ -1,7 +1,7 @@
 package com.gfz.lab.utils
 
 import android.os.Environment
-import com.gfz.lab.data.KTApp
+import com.gfz.lab.app.KTApp
 import java.io.File
 
 /**

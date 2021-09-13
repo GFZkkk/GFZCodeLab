@@ -8,6 +8,8 @@ import android.os.Looper
 import android.view.*
 import com.gfz.lab.R
 import com.gfz.lab.databinding.LayoutCountDownBinding
+import com.gfz.lab.ext.getCompatColor
+import com.gfz.lab.ext.setDisplay
 import com.gfz.lab.utils.OverlayUtil
 import com.gfz.lab.utils.*
 import java.text.SimpleDateFormat

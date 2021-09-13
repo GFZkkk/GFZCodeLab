@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.lab.callback.OnItemClickListener
-import com.gfz.lab.data.KTApp
+import com.gfz.lab.app.KTApp
 import com.gfz.lab.utils.TimeCell
 
 
