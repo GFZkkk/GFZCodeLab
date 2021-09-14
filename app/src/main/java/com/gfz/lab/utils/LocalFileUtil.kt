@@ -8,9 +8,9 @@ import java.io.File
  * 本地文件管理
  * created by gaofengze on 2021/4/30
  */
-class LocalFileUtil {
+object LocalFileUtil {
 
-    fun getAppFilePath(): String {
+    private fun getAppFilePath(): String {
         return KTApp.appContext.filesDir.toString() + File.separator
     }
 

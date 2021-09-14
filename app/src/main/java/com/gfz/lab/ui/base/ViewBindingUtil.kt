@@ -15,9 +15,6 @@ import com.gfz.lab.ext.toLog
  * created by gaofengze on 2021/1/27
  */
 
-inline fun <reified VB : ViewBinding> Fragment.viewBind() =
-    FragmentBindingDelegate(VB::class.java)
-
 inline fun <reified VB : ViewBinding> AppCompatActivity.viewBind() = lazy {
     inflateBinding<VB>(layoutInflater).apply {
         setContentView(root)

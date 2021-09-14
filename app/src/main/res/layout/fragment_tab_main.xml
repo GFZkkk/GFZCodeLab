@@ -3,17 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fcv_tab"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:defaultNavHost="false"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/v_bottom"
-        android:name="androidx.navigation.fragment.NavHostFragment"
-        app:navGraph="@navigation/host_navigation"/>
+        app:layout_constraintBottom_toTopOf="@id/v_bottom"/>
     <View
         android:id="@+id/v_bottom"
         android:layout_width="0dp"
@@ -22,4 +19,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_bottom"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/v_bottom"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

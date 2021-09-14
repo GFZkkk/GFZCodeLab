@@ -10,7 +10,7 @@ import com.gfz.lab.utils.TopLog
  *
  * created by gaofengze on 2021/5/14
  */
-class NormalItemDecoration(private val screenWidth: Int, private val count: Int): RecyclerView.ItemDecoration() {
+class AvgItemDecoration(private val screenWidth: Int, private val count: Int): RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
         outRect: Rect,

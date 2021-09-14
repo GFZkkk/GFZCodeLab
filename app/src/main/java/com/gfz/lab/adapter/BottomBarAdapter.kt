@@ -30,7 +30,7 @@ class BottomBarAdapter : BaseRecyclerViewAdapter<TabItemBean>() {
             val choose = getClickIndex() == position
             with(binding){
                 ivBottomIcon.setImageResource(data.getIconRes(choose))
-                tvBottomDes.text = data.des
+                tvBottomDes.setText(data.desRes)
                 tvBottomDes.setTextColorRes(data.getDesColorRes(choose))
             }
         }

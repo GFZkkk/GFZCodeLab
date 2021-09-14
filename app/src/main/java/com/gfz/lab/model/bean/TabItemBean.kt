@@ -2,6 +2,8 @@ package com.gfz.lab.model.bean
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.IdRes
+import androidx.annotation.StringRes
 
 /**
  *
@@ -10,9 +12,10 @@ import androidx.annotation.DrawableRes
 data class TabItemBean(
     @DrawableRes val activeIconRes: Int,
     @DrawableRes val defaultIconRes: Int,
-    val des: String,
+    @StringRes val desRes: Int,
     @ColorRes val textActiveColorRes: Int,
     @ColorRes val textDefaultColorRes: Int,
+    @IdRes val actionRes: Int
 ){
     fun getIconRes(choose: Boolean) = if (choose) { activeIconRes } else { defaultIconRes }
 
