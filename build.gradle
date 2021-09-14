@@ -34,3 +34,162 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+/**
+ * 加固前打包流程
+ */
+task step1(dependsOn: ":resetFileFolder"){
+    doLast {
+        def output0 = rootProject.ext.packgeConfig.releasePath
+
+        println("copy apk")
+        copy{
+            from('app/build/outputs/apk/release/')
+            into(output0)
+            include("app-release.apk")
+        }
+    }
+}
+
+/**
+ * 加固后签名流程
+ */
+task step2(dependsOn: ":packer"){
+    doFirst {
+        def versionName = rootProject.ext.androidConfig.versionName
+        def output0 = rootProject.ext.packgeConfig.releasePath
+        def output4 = rootProject.ext.packgeConfig.channelPath
+
+        println("build channel")
+        copy{
+            from "${output0}/channel"
+            include("towords_${versionName}-*")
+            rename("towords_(.*)-(.*).apk","towords_\$2_\$1.apk")
+            into output4
+        }
+        List<File> listOfFiles = fileTree(dir: "${output0}/channel").asList()
+        delete {
+            listOfFiles.each {
+                file ->
+                    println file.name
+                    delete file
+            }
+        }
+    }
+}
+
+task step2Windows(dependsOn: ":packerWindows"){
+    doFirst {
+        def versionName = rootProject.ext.androidConfig.versionName
+        def output0 = rootProject.ext.packgeConfig.releasePath
+        def output4 = rootProject.ext.packgeConfig.channelPath
+
+        println("build channel")
+        copy{
+            from "${output0}/channel"
+            include("towords_${versionName}-*")
+            rename("towords_(.*)-(.*).apk","towords_\$2_\$1.apk")
+            into output4
+        }
+        List<File> listOfFiles = fileTree(dir: "${output0}/channel").asList()
+        delete {
+            listOfFiles.each {
+                file ->
+                    println file.name
+                    delete file
+            }
+        }
+    }
+}
+
+task resetFileFolder(dependsOn: "::app:assembleRelease"){
+    doFirst {
+        def output0 = rootProject.ext.packgeConfig.releasePath
+        def output4 = rootProject.ext.packgeConfig.channelPath
+
+        mkdir "${output0}"
+        mkdir "${output4}"
+        mkdir "${output0}/channel"
+
+        println("cleanRelease")
+        List<File> listOfFiles = fileTree(dir: output0).asList()
+        listOfFiles.addAll(fileTree(dir: output4).asList())
+        delete {
+            listOfFiles.each {
+                file ->
+                    println file.name
+                    delete file
+            }
+        }
+    }
+}
+
+task packer(dependsOn: ":apksigner"){
+    doFirst {
+        def versionName = rootProject.ext.androidConfig.versionName
+        def output0 = rootProject.ext.packgeConfig.releasePath
+        exec {
+            commandLine "java -jar packer-ng-2.0.1.jar generate --channels=@markets.txt --output=${output0}/channel ${output0}/towords_${versionName}.apk".split(" ")
+        }
+    }
+}
+
+task packerWindows(dependsOn: ":apksignerWindows"){
+    doFirst {
+        def versionName = rootProject.ext.androidConfig.versionName
+        def output0 = rootProject.ext.packgeConfig.releasePath
+        exec {
+            commandLine "java -jar packer-ng-2.0.1.jar generate --channels=@markets.txt --output=${output0}/channel ${output0}/towords_${versionName}.apk".split(" ")
+        }
+    }
+}
+
+task apksigner(dependsOn: ":zipalign"){
+    doFirst {
+        def toolsPath = rootProject.ext.packgeConfig.toolsPath
+        def versionName = rootProject.ext.androidConfig.versionName
+        def output0 = rootProject.ext.packgeConfig.releasePath
+        exec {
+            commandLine "${toolsPath}/apksigner sign --ks key_store/key --ks-key-alias minimud_towords --ks-pass pass:2081101 --key-pass pass:2081101 --out ${output0}/towords_${versionName}.apk ${output0}/my-app-unsigned-aligned.apk".split(" ")
+        }
+    }
+}
+
+task apksignerWindows(dependsOn: ":zipalign"){
+    doFirst {
+        def toolsPath = rootProject.ext.packgeConfig.toolsPath
+        def versionName = rootProject.ext.androidConfig.versionName
+        def output0 = rootProject.ext.packgeConfig.releasePath
+        exec {
+            commandLine "${toolsPath}/apksigner.bat sign --ks key_store/key --ks-key-alias minimud_towords --ks-pass pass:2081101 --key-pass pass:2081101 --out ${output0}/towords_${versionName}.apk ${output0}/my-app-unsigned-aligned.apk".split(" ")
+        }
+    }
+}
+
+task zipalign{
+    doFirst {
+        def toolsPath = rootProject.ext.packgeConfig.toolsPath
+        def versionName = rootProject.ext.androidConfig.versionName
+        def versionCode = versionName.replace(".","")
+        def output0 = rootProject.ext.packgeConfig.releasePath
+        exec {
+            commandLine "${toolsPath}/zipalign -v -p 4 ${output0}/app-release_${versionCode}_jiagu.apk ${output0}/my-app-unsigned-aligned.apk".split(" ")
+        }
+    }
+}
+
+ext{
+
+    debugKeyStoreFile = "../key_store/key"
+    releaseKeyStoreFile = "../key_store/key"
+
+    Properties properties = new Properties()
+    InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
+    properties.load( inputStream )
+    packgeConfig = [
+            releasePath : properties.getProperty('releasePath'),
+            channelPath : properties.getProperty('channelPath'),
+            toolsPath : properties.getProperty('toolsPath')+"/27.0.3",
+
+    ]
+}
