@@ -19,7 +19,6 @@ class AvgItemDecoration(private val screenWidth: Int, private val count: Int): R
         state: RecyclerView.State
     ) {
         val width = 50.toPX(parent.context)
-        TopLog.e(width)
         val leftWidth = screenWidth - width * count
         val blankWidth = leftWidth / (count + 1)
         val position = parent.getChildAdapterPosition(view)

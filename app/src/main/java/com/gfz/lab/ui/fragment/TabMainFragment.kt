@@ -20,6 +20,7 @@ import com.gfz.lab.utils.ScreenUtil
 class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
 
     override fun initView() {
+        // 初始化fragment
         val fragmentList = listOf(HomeFragment(), FuncFragment(), MineFragment())
         binding.vpMain.adapter = object : FragmentStateAdapter(this){
             override fun getItemCount(): Int {
@@ -32,7 +33,7 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
         }
         binding.vpMain.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-
+        // 初始化bottombar
         val adapter = BottomBarAdapter()
         adapter.setDataList(listOf(TabItemBean(R.drawable.ic_home_active, R.drawable.ic_home_default, R.string.tab_main, R.color.tab_active, R.color.tab_default, R.id.homeFragment),
             TabItemBean(R.drawable.ic_all_active, R.drawable.ic_all_default, R.string.tab_function, R.color.tab_active, R.color.tab_default, R.id.funcFragment),

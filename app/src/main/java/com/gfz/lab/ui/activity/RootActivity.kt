@@ -1,5 +1,6 @@
 package com.gfz.lab.ui.activity
 
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import com.gfz.lab.R
 import com.gfz.lab.databinding.ActivityRootBinding
@@ -18,6 +19,5 @@ class RootActivity: BaseVBActivity<ActivityRootBinding>(){
     override fun initData() {
 
     }
-
 
 }

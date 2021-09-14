@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.IdRes
@@ -52,10 +53,10 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         super.onDestroy()
     }
 
-    private fun setWindowStatus(){
+    open fun setWindowStatus(){
         val window: Window = window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = getCompatColor(R.color.white)
+        window.statusBarColor = getCompatColor(R.color.col_b07529)
     }
 
     abstract fun loadView()
@@ -84,6 +85,14 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
 
     override fun start(@IdRes action: Int, bundle: Bundle?) {
         nav.navigate(action, bundle)
+    }
+
+    override fun pop() {
+        nav.popBackStack()
+    }
+
+    override fun popTo(action: Int, inclusive: Boolean) {
+        nav.popBackStack(action, inclusive)
     }
 
     fun postDelayed(runnable: Runnable, delayed: Long){

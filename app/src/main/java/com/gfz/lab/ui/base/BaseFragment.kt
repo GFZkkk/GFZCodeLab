@@ -7,7 +7,11 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
+import com.gfz.lab.R
 
 import com.gfz.lab.utils.TimeCell
 
@@ -16,6 +20,8 @@ import com.gfz.lab.utils.TimeCell
  */
 
 abstract class BaseFragment: Fragment(), BasePageTools {
+
+    lateinit var nav: NavController
 
     val handler by lazy{
         Handler(Looper.getMainLooper())
@@ -29,10 +35,19 @@ abstract class BaseFragment: Fragment(), BasePageTools {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        nav = findNavController()
+        view.findViewById<TextView>(getBackViewId())?.setOnClickListener {
+            if (fastClick()){
+                return@setOnClickListener
+            }
+            pop()
+        }
         initView()
     }
 
     protected abstract fun initView()
+
+    protected open fun getBackViewId() = R.id.tv_back
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -49,7 +64,15 @@ abstract class BaseFragment: Fragment(), BasePageTools {
     }
 
     override fun start(action: Int, bundle: Bundle?) {
-        mActivity?.start(action, bundle)
+        nav.navigate(action, bundle)
+    }
+
+    override fun pop() {
+        nav.navigateUp()
+    }
+
+    override fun popTo(action: Int, inclusive: Boolean) {
+        nav.popBackStack(action, inclusive)
     }
 
     override fun showToast(text: String) {

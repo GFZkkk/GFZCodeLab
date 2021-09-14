@@ -13,4 +13,6 @@ interface BasePageTools {
     fun showToast(text: String)
     fun showToast(textRes: Int)
     fun fastClick(tag: Int = 0, dur: Int = 500): Boolean
+    fun pop()
+    fun popTo(@IdRes action: Int, inclusive: Boolean)
 }
