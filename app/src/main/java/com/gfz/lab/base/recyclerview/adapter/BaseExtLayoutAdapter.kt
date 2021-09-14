@@ -23,9 +23,9 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList())
     val FOOT = -2
     val HEAD = -3
 
-    protected var footerViewBinding: ViewBinding? = null
-    protected var emptyViewBinding: ViewBinding? = null
-    protected var headerViewBinding: ViewBinding? = null
+    var footerViewBinding: ViewBinding? = null
+    var emptyViewBinding: ViewBinding? = null
+    var headerViewBinding: ViewBinding? = null
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
@@ -82,17 +82,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList())
     }
 
     // region 额外布局
-    open fun setFooterView(footerViewBinding: ViewBinding?) {
-        this.footerViewBinding = footerViewBinding
-    }
-
-    open fun setEmptyView(emptyViewBinding: ViewBinding?) {
-        this.emptyViewBinding = emptyViewBinding
-    }
-
-    open fun setHeaderView(headerViewBinding: ViewBinding?) {
-        this.headerViewBinding = headerViewBinding
-    }
 
     protected open fun getEmptyViewBindingClass(): Class<*>? {
         return null

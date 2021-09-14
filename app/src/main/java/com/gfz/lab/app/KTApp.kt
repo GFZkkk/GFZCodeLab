@@ -1,10 +1,14 @@
 package com.gfz.lab.app
 
+import android.app.ActivityManager
+import android.app.ActivityManager.RunningAppProcessInfo
 import android.app.Application
 import android.content.Context
+import android.os.Process
 import androidx.multidex.MultiDex
 import com.gfz.lab.base.KTCatchException
 import com.gfz.lab.utils.TopLog
+import com.tencent.mmkv.MMKV
 import kotlin.properties.Delegates
 
 /**
@@ -22,10 +26,31 @@ class KTApp: Application() {
         appContext = this
         TopLog.init(true)
         KTCatchException.init(this)
+        if (shouldInit()){
+            init()
+        }
+
     }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)
+    }
+
+    fun init(){
+        MMKV.initialize(appContext)
+    }
+
+    private fun shouldInit(): Boolean {
+        val am = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val processInfos = am.runningAppProcesses
+        val mainProcessName = packageName
+        val myPid = Process.myPid()
+        for (info in processInfos) {
+            if (info.pid == myPid && mainProcessName == info.processName) {
+                return true
+            }
+        }
+        return false
     }
 }
