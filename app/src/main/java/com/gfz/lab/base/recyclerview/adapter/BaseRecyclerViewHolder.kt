@@ -7,18 +7,21 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.gfz.lab.callback.OnItemClickListener
 
 /**
  * #BaseRecyclerViewAdapter
  * created by gaofengze on 2020-01-19
  */
 
-abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.ViewHolder(binding.root) {
+abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     var context: Context? = null
 
+    private var listener: OnItemClickListener? = null
+
     init {
-        context = binding.root.context
+        context = itemView.context
         initEvent()
     }
 
@@ -49,8 +52,26 @@ abstract class BaseRecyclerViewHolder<T>(binding: ViewBinding) : RecyclerView.Vi
     }
 
     open fun initEvent(){}
+
     abstract fun onBindViewHolder(data: T, position: Int)
     // endregion
+
+    open fun setHolderListener(listener: OnItemClickListener?) {
+        this.listener = listener
+    }
+
+    protected open fun setHolderListener(vararg views: View) {
+        for (view in views) {
+            view.setOnClickListener { v ->
+                listener?.onClick(v, getHolderPosition())
+            }
+        }
+    }
+
+    //将点击事件传出去
+    protected open fun click(v: View) {
+        listener?.onClick(v, getHolderPosition())
+    }
 
     // region 工具方法
     fun TextView.setTextColorRes(@ColorRes color: Int){

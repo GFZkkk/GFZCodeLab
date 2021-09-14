@@ -26,7 +26,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 获取数据长度
      */
-    protected val length
+    val length
         get() = list.size
     /**
      * 当前点击的position
@@ -59,7 +59,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
-        val holder = getViewHolder(parent, viewType)
+        val holder = onCreateViewHolder(LayoutInflater.from(parent.context), parent, viewType)
         setHolderListener(holder)
         return holder
     }
@@ -75,7 +75,11 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 抽象方法得到子类viewHolder
      */
-    abstract fun getViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T>
+    abstract fun onCreateViewHolder(
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseRecyclerViewHolder<T>
 
     /**
      * 列表长度
@@ -267,6 +271,31 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     }
 
     /**
+     * 刷新改变item的位置
+     */
+    open fun notifyInserted(position: Int) {
+        notifyItemInserted(position)
+    }
+
+    /**
+     * 刷新改变item的位置
+     */
+    open fun notifyChanged(position: Int) {
+        if (isItemIndex(position)) {
+            notifyItemChanged(position)
+        }
+    }
+
+    /**
+     * 刷新删除item的位置
+     */
+    open fun notifyRemoved(position: Int) {
+        if (isItemIndex(position)) {
+            notifyItemRemoved(position)
+        }
+    }
+
+    /**
      * 获取创建viewHolder时的view
      * 顺便取一下context
      */
@@ -289,9 +318,8 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 设置item中控件的点击事件
      */
     protected fun setHolderListener(holder: BaseRecyclerViewHolder<*>) {
-        val view = holder.itemView
-        view.setOnClickListener {
-            clickEvent(view, holder.getHolderPosition())
+        holder.itemView.setOnClickListener {
+            clickEvent(it, holder.getHolderPosition())
         }
     }
 

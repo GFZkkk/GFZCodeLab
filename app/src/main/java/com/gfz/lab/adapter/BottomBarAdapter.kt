@@ -1,8 +1,10 @@
 package com.gfz.lab.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewAdapter
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
+import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemBottomBarBinding
 import com.gfz.lab.model.bean.TabItemBean
 import com.gfz.lab.utils.viewBind
@@ -17,14 +19,15 @@ class BottomBarAdapter : BaseRecyclerViewAdapter<TabItemBean>() {
         setNeedAutoRefreshClickItem(true)
     }
 
-    override fun getViewHolder(
+    override fun onCreateViewHolder(
+        layoutInflater: LayoutInflater,
         parent: ViewGroup,
         viewType: Int
     ): BaseRecyclerViewHolder<TabItemBean> {
-        return ViewHolder(viewBind(parent))
+        return ViewHolder(ItemBottomBarBinding.inflate(layoutInflater, parent, false))
     }
 
-    inner class ViewHolder(private val binding: ItemBottomBarBinding): BaseRecyclerViewHolder<TabItemBean>(binding){
+    inner class ViewHolder(binding: ItemBottomBarBinding): BaseVBRecyclerViewHolder<TabItemBean, ItemBottomBarBinding>(binding){
 
         override fun onBindViewHolder(data: TabItemBean, position: Int) {
             val choose = getClickIndex() == position
@@ -36,4 +39,6 @@ class BottomBarAdapter : BaseRecyclerViewAdapter<TabItemBean>() {
         }
 
     }
+
+
 }

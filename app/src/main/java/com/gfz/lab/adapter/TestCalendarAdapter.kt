@@ -1,8 +1,10 @@
 package com.gfz.lab.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.gfz.lab.base.recyclerview.adapter.BaseCalendarAdapter
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
+import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemCalendarBinding
 import com.gfz.lab.model.bean.BaseCalendarBean
 import com.gfz.lab.utils.TopLog
@@ -21,14 +23,15 @@ class TestCalendarAdapter(sDate: String, eDate: String):
         return BaseCalendarBean(intArrayOf(year,month,day))
     }
 
-    override fun getViewHolder(
+    override fun onCreateViewHolder(
+        layoutInflater: LayoutInflater,
         parent: ViewGroup,
         viewType: Int
     ): BaseRecyclerViewHolder<BaseCalendarBean> {
-        return ViewHolder(viewBind(parent))
+        return ViewHolder(ItemCalendarBinding.inflate(layoutInflater, parent,false))
     }
 
-    inner class ViewHolder(private val binding: ItemCalendarBinding): BaseRecyclerViewHolder<BaseCalendarBean>(binding){
+    inner class ViewHolder(binding: ItemCalendarBinding): BaseVBRecyclerViewHolder<BaseCalendarBean, ItemCalendarBinding>(binding){
 
         override fun onBindViewHolder(data: BaseCalendarBean, position: Int) {
             TopLog.e(Gson().toJson(data))
@@ -36,5 +39,7 @@ class TestCalendarAdapter(sDate: String, eDate: String):
         }
 
     }
+
+
 
 }

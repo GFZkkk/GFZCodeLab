@@ -1,11 +1,13 @@
 package com.gfz.lab.adapter
 
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewAdapter
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
+import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemMoveBinding
 import com.gfz.lab.model.bean.MoveBean
 import com.gfz.lab.utils.TopLog
@@ -26,8 +28,12 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
         helper = ItemTouchHelper(callBack!!)
     }
 
-    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<MoveBean> {
-        return ViewHolder(viewBind(parent))
+    override fun onCreateViewHolder(
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseRecyclerViewHolder<MoveBean> {
+        return ViewHolder(ItemMoveBinding.inflate(layoutInflater, parent, false))
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -38,7 +44,7 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
         callBack?.setCanMove(canMove)
     }
 
-    inner class ViewHolder(private val binding: ItemMoveBinding) : BaseRecyclerViewHolder<MoveBean>(binding) {
+    inner class ViewHolder(binding: ItemMoveBinding) : BaseVBRecyclerViewHolder<MoveBean, ItemMoveBinding>(binding) {
 
         override fun onBindViewHolder(data: MoveBean, position: Int) {
             with(binding){

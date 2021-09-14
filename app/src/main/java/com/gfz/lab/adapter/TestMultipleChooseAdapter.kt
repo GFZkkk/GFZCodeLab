@@ -1,9 +1,11 @@
 package com.gfz.lab.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.gfz.lab.R
 import com.gfz.lab.base.recyclerview.adapter.BaseMultipleChooseAdapter
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
+import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemMultipleChooseBinding
 import com.gfz.lab.ext.setDisplay
 import com.gfz.lab.model.bean.MultipleChooseBean
@@ -25,14 +27,15 @@ class TestMultipleChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList(
         return R.id.iv_choose
     }
 
-    override fun getViewHolder(
+    override fun onCreateViewHolder(
+        layoutInflater: LayoutInflater,
         parent: ViewGroup,
         viewType: Int
     ): BaseRecyclerViewHolder<MultipleChooseBean> {
-        return ViewHolder(viewBind(parent))
+        return ViewHolder(ItemMultipleChooseBinding.inflate(layoutInflater,parent,false))
     }
 
-    inner class ViewHolder(private val binding: ItemMultipleChooseBinding) : BaseRecyclerViewHolder<MultipleChooseBean>(binding) {
+    inner class ViewHolder(binding: ItemMultipleChooseBinding) : BaseVBRecyclerViewHolder<MultipleChooseBean, ItemMultipleChooseBinding>(binding) {
 
         override fun onBindViewHolder(data: MultipleChooseBean, position: Int) {
             with(binding){
