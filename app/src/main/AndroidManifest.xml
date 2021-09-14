@@ -26,7 +26,7 @@
             android:value="665"/>
 
         <activity android:name=".LaunchActivity"
-            android:theme="@style/FullScreen"
+            android:theme="@style/ThemeSplash"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +35,6 @@
             </intent-filter>
         </activity>
         <activity android:name="com.gfz.lab.ui.activity.RootActivity" />
-
 
         <service android:name=".service.DrawOverService" />
     </application>

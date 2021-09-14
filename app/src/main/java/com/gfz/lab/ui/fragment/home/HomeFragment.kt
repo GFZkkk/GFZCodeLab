@@ -18,7 +18,6 @@ import com.gfz.lab.utils.viewBind
 class HomeFragment : BaseVBFragment<FragmentHomeBinding>() {
 
     override fun initView() {
-        TopLog.e("HomeFragment")
         val adapter = Test3Adapter()
         binding.rvList.adapter = adapter
         binding.rvList.layoutManager = GridLayoutManager(context, 2)

@@ -14,7 +14,14 @@ class LaunchActivity : BaseActivity(){
     }
 
     override fun initData() {
-        start(RootActivity::class.java)
-        finish()
+        postDelayed({
+            if(this.isFinishing){
+                return@postDelayed
+            }
+            start(RootActivity::class.java)
+            finish()
+        }, 2000)
     }
+
+
 }

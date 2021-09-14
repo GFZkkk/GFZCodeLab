@@ -9,7 +9,7 @@
     </style>
 
     <style name="ThemeSplash" parent="FullScreen">
-<!--        <item name="android:windowBackground"></item>-->
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
     <style name="FullScreen" parent="Theme.AppCompat.Light.NoActionBar">

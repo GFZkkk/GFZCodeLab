@@ -14,6 +14,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.gfz.lab.R
 import com.gfz.lab.ext.getCompatColor
 import com.gfz.lab.utils.*
+import java.util.concurrent.Delayed
 
 
 /**
@@ -24,9 +25,9 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
 
     lateinit var nav: NavController
 
-    val handler by lazy{
-        Handler(Looper.getMainLooper())
-    }
+    var handler : Handler? = null
+
+    val taskList: HashSet<Runnable> = HashSet()
 
     private val timeCell: TimeCell by lazy {
         TimeCell()
@@ -36,13 +37,19 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         super.onCreate(savedInstanceState)
         setWindowStatus()
         loadView()
-
+        handler = Handler(mainLooper)
         getNavId()?.apply {
             nav = getNavControllerById(this)
         }
 
         initView()
         initData()
+    }
+
+    override fun onDestroy() {
+        handler?.removeMessages(0)
+        handler = null
+        super.onDestroy()
     }
 
     private fun setWindowStatus(){
@@ -77,6 +84,10 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
 
     override fun start(@IdRes action: Int, bundle: Bundle?) {
         nav.navigate(action, bundle)
+    }
+
+    fun postDelayed(runnable: Runnable, delayed: Long){
+        handler?.postDelayed(runnable, delayed)
     }
 
     // region 工具方法

@@ -16,7 +16,7 @@ class RootActivity: BaseVBActivity<ActivityRootBinding>(){
     override fun getNavId(): Int = R.id.fcv_host
 
     override fun initData() {
-        TopLog.e("RootActivity")
+
     }
 
 
