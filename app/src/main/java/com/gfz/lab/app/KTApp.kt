@@ -24,8 +24,6 @@ class KTApp: Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = this
-        TopLog.init(true)
-        KTCatchException.init(this)
         if (shouldInit()){
             init()
         }
@@ -38,6 +36,9 @@ class KTApp: Application() {
     }
 
     fun init(){
+        TopLog.init(true)
+        KTCatchException.init(this)
+
         MMKV.initialize(appContext)
     }
 
