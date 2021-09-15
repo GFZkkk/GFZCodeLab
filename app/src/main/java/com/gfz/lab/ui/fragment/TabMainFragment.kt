@@ -43,7 +43,7 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
         binding.rvBottom.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         binding.rvBottom.addItemDecoration(AvgItemDecoration(ScreenUtil.getScreenWidth(), adapter.itemCount))
 
-        adapter.listener = { _, position ->
+        adapter.setOnItemClickListener { _, position ->
             binding.vpMain.setCurrentItem(position, false)
         }
 

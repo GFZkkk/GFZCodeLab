@@ -33,12 +33,12 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 点击事件
      */
-    var listener: ((View, Int) -> Unit)? = null
+    private var listener: ((View, Int) -> Unit)? = null
 
     /**
      * 带数据的点击事件
      */
-    var dataListener: ((View, Int, T?) -> Unit)? = null
+    private var dataListener: ((View, Int, T?) -> Unit)? = null
 
     /**
      * 是否自动刷新点击的item
@@ -109,9 +109,13 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     // region 点击事件
 
-    /*fun setOnItemClickListener(listener: OnItemClickListener){
+    fun setOnItemClickListener(listener: ((View, Int) -> Unit)?){
         this.listener = listener
-    }*/
+    }
+
+    fun setOnItemClickDataListener(dataListener: ((View, Int, T?) -> Unit)?){
+        this.dataListener = dataListener
+    }
 
     /**
      * 设置item中控件的点击事件

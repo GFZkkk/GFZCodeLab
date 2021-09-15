@@ -30,7 +30,7 @@ class HomeFragment : BaseVBFragment<FragmentHomeBinding>() {
             TestBean("扩展布局实验区", R.id.testExtAdapterFragment)
         ))
 
-        adapter.dataListener = { _, _, testBean ->
+        adapter.setOnItemClickDataListener { _, _, testBean ->
             testBean?.apply {
                 start(idRes)
             }
