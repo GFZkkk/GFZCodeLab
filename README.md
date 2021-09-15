@@ -6,14 +6,6 @@
 
 ### 记录
 
-#### 2021-09-09 开始搭建navigation
-
-* 决定采用navigation + livedata + viewmode作为基础架构。
-
-+ 使用单activity多fragment方式搭建项目。
-+ 不再使用rxjava作为线程控制工具。
-+ 不再使用eventbus作为通信工具。
-
 #### 2021-09-14 构建首页
 
 + 使用viewpager2 + recyclerview作为首页结构。
@@ -22,3 +14,12 @@
 + 添加基础头部。
 + 修改状态栏主题颜色。
 + 新增打包方法
+
+#### 2021-09-09 开始搭建navigation
+
+* 决定采用navigation + livedata + viewmode作为基础架构。
+
++ 使用单activity多fragment方式搭建项目。
++ 不再使用rxjava作为线程控制工具。
++ 不再使用eventbus作为通信工具。
+
