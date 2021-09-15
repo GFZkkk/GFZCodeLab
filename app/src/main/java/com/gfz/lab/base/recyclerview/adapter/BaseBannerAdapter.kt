@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.MotionEvent
+import android.view.View.OnTouchListener
 import androidx.recyclerview.widget.RecyclerView
 
 /**
@@ -12,7 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
  */
 abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
     BaseCenterAdapter<T>(context, true) {
-    private val mHandler: Handler by lazy {
+
+    private val mHandler by lazy{
         Handler(Looper.getMainLooper())
     }
 
@@ -30,10 +32,7 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
         addMoveEvent()
     }
 
-    open fun loadData(data: List<T?>) {
-        if (data.isEmpty()) {
-            return
-        }
+    fun readyData(data: List<T?>) {
         bannerNum = data.size
         clear()
         addData(data[data.size - 1])
@@ -42,27 +41,28 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
         notifyDataSetChanged()
     }
 
-    open fun getBannerNum(): Int {
+    fun getBannerNum(): Int {
         return bannerNum
     }
 
-    /**
-     * 这里需要对返回的position进行处理，返回图片的下标
-     */
-    override fun setOnItemScrollListener(onItemScrollListener: OnItemScrollListener) {
-        super.setOnItemScrollListener(object : OnItemScrollListener {
-            override fun onItemScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-                onItemScrollListener.onItemScrolled(
-                    getBannerIndex(position),
-                    positionOffset,
-                    positionOffsetPixels
-                )
-            }
-        })
+    override fun setOnItemScrollListener(onItemScrollListener: OnItemScrollListener?) {
+        if (onItemScrollListener != null) {
+            super.setOnItemScrollListener(object : OnItemScrollListener {
+                override fun onItemScrolled(
+                    position: Int,
+                    positionOffset: Float,
+                    positionOffsetPixels: Int
+                ) {
+                    onItemScrollListener.onItemScrolled(
+                        getBannerIndex(position),
+                        positionOffset,
+                        positionOffsetPixels
+                    )
+                }
+            })
+        } else {
+            super.setOnItemScrollListener(null)
+        }
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -74,7 +74,6 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
                     removeMoveEvent()
                 }
                 MotionEvent.ACTION_MOVE -> {
-                    updatePosition()
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     addMoveEvent()
@@ -99,12 +98,12 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
         }
     }
 
-    open fun start() {
+    fun start() {
         isEnd = false
         addMoveEvent()
     }
 
-    open fun end() {
+    fun end() {
         isEnd = true
         removeMoveEvent()
     }
@@ -112,7 +111,7 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
     /**
      * 动起来
      */
-    open operator fun next() {
+    operator fun next() {
         if (itemCount != 0 && action != 2) {
             val next = (getClickIndex() + 1) % itemCount
             smoothScrollToPosition(next)
@@ -132,9 +131,6 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
         }
     }
 
-    /**
-     * 通过位置获取图片的下标，具体实现与轮播原理相关
-     */
     private fun getBannerIndex(position: Int): Int {
         return when {
             isFirstData(position) -> {

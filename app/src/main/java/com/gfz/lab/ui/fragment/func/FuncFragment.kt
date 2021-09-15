@@ -1,8 +1,6 @@
 package com.gfz.lab.ui.fragment.func
 
 import com.gfz.lab.databinding.FragmentFuncBinding
-import com.gfz.lab.databinding.FragmentTabMainBinding
-import com.gfz.lab.ui.base.BaseFragment
 import com.gfz.lab.ui.base.BaseVBFragment
 
 /**

@@ -53,7 +53,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      */
     var needAutoFilterEmptyData = true
 
-    private val timeCell: TimeCell by lazy {
+    val timeCell: TimeCell by lazy {
         TimeCell()
     }
 
@@ -154,7 +154,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
                 setClickIndex(position)
             }
             listener?.invoke(v, position)
-            dataListener?.invoke(v, position, getData(position))
+            dataListener?.invoke(v, position, getDataByPosition(position))
         }
     }
     // endregion
@@ -298,6 +298,15 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     open fun isFirstData(position: Int) = position == 0
 
     open fun isLastData(position: Int) = position == length - 1
+
+    /**
+     * 根据item的位置获取数据
+     * @param holderPosition
+     * @return
+     */
+    protected open fun getDataByPosition(holderPosition: Int): T? {
+        return getData(holderPosition)
+    }
     // endregion
 
     // endregion
