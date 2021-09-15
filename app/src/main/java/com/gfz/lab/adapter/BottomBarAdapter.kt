@@ -16,7 +16,7 @@ import com.gfz.lab.utils.viewBind
 class BottomBarAdapter : BaseRecyclerViewAdapter<TabItemBean>() {
 
     init {
-        setNeedAutoRefreshClickItem(true)
+        needAutoRefreshClickItem = true
     }
 
     override fun onCreateViewHolder(

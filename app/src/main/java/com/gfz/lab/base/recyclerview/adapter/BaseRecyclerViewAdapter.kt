@@ -1,13 +1,10 @@
 package com.gfz.lab.base.recyclerview.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.lab.callback.OnItemClickListener
-import com.gfz.lab.app.KTApp
 import com.gfz.lab.utils.TimeCell
 
 
@@ -36,19 +33,25 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 点击事件
      */
-    private var listener: OnItemClickListener? = null
+    var listener: ((View, Int) -> Unit)? = null
+
+    /**
+     * 带数据的点击事件
+     */
+    var dataListener: ((View, Int, T?) -> Unit)? = null
+
     /**
      * 是否自动刷新点击的item
      */
-    private var needAutoRefreshClickItem = false
+    var needAutoRefreshClickItem = false
     /**
      * 是否自动设置当前点击的position为clickIndex
      */
-    private var needAutoSetClickIndex = true
+    var needAutoSetClickIndex = true
     /**
      * 是否自动过滤空数据
      */
-    private var needAutoFilterEmptyData = true
+    var needAutoFilterEmptyData = true
 
     private val timeCell: TimeCell by lazy {
         TimeCell()
@@ -104,44 +107,38 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         }
     }
 
-    /**
-     * @return 绑定的数据集合
-     */
-    fun getData(): List<T?> = list
+    // region 点击事件
 
-    /**
-     * @return 绑定的某个位置的数据
-     */
-    fun getData(position: Int): T? = if (isDataIndex(position)) list[position] else null
-
-    /**
-     * 绑定点击事件
-     * @param listener 点击事件接口
-     */
-    fun setOnItemClickListener(listener: OnItemClickListener) {
+    /*fun setOnItemClickListener(listener: OnItemClickListener){
         this.listener = listener
+    }*/
+
+    /**
+     * 设置item中控件的点击事件
+     */
+    protected fun setListener(view: View?, position: Int) {
+        if (isItemIndex(position)) {
+            view?.setOnClickListener {
+                clickEvent(view, position)
+            }
+        }
     }
 
     /**
-     * 设置是否自动刷新点击的click，默认关闭
+     * 设置item中控件的点击事件
      */
-    fun setNeedAutoRefreshClickItem(needAutoRefreshClickItem: Boolean) {
-        this.needAutoRefreshClickItem = needAutoRefreshClickItem
+    protected fun setHolderListener(holder: BaseRecyclerViewHolder<*>) {
+        holder.itemView.setOnClickListener {
+            clickEvent(it, holder.getHolderPosition())
+        }
     }
 
     /**
-     * 设置是否自动设置选中的item为当前点击的item，默认开启
+     * 处理内部点击事件
+     * 可用于处理点击去重
+     * @return 是否消费掉了此次点击事件
      */
-    fun setNeedAutoSetClickIndex(needAutoSetClickIndex: Boolean) {
-        this.needAutoSetClickIndex = needAutoSetClickIndex
-    }
-
-    /**
-     * 是否过滤空数据
-     */
-    fun setNeedAutoFilterEmptyData(needAutoFilterEmptyData: Boolean) {
-        this.needAutoFilterEmptyData = needAutoFilterEmptyData
-    }
+    open fun click(v: View?, position: Int): Boolean = false
 
     /**
      * 设置点击事件
@@ -152,9 +149,22 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
             if (needAutoSetClickIndex) {
                 setClickIndex(position)
             }
-            listener?.onClick(v, position)
+            listener?.invoke(v, position)
+            dataListener?.invoke(v, position, getData(position))
         }
     }
+    // endregion
+
+    // region 数据
+    /**
+     * @return 绑定的数据集合
+     */
+    fun getData(): List<T?> = list
+
+    /**
+     * @return 绑定的某个位置的数据
+     */
+    fun getData(position: Int): T? = if (isDataIndex(position)) list[position] else null
 
     /**
      * 添加单个数据
@@ -270,6 +280,26 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         list.clear()
     }
 
+    // region 判断方法
+    /**
+     * 是否是数组下标
+     */
+    open fun isDataIndex(position: Int): Boolean = position in 0 until length
+
+    /**
+     * 是否是item下标
+     */
+    open fun isItemIndex(position: Int): Boolean = position in 0 until itemCount
+
+    open fun isFirstData(position: Int) = position == 0
+
+    open fun isLastData(position: Int) = position == length - 1
+    // endregion
+
+    // endregion
+
+    // region 刷新
+
     /**
      * 刷新改变item的位置
      */
@@ -295,47 +325,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         }
     }
 
-    /**
-     * 获取创建viewHolder时的view
-     * 顺便取一下context
-     */
-    open fun getView(viewGroup: ViewGroup, layout: Int): View {
-        return LayoutInflater.from(viewGroup.context).inflate(layout, viewGroup, false)
-    }
-
-    /**
-     * 设置item中控件的点击事件
-     */
-    protected fun setListener(view: View?, position: Int) {
-        if (isItemIndex(position)) {
-            view?.setOnClickListener {
-                clickEvent(view, position)
-            }
-        }
-    }
-
-    /**
-     * 设置item中控件的点击事件
-     */
-    protected fun setHolderListener(holder: BaseRecyclerViewHolder<*>) {
-        holder.itemView.setOnClickListener {
-            clickEvent(it, holder.getHolderPosition())
-        }
-    }
-
-    /**
-     * 是否是数组下标
-     */
-    open fun isDataIndex(position: Int): Boolean = position in 0 until length
-
-    /**
-     * 是否是item下标
-     */
-    open fun isItemIndex(position: Int): Boolean = position in 0 until itemCount
-
-    open fun isFirstData(position: Int) = position == 0
-
-    open fun isLastData(position: Int) = position == length - 1
+    // endregion
 
     /**
      * item点击间隔
@@ -343,22 +333,9 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     open fun getClickDoubleTime(): Int = 500
 
     /**
-     * 拿一个全局context用来加载资源
-     */
-    private fun getAppContext(): Context = KTApp.appContext
-
-    /**
-     * 处理内部点击事件
-     * 可用于处理点击去重
-     * @return 是否消费掉了此次点击事件
-     */
-    open fun click(v: View?, position: Int): Boolean = false
-
-    /**
      * 防止重复点击
      */
     private fun fastClick(): Boolean {
         return timeCell.fastClick(0,500)
     }
-
 }

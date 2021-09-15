@@ -1,5 +1,6 @@
 package com.gfz.lab.ui.fragment
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,11 +43,10 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
         binding.rvBottom.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         binding.rvBottom.addItemDecoration(AvgItemDecoration(ScreenUtil.getScreenWidth(), adapter.itemCount))
 
-        adapter.setOnItemClickListener{ _, position ->
-            adapter.getData(position)?.let {
-                binding.vpMain.setCurrentItem(position, false)
-            }
+        adapter.listener = { _, position ->
+            binding.vpMain.setCurrentItem(position, false)
         }
+
 
         binding.vpMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {

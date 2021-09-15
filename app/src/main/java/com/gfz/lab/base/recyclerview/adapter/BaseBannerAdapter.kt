@@ -2,6 +2,7 @@ package com.gfz.lab.base.recyclerview.adapter
 
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
 
@@ -12,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
     BaseCenterAdapter<T>(context, true) {
     private val mHandler: Handler by lazy {
-        Handler()
+        Handler(Looper.getMainLooper())
     }
 
     private var isEnd = false
@@ -20,7 +21,7 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
     private var action = 0
 
     init {
-        setNeedChangeIndexAfterMoveEvent(true)
+        needChangeIndexAfterMoveEvent = true
     }
 
     override fun onItemChange(position: Int) {

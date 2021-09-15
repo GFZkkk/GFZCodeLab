@@ -53,7 +53,7 @@ abstract class BaseCenterAdapter<T> constructor(
         }
     }
     private var firstVisiblePosition = -1
-    private var needChangeIndexAfterMoveEvent = false
+    var needChangeIndexAfterMoveEvent = false
     private val offset: Int
     private val CHECK_TAG = 101
 
@@ -76,10 +76,6 @@ abstract class BaseCenterAdapter<T> constructor(
         }else{
             0
         }
-    }
-
-    fun setNeedChangeIndexAfterMoveEvent(needChangeIndexAfterMoveEvent: Boolean) {
-        this.needChangeIndexAfterMoveEvent = needChangeIndexAfterMoveEvent
     }
 
     fun setOnItemChangeListener(onItemChangeListener: OnItemChangeListener) {

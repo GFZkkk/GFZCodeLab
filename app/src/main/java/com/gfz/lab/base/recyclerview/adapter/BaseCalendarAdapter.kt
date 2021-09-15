@@ -93,7 +93,7 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
             }
         }
         //支持不显示上个月数据的情况
-        setNeedAutoFilterEmptyData(false)
+        needAutoFilterEmptyData = false
     }
 
     /**

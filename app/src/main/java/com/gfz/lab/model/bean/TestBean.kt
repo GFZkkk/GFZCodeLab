@@ -1,3 +1,6 @@
 package com.gfz.lab.model.bean
 
-data class TestBean(val str:String)
+import androidx.annotation.IdRes
+import androidx.annotation.IntegerRes
+
+data class TestBean(val str: String, val idRes: Int)
