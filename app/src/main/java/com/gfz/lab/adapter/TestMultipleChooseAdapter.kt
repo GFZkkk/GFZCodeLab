@@ -9,7 +9,6 @@ import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemMultipleChooseBinding
 import com.gfz.lab.ext.setDisplay
 import com.gfz.lab.model.bean.MultipleChooseBean
-import com.gfz.lab.utils.viewBind
 
 /**
  * created by gaofengze on 2020/4/14
@@ -53,7 +52,7 @@ class TestMultipleChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList(
                 }
                 tvTitle.text = data.title
                 clTitleChoose.setOnClickListener {
-                    changeGroupChooseStatus(data.groupId)
+                    changeGroupChooseStatus(position)
                 }
                 setListener(ivChoose, position)
             }

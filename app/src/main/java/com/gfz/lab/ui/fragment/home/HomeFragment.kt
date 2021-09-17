@@ -22,7 +22,7 @@ class HomeFragment : BaseVBFragment<FragmentHomeBinding>() {
 
         adapter.refresh(listOf(
             TestBean("日历试验区", R.id.testCalendarFragment),
-            TestBean("滑动多选试验区", R.id.testMoveFragment),
+            TestBean("滑动多选试验区", R.id.testMultipleChooseFragment),
             TestBean("悬浮计时试验区", R.id.testCountDownFragment),
             TestBean("时钟试验区", R.id.testClockFragment),
             TestBean("移动列表实验区", R.id.testMoveFragment),

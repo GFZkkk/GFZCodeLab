@@ -7,7 +7,6 @@ import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemBottomBarBinding
 import com.gfz.lab.model.bean.TabItemBean
-import com.gfz.lab.utils.viewBind
 
 /**
  * 底部导航栏item

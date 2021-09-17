@@ -7,7 +7,6 @@ import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemTestBinding
 import com.gfz.lab.model.bean.TestBean
-import com.gfz.lab.utils.viewBind
 
 class Test3Adapter(list: MutableList<TestBean?> = ArrayList()) :
     BaseRecyclerViewAdapter<TestBean>(list) {

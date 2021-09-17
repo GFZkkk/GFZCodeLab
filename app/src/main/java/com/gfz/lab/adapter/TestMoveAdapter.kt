@@ -11,7 +11,6 @@ import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemMoveBinding
 import com.gfz.lab.model.bean.MoveBean
 import com.gfz.lab.utils.TopLog
-import com.gfz.lab.utils.viewBind
 import java.util.*
 
 /**
