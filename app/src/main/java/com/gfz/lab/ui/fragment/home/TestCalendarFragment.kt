@@ -18,9 +18,6 @@ class TestCalendarFragment : BaseVBFragment<FragmentCalendarBinding>(){
 
     override fun initView() {
         with(binding){
-            with(headerBinding){
-                tvTitle.text = "日历测试区"
-            }
 
             rvCalendar.layoutManager = GridLayoutManager(context,7)
             rvCalendar.adapter = adapter

@@ -39,4 +39,8 @@ class TestMultipleChooseFragment : BaseVBFragment<FragmentMultiChooseBinding>(){
 
         binding.rvList.adapter = adapter
     }
+
+    override fun getTitleText(): String {
+        return "滑动多选试验区"
+    }
 }

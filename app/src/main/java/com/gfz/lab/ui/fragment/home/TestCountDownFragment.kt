@@ -32,6 +32,10 @@ class TestCountDownFragment : BaseVBFragment<FragmentCountdownBinding>(){
         }
     }
 
+    override fun getTitleText(): String {
+        return "悬浮计时试验区"
+    }
+
     private fun openService(){
         if (Build.VERSION.SDK_INT >= 23) {
             if (Settings.canDrawOverlays(requireContext())) {

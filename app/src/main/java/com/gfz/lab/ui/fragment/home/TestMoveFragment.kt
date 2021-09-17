@@ -22,4 +22,8 @@ class TestMoveFragment : BaseVBFragment<FragmentMoveBinding>(){
             MoveBean("译词训练")
         ))
     }
+
+    override fun getTitleText(): String {
+        return "移动列表实验区"
+    }
 }

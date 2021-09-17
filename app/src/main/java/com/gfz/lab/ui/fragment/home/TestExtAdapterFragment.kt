@@ -28,4 +28,8 @@ class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>(){
 
         }
     }
+
+    override fun getTitleText(): String {
+        return "扩展布局实验区"
+    }
 }

@@ -47,8 +47,8 @@ abstract class BaseMultipleChooseAdapter<T: BaseMultipleChooseBean>(dataList: Li
     /**
      * 选项的范围
      */
-    fun checkBound(x: Float, position: Int, view: View?): Boolean{
-        val chooseView: View? = view?.findViewById(getChooseViewByPosition(position))
+    fun checkBound(x: Float, position: Int, itemView: View?): Boolean{
+        val chooseView: View? = itemView?.findViewById(getChooseViewByPosition(position))
         chooseView?.let{
             return isBound(x, ChooseBound(chooseView.left, chooseView.right, correction))
         }
@@ -137,6 +137,9 @@ abstract class BaseMultipleChooseAdapter<T: BaseMultipleChooseBean>(dataList: Li
         }
     }
 
+    /**
+     * 改变组的修改状态
+     */
     fun changeGroupChooseStatus(position: Int){
         setTitleItemStatus(position, !isMultipleChooseItem(position))
         updateMultipleItem(position)

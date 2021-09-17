@@ -36,18 +36,30 @@ abstract class BaseFragment: Fragment(), BasePageTools {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         nav = findNavController()
-        view.findViewById<TextView>(getBackViewId())?.setOnClickListener {
-            if (fastClick()){
-                return@setOnClickListener
-            }
-            pop()
-        }
+        setTitleView(view)
         initView()
     }
 
     protected abstract fun initView()
 
     protected open fun getBackViewId() = R.id.tv_back
+
+    protected open fun getTitleText() : String? = null
+
+    open fun setTitleView(view: View){
+
+        view.findViewById<TextView>(getBackViewId())?.setOnClickListener {
+            if (fastClick()){
+                return@setOnClickListener
+            }
+            pop()
+        }
+
+        getTitleText()?.also {
+            view.findViewById<TextView>(R.id.tv_header_title)?.text = it
+        }
+
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

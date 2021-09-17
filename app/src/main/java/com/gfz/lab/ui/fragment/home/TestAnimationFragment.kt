@@ -18,5 +18,7 @@ class TestAnimationFragment : BaseVBFragment<FragmentAnimationBinding>(){
         }
     }
 
-
+    override fun getTitleText(): String {
+        return "自定义动画实验区"
+    }
 }

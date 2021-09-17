@@ -26,7 +26,7 @@ class TestClockFragment : BaseVBFragment<FragmentClockBinding>(){
 
     override fun initView() {
         binding.rvList.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        binding.rvList.addItemDecoration(NormalDecoration(bodyMargin = 0, headMargin = 90))
+        binding.rvList.addItemDecoration(NormalDecoration(0, 90))
         binding.rvList.adapter = adapter
         val timeItems: MutableList<Int?> = ArrayList()
         for (i in 1..12) {
@@ -54,6 +54,10 @@ class TestClockFragment : BaseVBFragment<FragmentClockBinding>(){
         val position = chooseTime!! / 5 - 1
         adapter.scrollToPosition(position)
         binding.tvClock.text = String.format("%s:00", adapter.getData(position))
+    }
+
+    override fun getTitleText(): String {
+        return "时钟试验区"
     }
 
     private fun getIndexByOffset(position: Int, positionOffset: Float): Int {

@@ -32,8 +32,7 @@ class MultiRecyclerView : RecyclerView {
             when (e.action) {
                 MotionEvent.ACTION_MOVE -> {
                     val x = e.rawX
-                    val checkBound: Boolean
-                    checkBound = if (multipleChooseAdapter.isCheckBoundByView()){
+                    val checkBound: Boolean = if (multipleChooseAdapter.isCheckBoundByView()){
                         multipleChooseAdapter.checkBound(x, currentFisrtPosition, linearLayoutManager.findViewByPosition(currentFisrtPosition))
                     }else{
                         multipleChooseAdapter.checkBound(x)

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
+    <include layout="@layout/layout_header"/>
     <com.gfz.lab.view.FireworksView
         android:id="@+id/fw"
         android:layout_width="375dp"
