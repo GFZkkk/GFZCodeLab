@@ -3,7 +3,7 @@ package com.gfz.lab.model.bean
 /**
  * created by gfz on 2020/4/6
  **/
-data class BaseCalendarBean(val date: IntArray) {
+open class BaseCalendarBean(val date: IntArray) {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

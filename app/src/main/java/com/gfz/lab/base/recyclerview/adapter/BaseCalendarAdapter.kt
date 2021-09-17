@@ -1,7 +1,6 @@
 package com.gfz.lab.base.recyclerview.adapter
 
 import com.gfz.lab.utils.DateUtil
-import com.gfz.lab.utils.DateUtil.getCurStandardShortDate
 import com.gfz.lab.utils.TopLog
 import java.util.*
 import kotlin.collections.ArrayList
@@ -16,7 +15,7 @@ import kotlin.collections.ArrayList
  */
 abstract class BaseCalendarAdapter<T>(sDate: String,
                                       eDate: String,
-                                      nDate: String = getCurStandardShortDate(),
+                                      nDate: String = DateUtil.getShortDateStr(),
                                       private val partLimit: Int = 10,
                                       private val loadNextLimit: Int = 3) :
     BaseRecyclerViewAdapter<T>() {
@@ -61,19 +60,16 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      */
     private var partFocusIndex = 0
 
-    /**
-     * 比较日期用到的标示
-     */
-    val BEFORE = -1
-    val AFTER = 1
-    val SAME = 0
+    enum class MMDateEnum{
+        BEFORE,AFTER,SAME
+    }
 
     init {
         startDate = sDate.getDate()
         endDate = eDate.getDate()
         nowDate = when {
-            compareTo(eDate,nDate) == AFTER -> eDate.getDate()
-            compareTo(sDate,nDate) == BEFORE -> sDate.getDate()
+            compareTo(eDate,nDate) == MMDateEnum.AFTER -> eDate.getDate()
+            compareTo(sDate,nDate) == MMDateEnum.BEFORE -> sDate.getDate()
             else -> nDate.getDate()
         }
         //是否需要分步加载
@@ -254,19 +250,27 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      * 判断 2019-08-04 与 2020-07-06 的先后关系
      * return 2020-07-06 是否在 2019-08-04 之后
      */
-    fun compareTo(date1: String, date2: String): Int {
+    fun compareTo(date1: String, date2: String): MMDateEnum {
         val dateTime1 = date1.getDate()
         val dateTime2 = date2.getDate()
+        return compareTo(dateTime1, dateTime2)
+    }
+
+    /**
+     * 判断 2019-08-04 与 2020-07-06 的先后关系
+     * return 2020-07-06 是否在 2019-08-04 之后
+     */
+    fun compareTo(dateTime1: IntArray, dateTime2: IntArray): MMDateEnum {
         for (i in dateTime1.indices) {
             val time1 = dateTime1[i]
             val time2 = dateTime2[i]
             if (time1 < time2) {
-                return AFTER
+                return MMDateEnum.AFTER
             } else if (time1 > time2) {
-                return BEFORE
+                return MMDateEnum.BEFORE
             }
         }
-        return SAME
+        return MMDateEnum.SAME
     }
 
     /**
@@ -312,13 +316,17 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
         return this[2]
     }
 
+    fun IntArray.isToday() : MMDateEnum{
+        return compareTo(nowDate, this)
+    }
+
     fun String.getDate(delimiters: String = "-"): IntArray{
         val s: List<String> = this.split(delimiters)
         require(s.size == 3)
         return s.map { it.toInt() }.toIntArray()
     }
 
-    fun MutableList<List<T?>>.move(isNext: Boolean){
+    private fun MutableList<List<T?>>.move(isNext: Boolean){
         require(this.count() > 1)
         val num: Int = this.count() / 2
         val partNum = if (isNext) this.count() - num else 0

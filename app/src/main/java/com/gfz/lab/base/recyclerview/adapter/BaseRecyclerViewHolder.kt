@@ -15,12 +15,11 @@ import androidx.recyclerview.widget.RecyclerView
 
 abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    var context: Context? = null
+    var context: Context = itemView.context
 
     private var listener: ((View, Int) -> Unit)? = null
 
     init {
-        context = itemView.context
         initEvent()
     }
 

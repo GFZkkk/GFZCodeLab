@@ -8,12 +8,44 @@ object DateUtil {
      * 所需时间格式
      */
     private const val shortDateFormatStr = "yyyy-MM-dd"
+    /**
+     * 所需时间格式
+     */
+    private const val shortTimeFormatStr = "yyyy-MM-dd HH:mm:ss"
 
     /**
      * 获取当前年月日
      */
-    fun getCurStandardShortDate(): String {
-        return SimpleDateFormat(shortDateFormatStr, Locale.getDefault()).format(Date())
+    fun getShortDateStr(date: Date = Date()): String {
+        return SimpleDateFormat(shortDateFormatStr, Locale.getDefault()).format(date)
+    }
+
+    /**
+     * 获取当前年月日
+     */
+    fun getShortTimeStr(date: Date = Date()): String {
+        return SimpleDateFormat(shortTimeFormatStr, Locale.getDefault()).format(date)
+    }
+
+    fun addDay(day: Int, date: Date = Date()): Date{
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.DAY_OF_MONTH, day)
+        return calendar.time
+    }
+
+    fun addMonth(month: Int, date: Date = Date()): Date{
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.MONTH, month)
+        return calendar.time
+    }
+
+    fun addYear(year: Int, date: Date = Date()): Date{
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.YEAR, year)
+        return calendar.time
     }
 
     /**

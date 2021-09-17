@@ -2,11 +2,12 @@ package com.gfz.lab.ext
 
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 
 const val LEFT: Int = 0
 const val TOP: Int = 1
-val RIGHT: Int = 2
-val BOTTOM: Int = 3
+const val RIGHT: Int = 2
+const val BOTTOM: Int = 3
 
 /**
  * 设置TextView文字旁边的图标
@@ -28,6 +29,15 @@ fun TextView?.setIcon(
             this?.setCompoundDrawables(null, null, null, null)
         }
     }
+}
+
+/**
+ * 设置TextView颜色资源
+ */
+fun TextView.setColorRes(
+    resId: Int
+) {
+    this.setTextColor(ContextCompat.getColor(context, resId))
 }
 
 /**
