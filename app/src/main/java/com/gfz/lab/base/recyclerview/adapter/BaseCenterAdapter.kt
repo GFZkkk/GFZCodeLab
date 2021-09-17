@@ -66,7 +66,7 @@ abstract class BaseCenterAdapter<T>(
         this.onItemChangeListener = onItemChangeListener
     }
 
-    fun setOnItemScrollListener(onItemScrollListener: OnItemScrollListener?) {
+    open fun setOnItemScrollListener(onItemScrollListener: OnItemScrollListener?) {
         this.onItemScrollListener = onItemScrollListener
     }
 
@@ -78,7 +78,7 @@ abstract class BaseCenterAdapter<T>(
         return 0
     }
 
-    protected fun getSnapHelper(): SnapHelper {
+    protected open fun getSnapHelper(): SnapHelper {
         return PagerSnapHelper()
     }
 

@@ -5,7 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.lab.ext.toPX
 
-class NormalDecoration(private val isHorizontal: Boolean = true, bodyMargin: Int, headMargin: Int = bodyMargin * 2) : RecyclerView.ItemDecoration() {
+class NormalDecoration(bodyMargin: Int, headMargin: Int = bodyMargin * 2, private val isHorizontal: Boolean = true) : RecyclerView.ItemDecoration() {
 
     val bodyMargin: Int = bodyMargin.toPX()
     val headMargin: Int = headMargin.toPX()
