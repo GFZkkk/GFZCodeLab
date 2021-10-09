@@ -96,8 +96,8 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
             if (!canMove){
                 return false
             }
-            val fromPosition = viewHolder.adapterPosition
-            val toPosition = target.adapterPosition
+            val fromPosition = viewHolder.layoutPosition
+            val toPosition = target.layoutPosition
             if (fromPosition < toPosition) {
                 for (i in fromPosition until toPosition) {
                     Collections.swap(adapter.getData(), i, i + 1)

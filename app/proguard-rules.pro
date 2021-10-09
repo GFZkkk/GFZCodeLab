@@ -20,8 +20,36 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+#androidx
+-keep class com.google.android.material.** {*;}
+-keep class androidx.** {*;}
+-keep public class * extends androidx.**
+-keep interface androidx.** {*;}
+-dontwarn com.google.android.material.**
+-dontnote com.google.android.material.**
+-dontwarn androidx.**
+
+#OkHttp3
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+
 -keepclassmembers class * implements androidx.viewbinding.ViewBinding {
   public static * inflate(android.view.LayoutInflater);
   public static * inflate(android.view.LayoutInflater, android.view.ViewGroup, boolean);
   public static * bind(android.view.View);
 }
+
+#glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
+}
+

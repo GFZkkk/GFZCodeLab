@@ -220,11 +220,8 @@ abstract class BaseCenterAdapter<T>(
 
     open fun <VH : BaseRecyclerViewHolder<T>?> getHolderByPosition(position: Int): VH? {
         if (isItemIndex(position)) {
-            if (mLayoutManager != null) {
-                val root = mLayoutManager!!.findViewByPosition(position)
-                if (root != null && mRecyclerView != null) {
-                    return mRecyclerView!!.getChildViewHolder(root) as VH
-                }
+            return mLayoutManager?.findViewByPosition(position)?.let {
+                mRecyclerView?.getChildViewHolder(it) as? VH
             }
         }
         return null

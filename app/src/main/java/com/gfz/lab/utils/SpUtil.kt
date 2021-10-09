@@ -15,13 +15,12 @@ object SpUtil {
         return sp.getString(getUserKey(key), default)
     }
 
-    fun getUserKey(key: String?): String?{
-        return key?.let {
-            if (key.startsWith("U_")){
-                val userId = "userId"
-                return key.replaceFirst("U", "userId")
-            }
-            return key
+    fun getUserKey(key: String?): String? = key?.let {
+        if (it.startsWith("U_")){
+            val userId = "userId"
+            it.replaceFirst("U", userId)
+        } else {
+            key
         }
     }
 }

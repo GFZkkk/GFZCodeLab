@@ -27,7 +27,7 @@ object KTCatchException: Thread.UncaughtExceptionHandler {
         Thread.setDefaultUncaughtExceptionHandler(this)
     }
 
-    override fun uncaughtException(thread: Thread?, ex: Throwable) {
+    override fun uncaughtException(thread: Thread, ex: Throwable) {
         mDefaultException?.uncaughtException(thread, ex)
         val writer: Writer = StringWriter()
         val printWriter = PrintWriter(writer)

@@ -66,7 +66,7 @@ object TopLog {
         val methodName = stackTrace[index.toInt()].methodName
         val lineNumber = stackTrace[index.toInt()].lineNumber
         val methodNameShort =
-            methodName.substring(0, 1).toUpperCase(Locale.ROOT) + methodName.substring(1)
+            methodName.substring(0, 1).uppercase() + methodName.substring(1)
         val stringBuilder = StringBuilder()
         stringBuilder.append("[ (").append(className).append(":").append(lineNumber).append(")#")
             .append(methodNameShort).append(" ] ")

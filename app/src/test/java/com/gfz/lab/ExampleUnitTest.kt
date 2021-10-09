@@ -24,7 +24,10 @@ class ExampleUnitTest {
 
     @Test
     fun random(){
-
+        val x  = 333
+        println(x shr 1)
+        println(x shr 1)
+        println(x shr 1)
     }
 
     @Test
