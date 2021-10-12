@@ -56,12 +56,12 @@ android {
 
     buildFeatures{
         viewBinding true
-        compose true
+//        compose true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_version
-    }
+//    composeOptions {
+//        kotlinCompilerExtensionVersion compose_version
+//    }
 
     compileOptions {
         sourceCompatibility java_version
@@ -69,13 +69,6 @@ android {
     }
 
     ndkVersion '21.3.6528147'
-}
-
-kapt {
-    useBuildCache = true
-    javacOptions {
-        option("-Xmaxerrs", 500)
-    }
 }
 
 dependencies {
@@ -86,8 +79,8 @@ dependencies {
     implementation "androidx.startup:startup-runtime:1.1.0-alpha01"
 
     // kotlin
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
 
     // ui
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
