@@ -1,7 +1,6 @@
-package com.gfz.lab.utils
+package com.gfz.common
 
 import android.util.Log
-import java.util.*
 
 object TopLog {
     const val V = 1

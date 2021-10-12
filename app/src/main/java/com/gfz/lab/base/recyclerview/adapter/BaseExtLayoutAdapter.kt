@@ -1,14 +1,13 @@
 package com.gfz.lab.base.recyclerview.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.viewbinding.ViewBinding
-import com.gfz.lab.utils.TopLog
+import com.gfz.common.TopLog
 import kotlin.collections.ArrayList
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder as BaseRecyclerViewHolder
 

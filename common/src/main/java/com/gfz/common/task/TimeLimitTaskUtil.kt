@@ -1,7 +1,7 @@
 package com.gfz.lab.utils.task
 
 import android.os.Handler
-import com.gfz.lab.utils.TimeCell
+import com.gfz.common.TimeCell
 
 
 /**

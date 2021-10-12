@@ -9,7 +9,7 @@ import com.gfz.lab.base.recyclerview.NormalDecoration
 import com.gfz.lab.base.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.lab.databinding.FragmentClockBinding
 import com.gfz.lab.ui.base.BaseVBFragment
-import com.gfz.lab.utils.TopLog
+import com.gfz.common.TopLog
 import java.util.ArrayList
 import kotlin.math.abs
 

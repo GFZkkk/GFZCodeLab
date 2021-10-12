@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.*
 import com.gfz.lab.base.recyclerview.NormalDecoration
 import com.gfz.lab.ext.toPX
 import com.gfz.common.ScreenUtil
-import com.gfz.lab.utils.TopLog
+import com.gfz.common.TopLog
 
 /**
  * 可以滚动到中间的适配器

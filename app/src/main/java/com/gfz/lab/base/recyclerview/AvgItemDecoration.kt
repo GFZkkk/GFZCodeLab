@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.lab.ext.toPX
-import com.gfz.lab.utils.TopLog
 
 /**
  *

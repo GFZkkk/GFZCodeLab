@@ -1,7 +1,7 @@
 package com.gfz.common
 
+import android.content.Context
 import android.os.Environment
-import com.gfz.lab.app.KTApp
 import java.io.File
 
 /**
@@ -10,19 +10,19 @@ import java.io.File
  */
 object LocalFileUtil {
 
-    private fun getAppFilePath(): String {
-        return KTApp.appContext.filesDir.toString() + File.separator
+    private fun getAppFilePath(context: Context): String {
+        return context.filesDir.toString() + File.separator
     }
 
     /**
      * 获取文件存储位置，优先外部存储
      */
-    fun getFilePath(dir: String): String? {
-        return if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) { //判断外部存储是否可用
-            KTApp.appContext.getExternalFilesDir(dir)?.absolutePath
+    fun getFilePath(context: Context, dir: String): String? {
+        return (if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) { //判断外部存储是否可用
+            context.getExternalFilesDir(dir)?.absolutePath
         } else { //没外部存储就使用内部存储
-            getAppFilePath().plus(dir)
-        }?.let {
+            getAppFilePath(context).plus(dir)
+        })?.let {
             makeRootDirectory(it)
             it.plus(File.separator)
         }

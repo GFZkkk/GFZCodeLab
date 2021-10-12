@@ -1,13 +1,12 @@
 package com.gfz.lab.app
 
 import android.app.ActivityManager
-import android.app.ActivityManager.RunningAppProcessInfo
 import android.app.Application
 import android.content.Context
 import android.os.Process
 import androidx.multidex.MultiDex
 import com.gfz.lab.base.KTCatchException
-import com.gfz.lab.utils.TopLog
+import com.gfz.common.TopLog
 import com.tencent.mmkv.MMKV
 import kotlin.properties.Delegates
 

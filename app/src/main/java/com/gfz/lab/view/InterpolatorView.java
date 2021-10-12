@@ -13,7 +13,7 @@ import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.Nullable;
 
-import com.gfz.lab.utils.TopLog;
+import com.gfz.common.TopLog;
 
 /**
  * created by gaofengze on 2021/1/20

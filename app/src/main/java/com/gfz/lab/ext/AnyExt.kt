@@ -1,6 +1,6 @@
 package com.gfz.lab.ext
 
-import com.gfz.lab.utils.TopLog
+import com.gfz.common.TopLog
 
 
 fun Any.toLog(type: Int = TopLog.E, tag: String? = null){

@@ -65,6 +65,10 @@
         android:id="@+id/testMapFragment"
         android:name="com.gfz.lab.ui.fragment.home.TestMapFragment"
         android:label="TestMapFragment" />
+    <fragment
+        android:id="@+id/testCodeFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestCodeFragment"
+        android:label="TestCodeFragment" />
 
 
 </navigation>
