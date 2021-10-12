@@ -1,4 +1,4 @@
-package com.gfz.lab.utils
+package com.gfz.common
 
 import android.content.Context
 import com.gfz.lab.app.KTApp

@@ -4,16 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.gfz.lab.R
 
-import com.gfz.lab.utils.TimeCell
+import com.gfz.common.TimeCell
 
 /**
  * created by gaofengze on 2020/4/30

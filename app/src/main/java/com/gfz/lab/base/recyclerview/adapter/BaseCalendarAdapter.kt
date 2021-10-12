@@ -1,6 +1,6 @@
 package com.gfz.lab.base.recyclerview.adapter
 
-import com.gfz.lab.utils.DateUtil
+import com.gfz.common.DateUtil
 import com.gfz.lab.utils.TopLog
 import java.util.*
 import kotlin.collections.ArrayList

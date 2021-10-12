@@ -4,20 +4,15 @@ import android.content.Context
 import android.os.Looper
 import android.view.MotionEvent
 import android.view.ViewTreeObserver
-import androidx.compose.ui.input.pointer.PointerEvent
-import androidx.lifecycle.LifecycleObserver
 import com.gfz.lab.databinding.FragmentMapBinding
 import com.gfz.lab.ext.round
 import com.gfz.lab.ext.toPX
 import com.gfz.lab.ui.base.BaseVBFragment
-import com.gfz.lab.utils.ScreenUtil
-import com.gfz.lab.utils.TopLog
-import com.gfz.lab.utils.task.TimeLoop
-import kotlin.math.max
-import kotlin.math.min
+import com.gfz.common.ScreenUtil
+import com.gfz.common.TimeLoop
 
 /**
- *
+ * 自定义地图
  * created by gaofengze on 2021/10/8
  */
 class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {

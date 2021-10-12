@@ -1,4 +1,4 @@
-package com.gfz.lab.utils
+package com.gfz.common
 
 import java.text.SimpleDateFormat
 import java.util.*

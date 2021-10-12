@@ -3,19 +3,16 @@ package com.gfz.lab.ui.base
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
-import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import com.gfz.common.TimeCell
 import com.gfz.lab.R
 import com.gfz.lab.ext.getCompatColor
 import com.gfz.lab.utils.*
-import java.util.concurrent.Delayed
 
 
 /**

@@ -3,16 +3,12 @@ package com.gfz.lab.base.recyclerview.adapter
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import androidx.annotation.Px
 import androidx.recyclerview.widget.*
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.gfz.lab.base.recyclerview.NormalDecoration
-import com.gfz.lab.ext.toDP
 import com.gfz.lab.ext.toPX
-import com.gfz.lab.utils.ScreenUtil
-import com.gfz.lab.utils.TimeCell
+import com.gfz.common.ScreenUtil
 import com.gfz.lab.utils.TopLog
 
 /**

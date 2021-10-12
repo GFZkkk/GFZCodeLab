@@ -1,6 +1,6 @@
 package com.gfz.lab.ext
 
-import com.gfz.lab.utils.DateUtil
+import com.gfz.common.DateUtil
 import java.util.*
 
 fun Date.toShortDateStr() = DateUtil.getShortDateStr(this)

@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.lab.ui.base.BaseFragment
-import com.gfz.lab.utils.ScreenUtil
+import com.gfz.common.ScreenUtil
 
 /**
  * 根据资源id获取颜色

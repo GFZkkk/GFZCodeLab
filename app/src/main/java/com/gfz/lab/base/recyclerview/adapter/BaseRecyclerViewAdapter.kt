@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.lab.utils.TimeCell
+import com.gfz.common.TimeCell
 
 
 /**

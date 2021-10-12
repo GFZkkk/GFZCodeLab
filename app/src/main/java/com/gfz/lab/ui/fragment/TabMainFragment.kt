@@ -1,6 +1,5 @@
 package com.gfz.lab.ui.fragment
 
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +14,7 @@ import com.gfz.lab.base.recyclerview.AvgItemDecoration
 import com.gfz.lab.ui.fragment.func.FuncFragment
 import com.gfz.lab.ui.fragment.home.HomeFragment
 import com.gfz.lab.ui.fragment.mine.MineFragment
-import com.gfz.lab.utils.ScreenUtil
+import com.gfz.common.ScreenUtil
 
 
 class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
