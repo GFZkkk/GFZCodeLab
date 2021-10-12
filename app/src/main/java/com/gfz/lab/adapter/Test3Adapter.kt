@@ -25,6 +25,4 @@ class Test3Adapter(list: MutableList<TestBean?> = ArrayList()) :
         }
     }
 
-
-
 }
