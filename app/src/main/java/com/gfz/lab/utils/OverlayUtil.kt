@@ -70,8 +70,8 @@ class OverlayUtil {
                     var x = params.x + nowX - lastX
                     var y = params.y + nowY - lastY
                     // 处理超出屏幕
-                    val maxX = ScreenUtil.getScreenWidth() - width
-                    val maxY = ScreenUtil.getScreenHeight() - height
+                    val maxX = ScreenUtil.getScreenWidth(rootView?.context) - width
+                    val maxY = ScreenUtil.getScreenHeight(rootView?.context) - height
                     if (x < 0){
                         x = 0
                     }else if(x > maxX){

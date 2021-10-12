@@ -1,7 +1,6 @@
 package com.gfz.common
 
 import android.content.Context
-import com.gfz.lab.app.KTApp
 
 /**
  * 屏幕相关操作
@@ -11,14 +10,11 @@ object ScreenUtil {
     /**
      * 获取屏幕宽度
      */
-    fun getScreenWidth(context: Context = KTApp.appContext): Int {
-        return context.resources.displayMetrics.widthPixels
-    }
+    fun getScreenWidth(context: Context?): Int = context?.resources?.displayMetrics?.widthPixels ?:0
+
 
     /**
      * 获取屏幕宽度
      */
-    fun getScreenHeight(context: Context = KTApp.appContext): Int {
-        return context.resources.displayMetrics.heightPixels
-    }
+    fun getScreenHeight(context: Context?): Int = context?.resources?.displayMetrics?.heightPixels ?:0
 }
