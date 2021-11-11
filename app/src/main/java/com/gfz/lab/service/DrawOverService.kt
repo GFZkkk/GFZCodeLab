@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.view.*
-import com.gfz.common.TopLog
+import com.gfz.common.utils.TopLog
 import com.gfz.lab.R
 import com.gfz.lab.databinding.LayoutCountDownBinding
 import com.gfz.lab.ext.getCompatColor

@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller.ScrollVectorProvider
 import androidx.recyclerview.widget.SnapHelper
-import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
-import com.gfz.lab.base.recyclerview.adapter.BaseCenterAdapter
-import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
+import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
+import com.gfz.recyclerview.adapter.BaseCenterAdapter
+import com.gfz.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemClockBinding
 import com.gfz.lab.ext.setVisible
 import kotlin.math.abs

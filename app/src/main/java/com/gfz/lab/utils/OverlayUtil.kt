@@ -6,7 +6,7 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import com.gfz.common.ScreenUtil
+import com.gfz.common.utils.ScreenUtil
 import com.gfz.lab.app.KTApp
 import com.gfz.lab.ext.toPX
 

@@ -9,7 +9,7 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.gfz.common.TimeCell
+import com.gfz.common.utils.TimeCell
 import com.gfz.lab.R
 import com.gfz.lab.ext.getCompatColor
 import com.gfz.lab.utils.*

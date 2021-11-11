@@ -10,11 +10,11 @@ import com.gfz.lab.model.bean.TabItemBean
 import com.gfz.lab.ui.base.BaseVBFragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.gfz.lab.base.recyclerview.AvgItemDecoration
+import com.gfz.recyclerview.decoration.AvgItemDecoration
 import com.gfz.lab.ui.fragment.func.FuncFragment
 import com.gfz.lab.ui.fragment.home.HomeFragment
 import com.gfz.lab.ui.fragment.mine.MineFragment
-import com.gfz.common.ScreenUtil
+import com.gfz.common.utils.ScreenUtil
 
 
 class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {

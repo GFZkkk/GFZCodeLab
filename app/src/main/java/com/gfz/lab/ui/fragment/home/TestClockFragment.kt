@@ -5,11 +5,12 @@ import android.util.SparseArray
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.lab.adapter.TestClockAdapter
-import com.gfz.lab.base.recyclerview.NormalDecoration
-import com.gfz.lab.base.recyclerview.adapter.BaseCenterAdapter
+import com.gfz.recyclerview.decoration.NormalDecoration
+import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.lab.databinding.FragmentClockBinding
 import com.gfz.lab.ui.base.BaseVBFragment
-import com.gfz.common.TopLog
+import com.gfz.common.utils.TopLog
+import com.gfz.lab.ext.toPX
 import java.util.ArrayList
 import kotlin.math.abs
 
@@ -26,7 +27,7 @@ class TestClockFragment : BaseVBFragment<FragmentClockBinding>(){
 
     override fun initView() {
         binding.rvList.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        binding.rvList.addItemDecoration(NormalDecoration(0, 90))
+        binding.rvList.addItemDecoration(NormalDecoration(0, 90.toPX()))
         binding.rvList.adapter = adapter
         val timeItems: MutableList<Int?> = ArrayList()
         for (i in 1..12) {

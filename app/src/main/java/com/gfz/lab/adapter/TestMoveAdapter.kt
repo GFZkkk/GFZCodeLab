@@ -5,12 +5,12 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewAdapter
-import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
-import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
+import com.gfz.recyclerview.adapter.BaseRecyclerViewAdapter
+import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
+import com.gfz.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemMoveBinding
 import com.gfz.lab.model.bean.MoveBean
-import com.gfz.common.TopLog
+import com.gfz.common.utils.TopLog
 import java.util.*
 
 /**

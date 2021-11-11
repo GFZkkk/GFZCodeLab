@@ -11,14 +11,14 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.gfz.lab.R
 
-import com.gfz.common.TimeCell
+import com.gfz.common.utils.TimeCell
+import com.gfz.lab.ext.getCompatColor
 
 /**
  * created by gaofengze on 2020/4/30
  */
 
 abstract class BaseFragment: Fragment(), BasePageTools {
-
     lateinit var nav: NavController
 
     val handler by lazy{

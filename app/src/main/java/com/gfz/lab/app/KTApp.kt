@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Process
 import androidx.multidex.MultiDex
 import com.gfz.lab.base.KTCatchException
-import com.gfz.common.TopLog
+import com.gfz.common.utils.TopLog
 import com.tencent.mmkv.MMKV
 import kotlin.properties.Delegates
 

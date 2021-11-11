@@ -7,7 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.lab.base.recyclerview.adapter.BaseMultipleChooseAdapter
+import com.gfz.recyclerview.adapter.BaseMultipleChooseAdapter
 
 /**
  * 配合可多选recyclerViewAdapter使用

@@ -2,9 +2,9 @@ package com.gfz.lab.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewAdapter
-import com.gfz.lab.base.recyclerview.adapter.BaseRecyclerViewHolder
-import com.gfz.lab.base.recyclerview.adapter.BaseVBRecyclerViewHolder
+import com.gfz.recyclerview.adapter.BaseRecyclerViewAdapter
+import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
+import com.gfz.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemTestBinding
 import com.gfz.lab.model.bean.TestBean
 

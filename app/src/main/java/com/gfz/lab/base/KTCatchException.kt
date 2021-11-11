@@ -2,7 +2,7 @@ package com.gfz.lab.base
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.gfz.common.TopLog
+import com.gfz.common.utils.TopLog
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.io.Writer

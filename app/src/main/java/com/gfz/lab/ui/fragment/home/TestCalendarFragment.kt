@@ -7,7 +7,7 @@ import com.gfz.lab.databinding.FragmentCalendarBinding
 import com.gfz.lab.ext.setColorRes
 import com.gfz.lab.ext.toShortDateStr
 import com.gfz.lab.ui.base.BaseVBFragment
-import com.gfz.common.DateUtil
+import com.gfz.common.utils.DateUtil
 
 /**
  * created by gfz on 2020/4/6

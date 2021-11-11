@@ -8,8 +8,8 @@ import com.gfz.lab.databinding.FragmentMapBinding
 import com.gfz.lab.ext.round
 import com.gfz.lab.ext.toPX
 import com.gfz.lab.ui.base.BaseVBFragment
-import com.gfz.common.ScreenUtil
-import com.gfz.common.TimeLoop
+import com.gfz.common.utils.ScreenUtil
+import com.gfz.common.utils.TimeLoop
 
 /**
  * 自定义地图
