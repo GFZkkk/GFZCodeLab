@@ -5,9 +5,9 @@ import android.app.Application
 import android.content.Context
 import android.os.Process
 import androidx.multidex.MultiDex
-import com.gfz.lab.base.KTCatchException
+import com.gfz.common.utils.SpUtil
+import com.gfz.common.KTCatchException
 import com.gfz.common.utils.TopLog
-import com.tencent.mmkv.MMKV
 import kotlin.properties.Delegates
 
 /**
@@ -38,7 +38,7 @@ class KTApp: Application() {
         TopLog.init(true)
         KTCatchException.init(this)
 
-        MMKV.initialize(appContext)
+        SpUtil.init(appContext)
     }
 
     private fun shouldInit(): Boolean {

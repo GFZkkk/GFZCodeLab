@@ -1,10 +1,8 @@
-package com.gfz.lab.utils
+package com.gfz.common.utils
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.os.Build
 import android.view.View
 import com.gfz.lab.ext.getCompatDrawable
 import java.io.ByteArrayOutputStream

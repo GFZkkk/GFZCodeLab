@@ -1,4 +1,4 @@
-package com.gfz.lab.base
+package com.gfz.common
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -20,7 +20,7 @@ object KTCatchException: Thread.UncaughtExceptionHandler {
     @SuppressLint("StaticFieldLeak")
     //获取系统默认的异常处理器,并且设置本类为系统默认处理器
     fun init(ctx: Context) {
-        this.context = ctx
+        context = ctx
         // 获取系统默认的UncaughtException处理器
         mDefaultException = Thread.getDefaultUncaughtExceptionHandler()
         // 设置该CrashHandler为程序的默认处理器

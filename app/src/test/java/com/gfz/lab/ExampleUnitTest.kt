@@ -1,12 +1,11 @@
 package com.gfz.lab
 
-import com.gfz.lab.utils.SpUtil
+import com.gfz.common.utils.SpUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import kotlin.random.Random
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -126,4 +125,5 @@ class ExampleUnitTest {
     }
 
     data class ApiBean(val url: String, val tip: String)
+
 }

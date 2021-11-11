@@ -1,8 +1,14 @@
-package com.gfz.lab.utils
+package com.gfz.common.utils
 
+import android.content.Context
 import com.tencent.mmkv.MMKV
 
 object SpUtil {
+
+    fun init(appContext: Context){
+        MMKV.initialize(appContext)
+    }
+
     private val sp: MMKV by lazy {
         MMKV.defaultMMKV()
     }

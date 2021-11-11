@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.gfz.lab.R;
-import com.gfz.lab.utils.BitmapUtil;
+import com.gfz.common.utils.BitmapUtil;
 
 import java.util.Random;
 

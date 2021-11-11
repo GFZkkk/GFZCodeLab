@@ -1,4 +1,4 @@
-package com.gfz.lab.utils
+package com.gfz.common.utils
 
 import java.util.*
 import kotlin.collections.ArrayList
