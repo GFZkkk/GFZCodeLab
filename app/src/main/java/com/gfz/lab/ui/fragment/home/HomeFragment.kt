@@ -29,7 +29,8 @@ class HomeFragment : BaseVBFragment<FragmentHomeBinding>() {
             TestBean("自定义动画实验区", R.id.testAnimationFragment),
 //            TestBean("扩展布局实验区", R.id.testExtAdapterFragment),
             TestBean("算法实验区", R.id.testCodeFragment),
-            TestBean("战场实验区", R.id.testMapFragment)
+            TestBean("战场实验区", R.id.testMapFragment),
+            TestBean("流式布局实验区", R.id.testFlowFragment)
         ))
 
         adapter.setOnItemClickDataListener { _, _, testBean ->
