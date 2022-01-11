@@ -29,7 +29,20 @@ abstract class BaseCenterAdapter<T>(
     // 该回调优先于checkIndex变化
     private var onItemChangeListener: OnItemChangeListener? = null
     private var onItemScrollListener: OnItemScrollListener? = null
-    private var onScrollListener: RecyclerView.OnScrollListener? = null
+    private val onScrollListener by lazy {
+        object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    checkPosition()
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                updateScrolledInfo()
+            }
+        }
+    }
     private var firstVisiblePosition = 0
 
     // 是否在滑动后自动更新checkIndex
@@ -83,8 +96,8 @@ abstract class BaseCenterAdapter<T>(
         mLayoutManager = recyclerView.layoutManager as LinearLayoutManager?
         mRecyclerView = recyclerView
         if (mLayoutManager != null) {
-            recyclerView.removeOnScrollListener(getOnScrollListener()!!)
-            recyclerView.addOnScrollListener(getOnScrollListener()!!)
+            recyclerView.removeOnScrollListener(onScrollListener)
+            recyclerView.addOnScrollListener(onScrollListener)
         } else {
             TopLog.i("LayoutManager为空，设置OnScrollListener失败")
         }
@@ -109,18 +122,12 @@ abstract class BaseCenterAdapter<T>(
         timeCell.start(CHECK_TAG)
         var position = 0
         if (snapHelper != null) {
-            val item = snapHelper!!.findSnapView(mLayoutManager)
-            if (item != null) {
-                position = mLayoutManager!!.getPosition(item)
-            }
-            if (onScrollListener != null) {
-                targetView = item
+            targetView = snapHelper?.findSnapView(mLayoutManager)?.apply {
+                position = mLayoutManager!!.getPosition(this)
             }
         } else {
             position = mLayoutManager!!.findFirstCompletelyVisibleItemPosition()
-            if (onScrollListener != null) {
-                targetView = mLayoutManager!!.findViewByPosition(position)
-            }
+            targetView = mLayoutManager!!.findViewByPosition(position)
         }
         // 通知item变动
         if (firstVisiblePosition != position) {
@@ -221,24 +228,6 @@ abstract class BaseCenterAdapter<T>(
             }
         }
         return null
-    }
-
-    fun getOnScrollListener(): RecyclerView.OnScrollListener? {
-        if (onScrollListener == null) {
-            onScrollListener = object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                        checkPosition()
-                    }
-                }
-
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    updateScrolledInfo()
-                }
-            }
-        }
-        return onScrollListener
     }
 
     protected open fun getScroller(position: Int): CenterScroller? {
