@@ -59,7 +59,7 @@ class DrawOverService : Service() {
         with(binding) {
             //移动悬浮窗
             clBody.setOnTouchListener{
-                    view, motionEvent ->
+                    _, motionEvent ->
                 overlayManager.handlerMoveEvent(motionEvent)
                 when (motionEvent.action) {
                     //点击屏幕外区域

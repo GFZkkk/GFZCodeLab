@@ -16,7 +16,7 @@ import com.gfz.lab.utils.ToastUtil
 class TestCountDownFragment : BaseVBFragment<FragmentCountdownBinding>(){
 
     override fun initView() {
-        binding.switchCheck.setOnTouchListener{ view, motionEvent ->
+        binding.switchCheck.setOnTouchListener{ _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP){
                 if (!binding.switchCheck.isChecked){
                     openService()

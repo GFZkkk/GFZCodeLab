@@ -4,9 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
 
@@ -22,9 +20,8 @@ abstract class BaseVBFragment<VB : ViewBinding> : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         if (_binding == null) {
-            viewLifecycleOwner.lifecycle.addObserver(object : LifecycleObserver {
-                @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-                fun onDestroyView() {
+            viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver{
+                override fun onDestroy(owner: LifecycleOwner) {
                     if (!needSaveView){
                         _binding = null
                     }

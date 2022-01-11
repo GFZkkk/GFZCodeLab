@@ -52,13 +52,13 @@ class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {
     }
 
     private fun initEvent(){
-        binding.root.setOnTouchListener { v, event ->
+        binding.root.setOnTouchListener { _, event ->
             x = event.x.toInt()
             y = event.y.toInt()
             false
         }
 
-        binding.flControl.setOnTouchListener { v, event ->
+        binding.flControl.setOnTouchListener { _, event ->
             touchX = event.x.toInt()
             touchY = event.y.toInt()
             when(event.action){

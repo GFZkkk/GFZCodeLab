@@ -53,7 +53,7 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
                     setCanMove(true)
                     true
                 }
-                ivMove.setOnTouchListener { v, event ->
+                ivMove.setOnTouchListener { _, event ->
                     if(event.action == MotionEvent.ACTION_UP){
                         setCanMove(false)
                     }
