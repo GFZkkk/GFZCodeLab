@@ -14,6 +14,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 fun CoroutineScope.launchSafe(
     context: CoroutineContext = EmptyCoroutineContext,
     onError: ((Throwable) -> Unit)? = null,
+    onComplete: ((Boolean) -> Unit)? = null,
     block: suspend CoroutineScope.() -> Unit
 ): Job {
     var c = context
@@ -21,12 +22,15 @@ fun CoroutineScope.launchSafe(
         c = context + defaultExceptionHandler(onError)
     }
     return launch(c) {
+        var success = false
         try {
             block()
+            success = true
         } catch (e: Exception) {
             TopLog.e(e)
             onError?.invoke(e)
         }
+        onComplete?.invoke(success)
     }
 }
 
