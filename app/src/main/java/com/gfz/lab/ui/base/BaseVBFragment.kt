@@ -21,13 +21,6 @@ abstract class BaseVBFragment<VB : ViewBinding> : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         if (_binding == null) {
-            viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
-                override fun onDestroy(owner: LifecycleOwner) {
-                    if (!needSaveView) {
-                        _binding = null
-                    }
-                }
-            })
             @Suppress("UNCHECKED_CAST")
             _binding = getClass(0)!!.getMethod(
                 "inflate",
@@ -40,8 +33,10 @@ abstract class BaseVBFragment<VB : ViewBinding> : BaseFragment() {
         return binding.root
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (!needSaveView) {
+            _binding = null
+        }
     }
 }

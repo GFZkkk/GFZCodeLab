@@ -67,7 +67,7 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         return null
     }
 
-    fun getNavControllerById(id: Int): NavController {
+    private fun getNavControllerById(id: Int): NavController {
         val navHostFragment = supportFragmentManager.findFragmentById(id) as NavHostFragment
         return navHostFragment.navController
     }

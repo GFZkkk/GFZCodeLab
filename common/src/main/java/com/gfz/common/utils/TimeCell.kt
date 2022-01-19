@@ -6,7 +6,7 @@ import android.util.SparseArray
 /**
  * 时间间隔工具类
  */
-class TimeCell(size: Int = 10) {
+class TimeCell(size: Int = 5) {
 
     private val timeArray: SparseArray<Long> by lazy {
         SparseArray<Long>(size)
