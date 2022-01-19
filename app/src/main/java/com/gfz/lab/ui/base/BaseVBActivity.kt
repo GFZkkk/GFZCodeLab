@@ -2,6 +2,7 @@ package com.gfz.lab.ui.base
 
 import android.view.LayoutInflater
 import androidx.viewbinding.ViewBinding
+import com.gfz.common.ext.getClass
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseVBActivity<VB : ViewBinding> : BaseActivity() {
@@ -17,20 +18,7 @@ abstract class BaseVBActivity<VB : ViewBinding> : BaseActivity() {
     }
 
     open fun onCreateViewBinding(): VB? {
-        return getVBClass(0)!!.getMethod("inflate", LayoutInflater::class.java)
+        return getClass(0)!!.getMethod("inflate", LayoutInflater::class.java)
             .invoke(null, layoutInflater) as VB
-    }
-
-    fun getVBClass(index: Int): Class<*>? {
-        var entitiClass: Class<*>? = null
-        val genericSuperclass = javaClass.genericSuperclass
-        if (genericSuperclass is ParameterizedType) {
-            val actualTypeArguments = genericSuperclass
-                .actualTypeArguments
-            if (actualTypeArguments.size > index) {
-                entitiClass = actualTypeArguments[index] as Class<*>
-            }
-        }
-        return entitiClass
     }
 }

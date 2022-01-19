@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
+import com.gfz.common.ext.getClass
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseVBFragment<VB : ViewBinding> : BaseFragment() {
@@ -28,7 +29,7 @@ abstract class BaseVBFragment<VB : ViewBinding> : BaseFragment() {
                 }
             })
             @Suppress("UNCHECKED_CAST")
-            _binding = getVBClass(0)!!.getMethod(
+            _binding = getClass(0)!!.getMethod(
                 "inflate",
                 LayoutInflater::class.java,
                 ViewGroup::class.java,
@@ -42,18 +43,5 @@ abstract class BaseVBFragment<VB : ViewBinding> : BaseFragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
-
-    fun getVBClass(index: Int): Class<*>? {
-        var entitiClass: Class<*>? = null
-        val genericSuperclass = javaClass.genericSuperclass
-        if (genericSuperclass is ParameterizedType) {
-            val actualTypeArguments = genericSuperclass
-                .actualTypeArguments
-            if (actualTypeArguments.size > index) {
-                entitiClass = actualTypeArguments[index] as Class<*>
-            }
-        }
-        return entitiClass
     }
 }
