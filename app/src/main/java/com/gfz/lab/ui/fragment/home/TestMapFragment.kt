@@ -5,8 +5,8 @@ import android.os.Looper
 import android.view.MotionEvent
 import android.view.ViewTreeObserver
 import com.gfz.lab.databinding.FragmentMapBinding
-import com.gfz.lab.ext.round
-import com.gfz.lab.ext.toPX
+import com.gfz.common.ext.round
+import com.gfz.common.ext.toPX
 import com.gfz.lab.ui.base.BaseVBFragment
 import com.gfz.common.utils.ScreenUtil
 import com.gfz.common.utils.TimeLoop
@@ -25,10 +25,10 @@ class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {
     var touchX = 0
     var touchY = 0
 
-    private var controlSize = arrayOf(0,0)
+    private var controlSize = arrayOf(0, 0)
     var controlPadding = 3.toPX()
 
-    private var pointSize = arrayOf(0,0)
+    private var pointSize = arrayOf(0, 0)
 
     var pointX = 0f
     var pointY = 0f
@@ -47,11 +47,12 @@ class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {
         }
     }
 
-    private val layoutListener: ViewTreeObserver.OnGlobalLayoutListener = ViewTreeObserver.OnGlobalLayoutListener {
-        measuredSize()
-    }
+    private val layoutListener: ViewTreeObserver.OnGlobalLayoutListener =
+        ViewTreeObserver.OnGlobalLayoutListener {
+            measuredSize()
+        }
 
-    private fun initEvent(){
+    private fun initEvent() {
         binding.root.setOnTouchListener { _, event ->
             x = event.x.toInt()
             y = event.y.toInt()
@@ -61,7 +62,7 @@ class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {
         binding.flControl.setOnTouchListener { _, event ->
             touchX = event.x.toInt()
             touchY = event.y.toInt()
-            when(event.action){
+            when (event.action) {
                 MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
                     touchX = event.x.toInt()
                     touchY = event.y.toInt()
@@ -74,7 +75,7 @@ class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {
         }
     }
 
-    private fun measuredSize(){
+    private fun measuredSize() {
         controlSize[0] = binding.flControl.width
         controlSize[1] = binding.flControl.height
 
@@ -87,7 +88,7 @@ class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {
 
     }
 
-    private fun execute(){
+    private fun execute() {
         context?.apply {
             // 设置控制小点的位置
             setPointPositionByTouch()
@@ -97,8 +98,9 @@ class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {
 
     }
 
-    private fun printLog(context: Context){
-        val info = """宽:${ScreenUtil.getScreenWidth(context)}, 高:${ScreenUtil.getScreenHeight(context)}
+    private fun printLog(context: Context) {
+        val info =
+            """宽:${ScreenUtil.getScreenWidth(context)}, 高:${ScreenUtil.getScreenHeight(context)}
                 |位置：{${x},${y}}
                 |触摸：{${touchX},${touchY}}
                 |面板：{${controlSize[0]},${controlSize[1]}}
@@ -107,16 +109,18 @@ class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {
         binding.tvInfo.text = info
     }
 
-    private fun setPointPositionByTouch(){
+    private fun setPointPositionByTouch() {
 
-        pointX = touchX.round(controlPadding, controlSize[0] - pointSize[0] - controlPadding).toFloat()
-        pointY = touchY.round(controlPadding, controlSize[1] - pointSize[1] - controlPadding).toFloat()
+        pointX =
+            touchX.round(controlPadding, controlSize[0] - pointSize[0] - controlPadding).toFloat()
+        pointY =
+            touchY.round(controlPadding, controlSize[1] - pointSize[1] - controlPadding).toFloat()
 
         binding.point.x = pointX
         binding.point.y = pointY
     }
 
-    private fun resetTouchPosition(){
+    private fun resetTouchPosition() {
         touchX = (controlSize[0] shr 1) - (pointSize[0] shr 1)
         touchY = (controlSize[1] shr 1) - (pointSize[1] shr 1)
     }

@@ -8,7 +8,7 @@ import android.view.View
 import android.view.WindowManager
 import com.gfz.common.utils.ScreenUtil
 import com.gfz.lab.app.KTApp
-import com.gfz.lab.ext.toPX
+import com.gfz.common.ext.toPX
 
 /**
  * 管理小窗口布局
@@ -34,11 +34,12 @@ class OverlayUtil {
         //设置type.系统提示型窗口，一般都在应用程序窗口之上.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-        }else{
+        } else {
             params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
         }
         //设置flags.不可聚焦及不可使用按钮对悬浮窗进行操控.
-        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
+        params.flags =
+            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
         //设置窗口初始停靠位置.
         params.gravity = Gravity.START or Gravity.TOP
         params.width = 180.toPX()
@@ -46,18 +47,18 @@ class OverlayUtil {
 
     }
 
-    fun showWindow(view: View){
+    fun showWindow(view: View) {
         rootView = view
         lastX = 0
         lastY = 0
         windowManager.addView(rootView, params)
     }
 
-    fun close(){
+    fun close() {
         windowManager.removeView(rootView)
     }
 
-    fun handlerMoveEvent(motionEvent: MotionEvent){
+    fun handlerMoveEvent(motionEvent: MotionEvent) {
         when (motionEvent.action) {
             MotionEvent.ACTION_DOWN -> {
                 lastX = 0
@@ -66,20 +67,20 @@ class OverlayUtil {
             MotionEvent.ACTION_MOVE -> {
                 val nowX = motionEvent.rawX.toInt()
                 val nowY = motionEvent.rawY.toInt()
-                if (lastX != 0 && lastY != 0){
+                if (lastX != 0 && lastY != 0) {
                     var x = params.x + nowX - lastX
                     var y = params.y + nowY - lastY
                     // 处理超出屏幕
                     val maxX = ScreenUtil.getScreenWidth(rootView?.context) - width
                     val maxY = ScreenUtil.getScreenHeight(rootView?.context) - height
-                    if (x < 0){
+                    if (x < 0) {
                         x = 0
-                    }else if(x > maxX){
+                    } else if (x > maxX) {
                         x = maxX
                     }
-                    if (y < 0){
+                    if (y < 0) {
                         y = 0
-                    }else if(y > maxY){
+                    } else if (y > maxY) {
                         y = maxY
                     }
 

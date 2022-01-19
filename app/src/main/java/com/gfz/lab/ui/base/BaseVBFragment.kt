@@ -20,15 +20,20 @@ abstract class BaseVBFragment<VB : ViewBinding> : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         if (_binding == null) {
-            viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver{
+            viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
                 override fun onDestroy(owner: LifecycleOwner) {
-                    if (!needSaveView){
+                    if (!needSaveView) {
                         _binding = null
                     }
                 }
             })
             @Suppress("UNCHECKED_CAST")
-            _binding = getVBClass(0)!!.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
+            _binding = getVBClass(0)!!.getMethod(
+                "inflate",
+                LayoutInflater::class.java,
+                ViewGroup::class.java,
+                Boolean::class.java
+            )
                 .invoke(null, inflater, container, false) as VB
         }
         return binding.root

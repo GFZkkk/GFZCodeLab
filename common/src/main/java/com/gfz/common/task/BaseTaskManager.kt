@@ -10,7 +10,8 @@ import android.os.Looper
  */
 open class BaseTaskManager<T : BaseTaskManager<T>>(
     private val handler: Handler = Handler(Looper.getMainLooper()),
-    private var runnable: Runnable? = null) {
+    private var runnable: Runnable? = null
+) {
 
     private var start = false
     private var remove = false
@@ -18,53 +19,53 @@ open class BaseTaskManager<T : BaseTaskManager<T>>(
     private val task: Runnable
         get() = checkNotNull(runnable)
 
-    interface FinishCallback{
+    interface FinishCallback {
         fun finish()
     }
 
-    fun setCallback(callback: FinishCallback?): T{
+    fun setCallback(callback: FinishCallback?): T {
         this.callback = callback
         return this as T
     }
 
-    fun setRunnable(runnable: Runnable){
+    fun setRunnable(runnable: Runnable) {
         this.runnable = runnable
     }
 
-    fun run(): T{
+    fun run(): T {
         return runAfterDelay(0)
     }
 
-    open fun runAfterDelay(delay: Long): T{
-        if (!start && !remove){
+    open fun runAfterDelay(delay: Long): T {
+        if (!start && !remove) {
             handler.postDelayed(task, delay)
             start = true
         }
         return this as T
     }
 
-    fun next(delay: Long = 300){
-        if (start && !remove){
-            if (canRun()){
+    fun next(delay: Long = 300) {
+        if (start && !remove) {
+            if (canRun()) {
                 handler.postDelayed(task, delay)
-            }else{
+            } else {
                 remove()
                 callback?.finish()
             }
         }
     }
 
-    fun pause(){
+    fun pause() {
         handler.removeCallbacks(task)
         start = false
     }
 
-    fun remove(){
+    fun remove() {
         pause()
         remove = false
     }
 
-    open fun canRun(): Boolean{
+    open fun canRun(): Boolean {
         return true
     }
 

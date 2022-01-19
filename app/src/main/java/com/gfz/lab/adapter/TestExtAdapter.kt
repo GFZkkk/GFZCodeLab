@@ -6,7 +6,7 @@ import com.gfz.recyclerview.adapter.BaseExtLayoutAdapter
 import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.lab.databinding.ItemExtDataBinding
 import com.gfz.lab.databinding.LayoutHeaderTestBinding
-import com.gfz.lab.ext.toLog
+import com.gfz.common.ext.toLog
 
 /**
  * 测试扩展布局

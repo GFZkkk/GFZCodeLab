@@ -15,8 +15,8 @@ import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder as BaseRecyclerViewHo
  *
  * created by gaofengze on 2021/1/27
  */
-abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList())
-    : BaseRecyclerViewAdapter<T>(list) {
+abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
+    BaseRecyclerViewAdapter<T>(list) {
 
     val EMPTY = -1
     val FOOT = -2
@@ -50,7 +50,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList())
             HEAD -> getHeaderViewHolder(layoutInflater, parent) as? BaseRecyclerViewHolder<T>
             else -> onCreateDataViewHolder(layoutInflater, parent, viewType)
         }
-        return requireNotNull(holder){
+        return requireNotNull(holder) {
             TopLog.e("view holder is null")
         }
     }

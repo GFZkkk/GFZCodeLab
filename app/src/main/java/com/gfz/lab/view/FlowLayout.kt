@@ -9,8 +9,11 @@ import kotlin.math.max
 /**
  * Created by gaofengze on 2022/1/7
  */
-class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0)
-    : FrameLayout(context, attrs, defStyleAttr) {
+class FlowLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : FrameLayout(context, attrs, defStyleAttr) {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
@@ -29,7 +32,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
         var realWidth = 0
         var realHeight = 0
 
-        for (index in 0 until childCount){
+        for (index in 0 until childCount) {
 
             val childView = getChildAt(index)
 
@@ -47,7 +50,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 childLayoutParams.topMargin + childLayoutParams.bottomMargin
             )
             // 检查是否需要换行
-            if (lineWidth + childWidth > childEnd){
+            if (lineWidth + childWidth > childEnd) {
                 // 宽度取最宽
                 realWidth = max(lineWidth, realWidth)
                 // 高度取末尾item高度相加
@@ -56,7 +59,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 lineMaxHeight = 0
                 // 记录没有放下的item的宽度
                 lineWidth = childWidth
-            }else{
+            } else {
                 lineWidth += childWidth
             }
             lineMaxHeight = max(lineMaxHeight, childHeight)
@@ -67,8 +70,8 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
         realWidth += paddingH
         realHeight += paddingTop + paddingBottom
 
-        val finalWidth = if(widthMode == MeasureSpec.AT_MOST) realWidth else width
-        val finalHeight = if(heightMode == MeasureSpec.AT_MOST) realHeight else height
+        val finalWidth = if (widthMode == MeasureSpec.AT_MOST) realWidth else width
+        val finalHeight = if (heightMode == MeasureSpec.AT_MOST) realHeight else height
 
         setMeasuredDimension(finalWidth, finalHeight)
     }
@@ -86,7 +89,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
         var lineWidth = paddingLeft
         var lineMaxHeight = 0
 
-        for (index in 0 until childCount){
+        for (index in 0 until childCount) {
             val view = getChildAt(index)
 
             if (view.visibility == GONE) {
@@ -100,7 +103,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
             left = lineWidth + marginLayoutParams.leftMargin
             right = left + width
 
-            if (right > childEnd){
+            if (right > childEnd) {
                 // 换行
                 lineHeight += lineMaxHeight
                 // reset
@@ -117,7 +120,10 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
             lineWidth = right + marginLayoutParams.leftMargin
 
-            lineMaxHeight = max(lineMaxHeight, bottom - top + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin)
+            lineMaxHeight = max(
+                lineMaxHeight,
+                bottom - top + marginLayoutParams.topMargin + marginLayoutParams.bottomMargin
+            )
         }
     }
 

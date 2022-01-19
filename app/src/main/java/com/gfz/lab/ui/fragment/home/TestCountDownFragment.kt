@@ -1,4 +1,5 @@
 package com.gfz.lab.ui.fragment.home
+
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -13,19 +14,19 @@ import com.gfz.lab.utils.ToastUtil
 /**
  * created by gfz on 2020/5/5
  **/
-class TestCountDownFragment : BaseVBFragment<FragmentCountdownBinding>(){
+class TestCountDownFragment : BaseVBFragment<FragmentCountdownBinding>() {
 
     override fun initView() {
-        binding.switchCheck.setOnTouchListener{ _, motionEvent ->
-            if (motionEvent.action == MotionEvent.ACTION_UP){
-                if (!binding.switchCheck.isChecked){
+        binding.switchCheck.setOnTouchListener { _, motionEvent ->
+            if (motionEvent.action == MotionEvent.ACTION_UP) {
+                if (!binding.switchCheck.isChecked) {
                     openService()
-                }else{
+                } else {
                     binding.switchCheck.isChecked = false
                     activity?.stopService(Intent(activity, DrawOverService::class.java))
                 }
                 true
-            }else{
+            } else {
                 false
             }
 
@@ -36,7 +37,7 @@ class TestCountDownFragment : BaseVBFragment<FragmentCountdownBinding>(){
         return "悬浮计时试验区"
     }
 
-    private fun openService(){
+    private fun openService() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (Settings.canDrawOverlays(requireContext())) {
                 startService()
@@ -55,7 +56,7 @@ class TestCountDownFragment : BaseVBFragment<FragmentCountdownBinding>(){
         }
     }
 
-    private fun startService(){
+    private fun startService() {
         binding.switchCheck.isChecked = true
         activity?.startService(Intent(activity, DrawOverService::class.java))
     }

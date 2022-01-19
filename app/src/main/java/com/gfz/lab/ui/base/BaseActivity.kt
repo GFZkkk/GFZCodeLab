@@ -11,7 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.gfz.common.utils.TimeCell
 import com.gfz.lab.R
-import com.gfz.lab.ext.getCompatColor
+import com.gfz.common.ext.getCompatColor
 import com.gfz.lab.utils.*
 
 
@@ -23,7 +23,7 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
 
     lateinit var nav: NavController
 
-    var handler : Handler? = null
+    var handler: Handler? = null
 
     val taskList: HashSet<Runnable> = HashSet()
 
@@ -50,7 +50,7 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         super.onDestroy()
     }
 
-    open fun setWindowStatus(){
+    open fun setWindowStatus() {
         val window: Window = window
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.statusBarColor = getCompatColor(R.color.col_b07529)
@@ -58,16 +58,16 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
 
     abstract fun loadView()
 
-    open fun initView(){}
+    open fun initView() {}
 
     abstract fun initData()
 
     @IdRes
-    open fun getNavId(): Int?{
+    open fun getNavId(): Int? {
         return null
     }
 
-    fun getNavControllerById(id: Int): NavController{
+    fun getNavControllerById(id: Int): NavController {
         val navHostFragment = supportFragmentManager.findFragmentById(id) as NavHostFragment
         return navHostFragment.navController
     }
@@ -92,20 +92,21 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         nav.popBackStack(action, inclusive)
     }
 
-    fun postDelayed(runnable: Runnable, delayed: Long){
+    fun postDelayed(runnable: Runnable, delayed: Long) {
         handler?.postDelayed(runnable, delayed)
     }
 
     // region 工具方法
     fun getContext() = this
+
     /**
      * 显示吐司
      */
-    override fun showToast(text: String){
+    override fun showToast(text: String) {
         ToastUtil.showToast(text)
     }
 
-    override fun showToast(textRes: Int){
+    override fun showToast(textRes: Int) {
         showToast(getString(textRes))
     }
 

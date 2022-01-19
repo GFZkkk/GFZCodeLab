@@ -9,10 +9,10 @@ import android.view.*
 import com.gfz.common.utils.TopLog
 import com.gfz.lab.R
 import com.gfz.lab.databinding.LayoutCountDownBinding
-import com.gfz.lab.ext.getCompatColor
-import com.gfz.lab.ext.setDisplay
+import com.gfz.common.ext.getCompatColor
+import com.gfz.common.ext.setDisplay
+import com.gfz.lab.ui.base.viewBind
 import com.gfz.lab.utils.OverlayUtil
-import com.gfz.lab.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
 

@@ -1,4 +1,4 @@
-package com.gfz.lab.ext
+package com.gfz.common.ext
 
 import android.content.Context
 
@@ -10,14 +10,16 @@ import android.content.Context
 /**
  * 根据手机的分辨率从 dx(像素) 的单位 转成为 px
  */
-fun Int.toPX(context: Context): Int = (this * context.resources.displayMetrics.density + 0.5f).toInt()
+fun Int.toPX(context: Context): Int =
+    (this * context.resources.displayMetrics.density + 0.5f).toInt()
 
 /**
  * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
  */
-fun Int.toDP(context: Context): Int = (this / context.resources.displayMetrics.density + 0.5f).toInt()
+fun Int.toDP(context: Context): Int =
+    (this / context.resources.displayMetrics.density + 0.5f).toInt()
 
-fun Int.round(min: Int, max: Int): Int{
+fun Int.round(min: Int, max: Int): Int {
     return when {
         this > max -> {
             max
@@ -31,7 +33,7 @@ fun Int.round(min: Int, max: Int): Int{
     }
 }
 
-fun Float.round(min: Float, max: Float): Float{
+fun Float.round(min: Float, max: Float): Float {
     return when {
         this > max -> {
             max

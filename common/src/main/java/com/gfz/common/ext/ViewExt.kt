@@ -1,8 +1,7 @@
-package com.gfz.lab.ext
+package com.gfz.common.ext
 
 import android.view.View
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 
 const val LEFT: Int = 0
 const val TOP: Int = 1

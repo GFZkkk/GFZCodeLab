@@ -37,7 +37,7 @@ class TimeCell(size: Int = 10) {
     /**
      * 结束计时
      */
-    fun end(tag: Int = 0): Long{
+    fun end(tag: Int = 0): Long {
         val time = getNowTime() - getLastTime(tag)
         start(tag)
         return time

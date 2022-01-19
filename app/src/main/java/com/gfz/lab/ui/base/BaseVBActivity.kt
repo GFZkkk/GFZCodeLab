@@ -17,7 +17,8 @@ abstract class BaseVBActivity<VB : ViewBinding> : BaseActivity() {
     }
 
     open fun onCreateViewBinding(): VB? {
-        return getVBClass(0)!!.getMethod("inflate", LayoutInflater::class.java).invoke(null, layoutInflater) as VB
+        return getVBClass(0)!!.getMethod("inflate", LayoutInflater::class.java)
+            .invoke(null, layoutInflater) as VB
     }
 
     fun getVBClass(index: Int): Class<*>? {

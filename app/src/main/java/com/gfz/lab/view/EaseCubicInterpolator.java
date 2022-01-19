@@ -9,7 +9,6 @@ import android.view.animation.Interpolator;
 public class EaseCubicInterpolator implements Interpolator {
 
 
-
     private final static int ACCURACY = 4096;
 
     private int mLastI = 0;
@@ -19,23 +18,15 @@ public class EaseCubicInterpolator implements Interpolator {
     private final PointF mControlPoint2 = new PointF();
 
 
-
     /**
-
      * 设置中间两个控制点.<br>
-
+     * <p>
      * 在线工具: http://cubic-bezier.com/<br>
-
      *
-
      * @param x1
-
      * @param y1
-
      * @param x2
-
      * @param y2
-
      */
 
     public EaseCubicInterpolator(float x1, float y1, float x2, float y2) {
@@ -49,7 +40,6 @@ public class EaseCubicInterpolator implements Interpolator {
         mControlPoint2.y = y2;
 
     }
-
 
 
     @Override
@@ -91,29 +81,17 @@ public class EaseCubicInterpolator implements Interpolator {
     }
 
 
-
     /**
-
      * 求三次贝塞尔曲线(四个控制点)一个点某个维度的值.<br>
-
+     * <p>
      * 参考资料: <em> http://devmag.org.za/2011/04/05/bzier-curves-a-tutorial/ </em>
-
      *
-
-     * @param t
-
-     *            取值[0, 1]
-
+     * @param t      取值[0, 1]
      * @param value0
-
      * @param value1
-
      * @param value2
-
      * @param value3
-
      * @return
-
      */
 
     public static double cubicCurves(double t, double value0, double value1,
@@ -131,7 +109,6 @@ public class EaseCubicInterpolator implements Interpolator {
         double uuu = uu * u;
 
         double ttt = tt * t;
-
 
 
         value = uuu * value0;

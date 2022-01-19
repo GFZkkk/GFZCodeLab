@@ -9,18 +9,20 @@ import com.gfz.lab.ui.base.BaseVBFragment
 /**
  * Created by gaofengze on 2020/8/22.
  */
-class TestMoveFragment : BaseVBFragment<FragmentMoveBinding>(){
+class TestMoveFragment : BaseVBFragment<FragmentMoveBinding>() {
 
     override fun initView() {
         binding.rvList.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvList.adapter = TestMoveAdapter(listOf(
-            MoveBean("拼写训练"),
-            MoveBean("释义训练"),
-            MoveBean("例句训练"),
-            MoveBean("看词训练"),
-            MoveBean("听词训练"),
-            MoveBean("译词训练")
-        ))
+        binding.rvList.adapter = TestMoveAdapter(
+            listOf(
+                MoveBean("拼写训练"),
+                MoveBean("释义训练"),
+                MoveBean("例句训练"),
+                MoveBean("看词训练"),
+                MoveBean("听词训练"),
+                MoveBean("译词训练")
+            )
+        )
     }
 
     override fun getTitleText(): String {

@@ -47,24 +47,25 @@ public class InterpolatorView extends View implements ValueAnimator.AnimatorUpda
     }
 
     AnimatorSet animatorSet;
-    private void init(){
+
+    private void init() {
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.STROKE);
         path = new Path();
-        ObjectAnimator animator = ObjectAnimator.ofFloat(this,"progressX", 0,1);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, "progressX", 0, 1);
         animator.setInterpolator(new LinearInterpolator());
 //        animator.setRepeatCount(ValueAnimator.INFINITE);
         animator.addUpdateListener(this);
 
-        ObjectAnimator animator1 = ObjectAnimator.ofFloat(this,"progressY", 0,1);
+        ObjectAnimator animator1 = ObjectAnimator.ofFloat(this, "progressY", 0, 1);
 //        animator1.setRepeatCount(ValueAnimator.INFINITE);
-        animator1.setInterpolator(new EaseCubicInterpolator(0.66f,0,0.34f, 1));
+        animator1.setInterpolator(new EaseCubicInterpolator(0.66f, 0, 0.34f, 1));
         animatorSet = new AnimatorSet();
         animatorSet.playTogether(animator, animator1);
 
     }
 
-    public void start(){
+    public void start() {
         animatorSet.setDuration(2000);
         animatorSet.start();
     }
@@ -81,7 +82,7 @@ public class InterpolatorView extends View implements ValueAnimator.AnimatorUpda
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int width = 1000;
-        path.lineTo( width * progressX, width - width * progressY);
+        path.lineTo(width * progressX, width - width * progressY);
         canvas.drawPath(path, paint);
         TopLog.INSTANCE.e(progressY);
     }

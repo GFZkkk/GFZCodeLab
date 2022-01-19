@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseBannerAdapter<T>(context: Context, private val time: Int) :
     BaseCenterAdapter<T>(context, true) {
 
-    private val mHandler by lazy{
+    private val mHandler by lazy {
         Handler(Looper.getMainLooper())
     }
 

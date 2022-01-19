@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
-import com.gfz.lab.ext.getCompatDrawable
+import com.gfz.common.ext.getCompatDrawable
 import java.io.ByteArrayOutputStream
 import java.io.File
 
@@ -33,7 +33,7 @@ object BitmapUtil {
         }
     }
 
-    fun saveBitmapToFile(fileName: String){
+    fun saveBitmapToFile(fileName: String) {
         val file = File(fileName)
     }
 

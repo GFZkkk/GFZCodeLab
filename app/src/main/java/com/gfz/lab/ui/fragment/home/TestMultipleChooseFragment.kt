@@ -12,7 +12,7 @@ import java.util.*
  * created by gaofengze on 2020/4/14
  */
 
-class TestMultipleChooseFragment : BaseVBFragment<FragmentMultiChooseBinding>(){
+class TestMultipleChooseFragment : BaseVBFragment<FragmentMultiChooseBinding>() {
 
     override fun initView() {
         binding.rvList.layoutManager = LinearLayoutManager(requireContext())

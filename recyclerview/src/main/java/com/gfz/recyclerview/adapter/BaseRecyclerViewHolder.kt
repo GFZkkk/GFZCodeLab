@@ -29,10 +29,10 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
      */
     fun bindViewHolder(data: T?, position: Int) {
 
-        if (data != null){
+        if (data != null) {
             itemView.visibility = View.VISIBLE
             onBindViewHolder(data, position)
-        }else{
+        } else {
             itemView.visibility = View.INVISIBLE
             bindNoDataViewHolder()
         }
@@ -41,7 +41,7 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
     /**
      * 隐藏没有数据的viewholder
      */
-    open fun bindNoDataViewHolder(){
+    open fun bindNoDataViewHolder() {
 
     }
 
@@ -49,7 +49,7 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
         return layoutPosition
     }
 
-    open fun initEvent(){}
+    open fun initEvent() {}
 
     abstract fun onBindViewHolder(data: T, position: Int)
     // endregion
@@ -72,7 +72,7 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
     }
 
     // region 工具方法
-    fun TextView.setTextColorRes(@ColorRes color: Int){
+    fun TextView.setTextColorRes(@ColorRes color: Int) {
         this.setTextColor(ContextCompat.getColor(context, color))
     }
     // endregion

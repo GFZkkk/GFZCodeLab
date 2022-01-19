@@ -8,7 +8,7 @@ import me.jessyan.autosize.internal.CancelAdapt
  * 启动页
  * created by gaofengze on 2021/4/30
  */
-class LaunchActivity : BaseActivity(), CancelAdapt{
+class LaunchActivity : BaseActivity(), CancelAdapt {
 
     override fun loadView() {
         // 无ui
@@ -16,7 +16,7 @@ class LaunchActivity : BaseActivity(), CancelAdapt{
 
     override fun initData() {
         postDelayed({
-            if(this.isFinishing){
+            if (this.isFinishing) {
                 return@postDelayed
             }
             start(RootActivity::class.java)

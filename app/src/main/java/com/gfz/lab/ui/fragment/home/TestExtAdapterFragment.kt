@@ -5,7 +5,7 @@ import com.gfz.lab.adapter.TestExtAdapter
 import com.gfz.lab.databinding.FragmentExtlayoutBinding
 import com.gfz.lab.databinding.LayoutHeaderTestBinding
 import com.gfz.lab.ui.base.BaseVBFragment
-import com.gfz.lab.utils.viewBind
+import com.gfz.lab.ui.base.viewBind
 
 /**
  *

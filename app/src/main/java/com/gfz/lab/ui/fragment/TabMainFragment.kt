@@ -22,7 +22,7 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
     override fun initView() {
         // 初始化fragment
         val fragmentList = listOf(HomeFragment(), FuncFragment(), MineFragment())
-        binding.vpMain.adapter = object : FragmentStateAdapter(this){
+        binding.vpMain.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int {
                 return fragmentList.size
             }
@@ -35,19 +35,50 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
 
         // 初始化bottombar
         val adapter = BottomBarAdapter()
-        adapter.setDataList(listOf(TabItemBean(R.drawable.ic_home_active, R.drawable.ic_home_default, R.string.tab_main, R.color.tab_active, R.color.tab_default, R.id.homeFragment),
-            TabItemBean(R.drawable.ic_all_active, R.drawable.ic_all_default, R.string.tab_function, R.color.tab_active, R.color.tab_default, R.id.funcFragment),
-            TabItemBean(R.drawable.ic_account_active, R.drawable.ic_account_default, R.string.tab_mine, R.color.tab_active, R.color.tab_default, R.id.mineFragment)))
+        adapter.setDataList(
+            listOf(
+                TabItemBean(
+                    R.drawable.ic_home_active,
+                    R.drawable.ic_home_default,
+                    R.string.tab_main,
+                    R.color.tab_active,
+                    R.color.tab_default,
+                    R.id.homeFragment
+                ),
+                TabItemBean(
+                    R.drawable.ic_all_active,
+                    R.drawable.ic_all_default,
+                    R.string.tab_function,
+                    R.color.tab_active,
+                    R.color.tab_default,
+                    R.id.funcFragment
+                ),
+                TabItemBean(
+                    R.drawable.ic_account_active,
+                    R.drawable.ic_account_default,
+                    R.string.tab_mine,
+                    R.color.tab_active,
+                    R.color.tab_default,
+                    R.id.mineFragment
+                )
+            )
+        )
         binding.rvBottom.adapter = adapter
-        binding.rvBottom.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        binding.rvBottom.addItemDecoration(AvgItemDecoration(ScreenUtil.getScreenWidth(context), adapter.itemCount))
+        binding.rvBottom.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        binding.rvBottom.addItemDecoration(
+            AvgItemDecoration(
+                ScreenUtil.getScreenWidth(context),
+                adapter.itemCount
+            )
+        )
 
         adapter.setOnItemClickListener { _, position ->
             binding.vpMain.setCurrentItem(position, false)
         }
 
 
-        binding.vpMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        binding.vpMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 adapter.setClickIndex(position)
             }

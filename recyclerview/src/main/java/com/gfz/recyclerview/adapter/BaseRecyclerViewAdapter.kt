@@ -20,11 +20,13 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 主要数据
      */
     private val list: MutableList<T?> = ArrayList()
+
     /**
      * 获取数据长度
      */
     val length
         get() = list.size
+
     /**
      * 当前点击的position
      */
@@ -44,10 +46,12 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 是否自动刷新点击的item
      */
     var needAutoRefreshClickItem = false
+
     /**
      * 是否自动设置当前点击的position为clickIndex
      */
     var needAutoSetClickIndex = true
+
     /**
      * 是否自动过滤空数据
      */
@@ -109,11 +113,11 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     // region 点击事件
 
-    fun setOnItemClickListener(listener: ((View, Int) -> Unit)?){
+    fun setOnItemClickListener(listener: ((View, Int) -> Unit)?) {
         this.listener = listener
     }
 
-    fun setOnItemClickDataListener(dataListener: ((View, Int, T?) -> Unit)?){
+    fun setOnItemClickDataListener(dataListener: ((View, Int, T?) -> Unit)?) {
         this.dataListener = dataListener
     }
 
@@ -349,6 +353,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 防止重复点击
      */
     private fun fastClick(): Boolean {
-        return timeCell.fastClick(0,500)
+        return timeCell.fastClick(0, 500)
     }
 }

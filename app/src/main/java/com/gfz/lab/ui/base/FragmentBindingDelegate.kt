@@ -21,7 +21,7 @@ class FragmentBindingDelegate<VB : ViewBinding>(
 
     override fun getValue(thisRef: Fragment, property: KProperty<*>): VB {
         if (!isInitialized) {
-            thisRef.viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver{
+            thisRef.viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
                 override fun onDestroy(owner: LifecycleOwner) {
                     _binding = null
                 }

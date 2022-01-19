@@ -5,7 +5,7 @@ import com.tencent.mmkv.MMKV
 
 object SpUtil {
 
-    fun init(appContext: Context){
+    fun init(appContext: Context) {
         MMKV.initialize(appContext)
     }
 
@@ -13,7 +13,7 @@ object SpUtil {
         MMKV.defaultMMKV()
     }
 
-    fun putString(key: String, value: String){
+    fun putString(key: String, value: String) {
         sp.encode(getUserKey(key), value)
     }
 
@@ -22,7 +22,7 @@ object SpUtil {
     }
 
     fun getUserKey(key: String?): String? = key?.let {
-        if (it.startsWith("U_")){
+        if (it.startsWith("U_")) {
             val userId = "userId"
             it.replaceFirst("U", userId)
         } else {

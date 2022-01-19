@@ -3,9 +3,12 @@ package com.gfz.recyclerview.decoration
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.lab.ext.toPX
 
-class NormalDecoration(val bodyMargin: Int, val headMargin: Int = bodyMargin * 2, private val isHorizontal: Boolean = true) : RecyclerView.ItemDecoration() {
+class NormalDecoration(
+    val bodyMargin: Int,
+    val headMargin: Int = bodyMargin * 2,
+    private val isHorizontal: Boolean = true
+) : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
         outRect: Rect,

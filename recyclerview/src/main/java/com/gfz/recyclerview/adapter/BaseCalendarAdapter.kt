@@ -13,11 +13,13 @@ import kotlin.collections.ArrayList
  * 当月份变化触发[loadNextLimit]时，将会触发改变数据区的位置，更新备份区数据的方法。
  * created by gfz on 2020/4/6
  */
-abstract class BaseCalendarAdapter<T>(sDate: String,
-                                      eDate: String,
-                                      nDate: String = DateUtil.getShortDateStr(),
-                                      private val partLimit: Int = 10,
-                                      private val loadNextLimit: Int = 3) :
+abstract class BaseCalendarAdapter<T>(
+    sDate: String,
+    eDate: String,
+    nDate: String = DateUtil.getShortDateStr(),
+    private val partLimit: Int = 10,
+    private val loadNextLimit: Int = 3
+) :
     BaseRecyclerViewAdapter<T>() {
 
     /**
@@ -60,31 +62,33 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      */
     private var partFocusIndex = 0
 
-    enum class MMDateEnum{
-        BEFORE,AFTER,SAME
+    enum class MMDateEnum {
+        BEFORE, AFTER, SAME
     }
 
     init {
         startDate = sDate.getDate()
         endDate = eDate.getDate()
         nowDate = when {
-            compareTo(eDate,nDate) == MMDateEnum.AFTER -> eDate.getDate()
-            compareTo(sDate,nDate) == MMDateEnum.BEFORE -> sDate.getDate()
+            compareTo(eDate, nDate) == MMDateEnum.AFTER -> eDate.getDate()
+            compareTo(sDate, nDate) == MMDateEnum.BEFORE -> sDate.getDate()
             else -> nDate.getDate()
         }
         //是否需要分步加载
-        if (monthNum > partLimit * 2){
+        if (monthNum > partLimit * 2) {
             needLoadPartition = true
         }
         //一共加载几个月的数据
-        monthNum = (endDate.getYear() - startDate.getYear()) * 12 + endDate.getMonth() - startDate.getMonth() + 1
+        monthNum =
+            (endDate.getYear() - startDate.getYear()) * 12 + endDate.getMonth() - startDate.getMonth() + 1
         //当前要显示哪个月
-        focusMonth = (nowDate.getYear() - startDate.getYear()) * 12 + nowDate.getMonth() - startDate.getMonth()
+        focusMonth =
+            (nowDate.getYear() - startDate.getYear()) * 12 + nowDate.getMonth() - startDate.getMonth()
         //分步加载的月份下标
-        if (needLoadPartition){
+        if (needLoadPartition) {
             partFocusIndex = focusMonth % partLimit
             //最后一段数据和不是第一段数据但坐标处于前半部分的情况需要往后移
-            if (focusMonth / partLimit == monthNum / partLimit || partFocusIndex < partLimit / 2 && focusMonth / partLimit != 0){
+            if (focusMonth / partLimit == monthNum / partLimit || partFocusIndex < partLimit / 2 && focusMonth / partLimit != 0) {
                 partFocusIndex += partLimit
             }
         }
@@ -113,15 +117,15 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      */
     open fun laterMonth() {
         if (haveNext()) {
-            if (needLoadPartition){
-                if (partFocusIndex < partLimit * 2 - 1){
+            if (needLoadPartition) {
+                if (partFocusIndex < partLimit * 2 - 1) {
                     partFocusIndex++
                     focusMonth++
                     show()
-                }else{
+                } else {
                     TopLog.i("数据加载中")
                 }
-            }else{
+            } else {
                 focusMonth++
                 show()
             }
@@ -133,15 +137,15 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      */
     open fun preMonth() {
         if (havePre()) {
-            if (needLoadPartition){
-                if (partFocusIndex > 0){
+            if (needLoadPartition) {
+                if (partFocusIndex > 0) {
                     partFocusIndex--
                     focusMonth--
                     show()
-                }else{
+                } else {
                     TopLog.i("数据加载中")
                 }
-            }else{
+            } else {
                 focusMonth--
                 show()
             }
@@ -153,12 +157,12 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      */
     open fun show() {
         checkMonthList()
-        if (needLoadPartition){
+        if (needLoadPartition) {
             refresh(monthList[partFocusIndex])
-        }else{
+        } else {
             refresh(monthList[focusMonth])
         }
-        needLoadPartition.apply {  }
+        needLoadPartition.apply { }
 
     }
 
@@ -176,31 +180,31 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      * 检查每个月的数据
      */
     private fun checkMonthList() {
-        if (needLoadPartition){
+        if (needLoadPartition) {
             val start = focusMonth - partFocusIndex % partLimit
-            if (monthList.count() != 0){
-                if(partFocusIndex <= loadNextLimit && focusMonth / partLimit != 0){
+            if (monthList.count() != 0) {
+                if (partFocusIndex <= loadNextLimit && focusMonth / partLimit != 0) {
                     TopLog.e("数据区后移")
                     monthList.move(true)
                     loadDataList(start, 0, partLimit)
                     partFocusIndex += partLimit
-                }else if(partFocusIndex >= partLimit * 2 - loadNextLimit && focusMonth / partLimit != monthNum / partLimit){
+                } else if (partFocusIndex >= partLimit * 2 - loadNextLimit && focusMonth / partLimit != monthNum / partLimit) {
                     TopLog.e("数据区前移")
                     monthList.move(false)
                     loadDataList(start, partLimit, partLimit * 2)
                     partFocusIndex -= partLimit
                 }
-            }else{
+            } else {
                 //如果下标靠前且不是第一序列则数据区加载到后半部分
-                if (focusMonth > partLimit && partFocusIndex % partLimit < partLimit / 2){
+                if (focusMonth > partLimit && partFocusIndex % partLimit < partLimit / 2) {
                     loadDataList(start - partLimit, 0, partLimit * 2)
-                }else{
+                } else {
                     loadDataList(start, 0, partLimit * 2)
                 }
 
             }
-        }else{
-            if (monthList.count() == 0){
+        } else {
+            if (monthList.count() == 0) {
                 loadDataList()
             }
 
@@ -213,12 +217,12 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
      * @param startIndex 填充的起始下标
      * @param endIndex 填充的结束下表
      */
-    private fun loadDataList(start: Int = 0, startIndex: Int = 0, endIndex: Int = monthNum){
+    private fun loadDataList(start: Int = 0, startIndex: Int = 0, endIndex: Int = monthNum) {
         val year = startDate.getYear()
         val startMonth = startDate.getMonth()
         for (i in startIndex until endIndex) {
             val month = startMonth + start + i
-            if (month >= monthNum + startMonth){
+            if (month >= monthNum + startMonth) {
                 break
             }
             monthList.add(i, getDayList(year + (month - 1) / 12, (month - 1) % 12 + 1))
@@ -241,7 +245,7 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
             dayList.add(getCalendarBean(year, month, i + 1))
         }
         //固定42天
-        for (i in 0 until 42 - dayList.size){
+        for (i in 0 until 42 - dayList.size) {
             dayList.add(null)
         }
         return dayList
@@ -302,38 +306,38 @@ abstract class BaseCalendarAdapter<T>(sDate: String,
         return nowDate
     }
 
-    fun IntArray.getYear():Int{
+    fun IntArray.getYear(): Int {
         require(this.size == 3)
         return this[0]
     }
 
-    fun IntArray.getMonth():Int{
+    fun IntArray.getMonth(): Int {
         require(this.size == 3)
         return this[1]
     }
 
-    fun IntArray.getDay():Int{
+    fun IntArray.getDay(): Int {
         require(this.size == 3)
         return this[2]
     }
 
-    fun IntArray.isToday() : MMDateEnum{
+    fun IntArray.isToday(): MMDateEnum {
         return compareTo(nowDate, this)
     }
 
-    fun String.getDate(delimiters: String = "-"): IntArray{
+    fun String.getDate(delimiters: String = "-"): IntArray {
         val s: List<String> = this.split(delimiters)
         require(s.size == 3)
         return s.map { it.toInt() }.toIntArray()
     }
 
-    private fun MutableList<List<T?>>.move(isNext: Boolean){
+    private fun MutableList<List<T?>>.move(isNext: Boolean) {
         require(this.count() > 1)
         val num: Int = this.count() / 2
         val partNum = if (isNext) this.count() - num else 0
         this.filterIndexed { index, _ ->
             !(isNext xor (index < num))
-        }.forEachIndexed{ index, v ->
+        }.forEachIndexed { index, v ->
             this[index + partNum] = v
         }
     }

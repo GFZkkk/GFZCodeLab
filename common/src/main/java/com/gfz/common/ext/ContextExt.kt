@@ -1,4 +1,4 @@
-package com.gfz.lab.ext
+package com.gfz.common.ext
 
 import android.content.Context
 import android.graphics.drawable.Drawable

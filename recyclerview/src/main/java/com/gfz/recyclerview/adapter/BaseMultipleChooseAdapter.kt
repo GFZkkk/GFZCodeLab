@@ -12,8 +12,8 @@ import com.gfz.recyclerview.bean.BaseMultipleChooseBean
  * created by gaofengze on 2020/4/14
  */
 
-abstract class BaseMultipleChooseAdapter<T: BaseMultipleChooseBean>(dataList: List<T?> = ArrayList()) :
-    BaseRecyclerViewAdapter<T>(dataList){
+abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: List<T?> = ArrayList()) :
+    BaseRecyclerViewAdapter<T>(dataList) {
 
     private val chooseItem: SparseBooleanArray = SparseBooleanArray()
     private val chooseTitleItem: SparseBooleanArray by lazy {
@@ -46,9 +46,9 @@ abstract class BaseMultipleChooseAdapter<T: BaseMultipleChooseBean>(dataList: Li
     /**
      * 选项的范围
      */
-    fun checkBound(x: Float, position: Int, itemView: View?): Boolean{
+    fun checkBound(x: Float, position: Int, itemView: View?): Boolean {
         val chooseView: View? = itemView?.findViewById(getChooseViewByPosition(position))
-        chooseView?.let{
+        chooseView?.let {
             return isBound(x, ChooseBound(chooseView.left, chooseView.right, correction))
         }
         return false
@@ -57,7 +57,7 @@ abstract class BaseMultipleChooseAdapter<T: BaseMultipleChooseBean>(dataList: Li
     /**
      * 选项的范围
      */
-    fun checkBound(x: Float): Boolean{
+    fun checkBound(x: Float): Boolean {
         bound?.let {
             return isBound(x, it)
         }
@@ -67,7 +67,7 @@ abstract class BaseMultipleChooseAdapter<T: BaseMultipleChooseBean>(dataList: Li
     /**
      * 是否在选中范围内
      */
-    private fun isBound(x: Float, bound: ChooseBound): Boolean{
+    private fun isBound(x: Float, bound: ChooseBound): Boolean {
         return x >= bound.left - bound.flag && x <= bound.right + bound.flag
     }
 
@@ -113,23 +113,23 @@ abstract class BaseMultipleChooseAdapter<T: BaseMultipleChooseBean>(dataList: Li
         else
             getData(position)?.getBaseGroupId() != getData(position - 1)?.getBaseGroupId()
 
-    fun setTitleItemStatus(position: Int, change: Boolean){
+    fun setTitleItemStatus(position: Int, change: Boolean) {
         val groupId = getGroupIdByPosition(position)
         chooseTitleItem.append(groupId, change)
         getData().forEachIndexed { index, t ->
-            if (t?.getBaseGroupId() == groupId && isNewGroup(index)){
+            if (t?.getBaseGroupId() == groupId && isNewGroup(index)) {
                 notifyItemChanged(index)
                 return@forEachIndexed
             }
         }
     }
 
-    fun updateMultipleItem(position: Int){
+    fun updateMultipleItem(position: Int) {
         val groupId = getGroupIdByPosition(position)
         val change = isMultipleChooseItem(position)
         getData().forEachIndexed { index, multipleChooseBean ->
-            if (multipleChooseBean?.getBaseGroupId() == groupId){
-                if (change != isChooseItem(index)){
+            if (multipleChooseBean?.getBaseGroupId() == groupId) {
+                if (change != isChooseItem(index)) {
                     chooseItem(index, change)
                 }
             }
@@ -139,32 +139,32 @@ abstract class BaseMultipleChooseAdapter<T: BaseMultipleChooseBean>(dataList: Li
     /**
      * 改变组的修改状态
      */
-    fun changeGroupChooseStatus(position: Int){
+    fun changeGroupChooseStatus(position: Int) {
         setTitleItemStatus(position, !isMultipleChooseItem(position))
         updateMultipleItem(position)
     }
 
-    fun checkGroupCheckStatus(position: Int){
+    fun checkGroupCheckStatus(position: Int) {
         val groupId = getGroupIdByPosition(position)
         val multipleChoose: Boolean = isMultipleChooseItem(position)
         var allChoose = true
         getData().forEachIndexed { index, t ->
-            if (t?.getBaseGroupId() == groupId){
-                if (!isChooseItem(index)){
+            if (t?.getBaseGroupId() == groupId) {
+                if (!isChooseItem(index)) {
                     allChoose = false
                     return@forEachIndexed
                 }
 
             }
         }
-        if (multipleChoose){
+        if (multipleChoose) {
             // 是全选状态，有未选中的，取消全选状态
-            if (!allChoose){
+            if (!allChoose) {
                 setTitleItemStatus(position, false)
             }
-        }else{
+        } else {
             // 不是全选状态，但是全部都被选中，修改全选状态为全选
-            if (allChoose){
+            if (allChoose) {
                 setTitleItemStatus(position, true)
             }
         }

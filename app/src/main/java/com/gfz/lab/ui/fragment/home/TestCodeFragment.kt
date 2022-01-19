@@ -8,9 +8,9 @@ import com.gfz.lab.ui.base.BaseVBFragment
  *
  * created by gaofengze on 2021/10/12
  */
-class TestCodeFragment: BaseVBFragment<FragmentCodeBinding>() {
+class TestCodeFragment : BaseVBFragment<FragmentCodeBinding>() {
 
-    val timeCell: TimeCell by lazy{
+    val timeCell: TimeCell by lazy {
         TimeCell()
     }
 

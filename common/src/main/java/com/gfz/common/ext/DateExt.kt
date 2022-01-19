@@ -1,4 +1,4 @@
-package com.gfz.lab.ext
+package com.gfz.common.ext
 
 import com.gfz.common.utils.DateUtil
 import java.util.*

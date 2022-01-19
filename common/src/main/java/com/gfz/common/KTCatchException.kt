@@ -12,7 +12,7 @@ import java.io.Writer
  * created by gaofengze on 2021/5/13
  */
 @SuppressLint("StaticFieldLeak")
-object KTCatchException: Thread.UncaughtExceptionHandler {
+object KTCatchException : Thread.UncaughtExceptionHandler {
 
     var context: Context? = null
     private var mDefaultException: Thread.UncaughtExceptionHandler? = null

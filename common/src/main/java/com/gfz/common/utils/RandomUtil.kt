@@ -13,7 +13,7 @@ object RandomUtil {
         Random()
     }
 
-    fun getRandomIndex(size: Int): Int{
+    fun getRandomIndex(size: Int): Int {
         random.setSeed(System.currentTimeMillis())
         return random.nextInt(size)
     }
@@ -21,17 +21,21 @@ object RandomUtil {
     /**
      * 从list中取一个随机的list,不改变原有list
      */
-    fun <T> getRandomList(list: MutableList<T>, num: Int = list.size): List<T>{
+    fun <T> getRandomList(list: MutableList<T>, num: Int = list.size): List<T> {
 
         randomList(ArrayList(list), num)
 
-        return if (num >= list.size) { list } else { list.subList(0, num) }
+        return if (num >= list.size) {
+            list
+        } else {
+            list.subList(0, num)
+        }
     }
 
     /**
      * 乱序一个list
      */
-    fun <T> randomList(list: MutableList<T>, num: Int = list.size){
+    fun <T> randomList(list: MutableList<T>, num: Int = list.size) {
 
         random.setSeed(System.currentTimeMillis())
 

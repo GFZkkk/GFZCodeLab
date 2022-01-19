@@ -6,10 +6,10 @@ import com.gfz.lab.ui.base.BaseVBFragment
 /**
  * Created by gaofengze on 2020/9/15.
  */
-class TestAnimationFragment : BaseVBFragment<FragmentAnimationBinding>(){
+class TestAnimationFragment : BaseVBFragment<FragmentAnimationBinding>() {
 
     override fun initView() {
-        with(binding){
+        with(binding) {
 //            fw.start()
             fw.setOnClickListener {
                 fw.start()

@@ -31,7 +31,7 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
             , getPX(23) + dottedHeight
             , getPX(15) + underlineHeight
     };
-    int[][] textSize = {{12,14,16},{14,16,18},{15,18,20},{16,18,20},{24,26,28},{34,36,40}};
+    int[][] textSize = {{12, 14, 16}, {14, 16, 18}, {15, 18, 20}, {16, 18, 20}, {24, 26, 28}, {34, 36, 40}};
     int height = 0;
 
     // 画图组件
@@ -64,7 +64,7 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
         init();
     }
 
-    private void init(){
+    private void init() {
 
         paintDotted = new Paint();
         paintDotted.setStyle(Paint.Style.STROKE);
@@ -83,6 +83,7 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
 
     /**
      * 设置是否显示
+     *
      * @param show
      */
     public void setShow(boolean show) {
@@ -103,7 +104,7 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
         int fontLevel = 0;
         int[] sizeArray = textSize[5];
         for (int i = 0; i < sizeArray.length; i++) {
-            if(size == sizeArray[i]){
+            if (size == sizeArray[i]) {
                 fontLevel = i;
                 break;
             }
@@ -118,13 +119,13 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
         super.onDraw(canvas);
     }
 
-    public void updateSize(int fontLevel){
+    public void updateSize(int fontLevel) {
         this.fontLevel = fontLevel;
         interval[0] = fontLevel == 2 ? dottedHeight + underlineHeight : dottedHeight;
         interval[2] = getPX(23 + fontLevel);
 
         height = 0;
-        for(float h : interval){
+        for (float h : interval) {
             height += h;
         }
         height += underlineHeight;
@@ -132,8 +133,8 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
         setMinHeight(height);
     }
 
-    private void drawFormatLine(Canvas canvas){
-        if (!show || getLineCount() > 1){
+    private void drawFormatLine(Canvas canvas) {
+        if (!show || getLineCount() > 1) {
             return;
         }
         int width = getMeasuredWidth();
@@ -145,9 +146,9 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
 
         int cutDownLength = 0;
         //用户可以看到的最短线段 (0, dottedLength]
-        if (overLength < dottedLength){
+        if (overLength < dottedLength) {
             cutDownLength = (int) (overLength + dottedSpace);
-        }else if(overLength > dottedLength){
+        } else if (overLength > dottedLength) {
             cutDownLength = (int) (overLength - dottedLength);
         }
 
@@ -157,14 +158,14 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
 
             y += interval[i];
 
-            if (i != 2){
+            if (i != 2) {
                 paintDotted.setPathEffect(pathEffectNext);
                 path.moveTo(width / 2f, y);
                 path.lineTo(width - cutDownLength, y);
                 path.moveTo(width / 2f, y);
                 path.lineTo(cutDownLength, y);
                 canvas.drawPath(path, paintDotted);
-            }else{
+            } else {
                 path.moveTo(cutDownLength, y);
                 path.lineTo(width - cutDownLength, y);
                 canvas.drawPath(path, paint);
@@ -172,7 +173,7 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
         }
     }
 
-    private float getPX(int dp){
+    private float getPX(int dp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
     }
 }

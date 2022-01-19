@@ -4,22 +4,22 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.gfz.lab.R
 import com.gfz.lab.adapter.TestCalendarAdapter
 import com.gfz.lab.databinding.FragmentCalendarBinding
-import com.gfz.lab.ext.setColorRes
-import com.gfz.lab.ext.toShortDateStr
+import com.gfz.common.ext.setColorRes
+import com.gfz.common.ext.toShortDateStr
 import com.gfz.lab.ui.base.BaseVBFragment
 import com.gfz.common.utils.DateUtil
 
 /**
  * created by gfz on 2020/4/6
  **/
-class TestCalendarFragment : BaseVBFragment<FragmentCalendarBinding>(){
+class TestCalendarFragment : BaseVBFragment<FragmentCalendarBinding>() {
 
     private val adapter = TestCalendarAdapter("2020-04-06", DateUtil.addYear(1).toShortDateStr())
 
     override fun initView() {
-        with(binding){
+        with(binding) {
 
-            rvCalendar.layoutManager = GridLayoutManager(context,7)
+            rvCalendar.layoutManager = GridLayoutManager(context, 7)
             rvCalendar.adapter = adapter
 
             tvPre.setOnClickListener {
@@ -48,8 +48,8 @@ class TestCalendarFragment : BaseVBFragment<FragmentCalendarBinding>(){
 
     }
 
-    private fun updateBtnVisible(){
-        binding.tvPre.setColorRes(if(adapter.havePre()) R.color.col_323640 else R.color.col_94949B)
-        binding.tvNext.setColorRes(if(adapter.haveNext()) R.color.col_323640 else R.color.col_94949B)
+    private fun updateBtnVisible() {
+        binding.tvPre.setColorRes(if (adapter.havePre()) R.color.col_323640 else R.color.col_94949B)
+        binding.tvNext.setColorRes(if (adapter.haveNext()) R.color.col_323640 else R.color.col_94949B)
     }
 }

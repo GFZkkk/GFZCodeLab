@@ -15,7 +15,7 @@ import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemClockBinding
-import com.gfz.lab.ext.setVisible
+import com.gfz.common.ext.setVisible
 import kotlin.math.abs
 
 /**

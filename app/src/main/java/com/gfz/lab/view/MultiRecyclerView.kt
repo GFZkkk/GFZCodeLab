@@ -26,28 +26,33 @@ class MultiRecyclerView : RecyclerView {
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(e: MotionEvent): Boolean {
         val linearLayoutManager: LinearLayoutManager? = layoutManager as LinearLayoutManager?
-        val multipleChooseAdapter: BaseMultipleChooseAdapter<*>? = adapter as BaseMultipleChooseAdapter<*>?
-        if (linearLayoutManager != null && multipleChooseAdapter != null){
+        val multipleChooseAdapter: BaseMultipleChooseAdapter<*>? =
+            adapter as BaseMultipleChooseAdapter<*>?
+        if (linearLayoutManager != null && multipleChooseAdapter != null) {
             val currentFisrtPosition: Int = linearLayoutManager.findFirstVisibleItemPosition()
             when (e.action) {
                 MotionEvent.ACTION_MOVE -> {
                     val x = e.rawX
-                    val checkBound: Boolean = if (multipleChooseAdapter.isCheckBoundByView()){
-                        multipleChooseAdapter.checkBound(x, currentFisrtPosition, linearLayoutManager.findViewByPosition(currentFisrtPosition))
-                    }else{
+                    val checkBound: Boolean = if (multipleChooseAdapter.isCheckBoundByView()) {
+                        multipleChooseAdapter.checkBound(
+                            x,
+                            currentFisrtPosition,
+                            linearLayoutManager.findViewByPosition(currentFisrtPosition)
+                        )
+                    } else {
                         multipleChooseAdapter.checkBound(x)
                     }
                     if (checkBound) {
                         val y = e.y.toInt()
                         var realPosition = currentFisrtPosition
-                        for (i in currentFisrtPosition..multipleChooseAdapter.itemCount){
+                        for (i in currentFisrtPosition..multipleChooseAdapter.itemCount) {
                             val view1: View? = linearLayoutManager.findViewByPosition(i)
-                            view1?.let{
+                            view1?.let {
                                 if (it.top <= y && it.bottom >= y) {
                                     realPosition = i
                                 }
                             }
-                            if (realPosition != currentFisrtPosition){
+                            if (realPosition != currentFisrtPosition) {
                                 break
                             }
                         }

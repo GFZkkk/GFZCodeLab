@@ -10,14 +10,14 @@ import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.lab.databinding.FragmentClockBinding
 import com.gfz.lab.ui.base.BaseVBFragment
 import com.gfz.common.utils.TopLog
-import com.gfz.lab.ext.toPX
+import com.gfz.common.ext.toPX
 import java.util.ArrayList
 import kotlin.math.abs
 
 /**
  * Created by gaofengze on 2020/7/2.
  */
-class TestClockFragment : BaseVBFragment<FragmentClockBinding>(){
+class TestClockFragment : BaseVBFragment<FragmentClockBinding>() {
 
     val adapter by lazy {
         TestClockAdapter(requireContext())
@@ -43,7 +43,11 @@ class TestClockFragment : BaseVBFragment<FragmentClockBinding>(){
         })
 
         adapter.setOnItemScrollListener(object : BaseCenterAdapter.OnItemScrollListener {
-            override fun onItemScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            override fun onItemScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
                 val index: Int = getIndexByOffset(position, positionOffset)
                 if (index != -1 && index != curIndex) {
                     curIndex = index

@@ -7,7 +7,7 @@ import android.view.ViewGroup.MarginLayoutParams
 import androidx.annotation.Px
 import androidx.recyclerview.widget.*
 import com.gfz.common.utils.ScreenUtil
-import com.gfz.lab.ext.toPX
+import com.gfz.common.ext.toPX
 import com.gfz.recyclerview.decoration.NormalDecoration
 
 /**
@@ -92,7 +92,7 @@ abstract class BaseCenterAdapter<T>(
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
-        requireNotNull(recyclerView.layoutManager){
+        requireNotNull(recyclerView.layoutManager) {
             "LayoutManager == null"
         }
         mLayoutManager = recyclerView.layoutManager as LinearLayoutManager

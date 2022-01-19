@@ -12,16 +12,15 @@ import androidx.navigation.fragment.findNavController
 import com.gfz.lab.R
 
 import com.gfz.common.utils.TimeCell
-import com.gfz.lab.ext.getCompatColor
 
 /**
  * created by gaofengze on 2020/4/30
  */
 
-abstract class BaseFragment: Fragment(), BasePageTools {
+abstract class BaseFragment : Fragment(), BasePageTools {
     lateinit var nav: NavController
 
-    val handler by lazy{
+    val handler by lazy {
         Handler(Looper.getMainLooper())
     }
 
@@ -42,12 +41,12 @@ abstract class BaseFragment: Fragment(), BasePageTools {
 
     protected open fun getBackViewId() = R.id.tv_back
 
-    protected open fun getTitleText() : String? = null
+    protected open fun getTitleText(): String? = null
 
-    open fun setTitleView(view: View){
+    open fun setTitleView(view: View) {
 
         view.findViewById<TextView>(getBackViewId())?.setOnClickListener {
-            if (fastClick()){
+            if (fastClick()) {
                 return@setOnClickListener
             }
             pop()

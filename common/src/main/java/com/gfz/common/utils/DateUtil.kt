@@ -8,6 +8,7 @@ object DateUtil {
      * 所需时间格式
      */
     private const val shortDateFormatStr = "yyyy-MM-dd"
+
     /**
      * 所需时间格式
      */
@@ -27,21 +28,21 @@ object DateUtil {
         return SimpleDateFormat(shortTimeFormatStr, Locale.getDefault()).format(date)
     }
 
-    fun addDay(day: Int, date: Date = Date()): Date{
+    fun addDay(day: Int, date: Date = Date()): Date {
         val calendar = Calendar.getInstance()
         calendar.time = date
         calendar.add(Calendar.DAY_OF_MONTH, day)
         return calendar.time
     }
 
-    fun addMonth(month: Int, date: Date = Date()): Date{
+    fun addMonth(month: Int, date: Date = Date()): Date {
         val calendar = Calendar.getInstance()
         calendar.time = date
         calendar.add(Calendar.MONTH, month)
         return calendar.time
     }
 
-    fun addYear(year: Int, date: Date = Date()): Date{
+    fun addYear(year: Int, date: Date = Date()): Date {
         val calendar = Calendar.getInstance()
         calendar.time = date
         calendar.add(Calendar.YEAR, year)
