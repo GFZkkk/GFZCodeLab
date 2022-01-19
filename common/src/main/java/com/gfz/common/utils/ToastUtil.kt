@@ -1,17 +1,17 @@
-package com.gfz.lab.utils
+package com.gfz.common.utils
 
 import android.widget.Toast
-import com.gfz.lab.app.KTApp
+import com.gfz.common.base.BaseApplication
 
 object ToastUtil {
 
     private val toast: Toast by lazy {
-        Toast(KTApp.appContext)
+        Toast(BaseApplication.appContext)
     }
 
     fun showToast(text: CharSequence) {
         Toast.makeText(
-            KTApp.appContext,
+            BaseApplication.appContext,
             text,
             if (text.length > 10) {
                 Toast.LENGTH_LONG

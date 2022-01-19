@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import com.gfz.lab.databinding.FragmentCountdownBinding
 import com.gfz.lab.service.DrawOverService
 import com.gfz.lab.ui.base.BaseVBFragment
-import com.gfz.lab.utils.ToastUtil
+import com.gfz.common.utils.ToastUtil
 
 /**
  * created by gfz on 2020/5/5

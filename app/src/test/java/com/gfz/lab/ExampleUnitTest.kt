@@ -1,11 +1,13 @@
 package com.gfz.lab
 
+import com.gfz.common.ext.getClass
 import com.gfz.common.utils.SpUtil
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import java.lang.reflect.ParameterizedType
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -125,5 +127,17 @@ class ExampleUnitTest {
     }
 
     data class ApiBean(val url: String, val tip: String)
+
+
+    @Test
+    fun testClass(){
+        val c = Test1()
+        println(c.getClass(0)?.name?:"no")
+    }
+
+    class TestType
+    class Test1 : TestClass<TestType>()
+    open class TestClass<T>
+
 
 }

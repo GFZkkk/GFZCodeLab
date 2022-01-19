@@ -12,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.gfz.common.utils.TimeCell
 import com.gfz.lab.R
 import com.gfz.common.ext.getCompatColor
-import com.gfz.lab.utils.*
+import com.gfz.common.utils.ToastUtil
 
 
 /**

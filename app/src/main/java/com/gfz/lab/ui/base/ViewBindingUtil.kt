@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
+import com.gfz.common.base.BaseApplication
 import com.gfz.lab.app.KTApp
 
 /**
@@ -34,7 +35,7 @@ inline fun <reified VB : ViewBinding> viewBind(parent: ViewGroup): VB {
 
 inline fun <reified VB : ViewBinding> viewBind(): VB {
     val method = VB::class.java.getMethod("inflate", LayoutInflater::class.java)
-    return method.invoke(null, LayoutInflater.from(KTApp.appContext)) as VB
+    return method.invoke(null, LayoutInflater.from(BaseApplication.appContext)) as VB
 }
 
 @Suppress("UNCHECKED_CAST")
