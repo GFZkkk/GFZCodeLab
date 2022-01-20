@@ -20,7 +20,9 @@ inline fun <reified VB : ViewBinding> AppCompatActivity.viewBind() = lazy {
 }
 
 inline fun <reified VB : ViewBinding> Dialog.viewBind() = lazy {
-    inflateBinding<VB>(layoutInflater).apply { setContentView(root) }
+    inflateBinding<VB>(layoutInflater).apply {
+        setContentView(root)
+    }
 }
 
 inline fun <reified VB : ViewBinding> viewBind(parent: ViewGroup): VB {
@@ -34,8 +36,7 @@ inline fun <reified VB : ViewBinding> viewBind(parent: ViewGroup): VB {
 }
 
 inline fun <reified VB : ViewBinding> viewBind(): VB {
-    val method = VB::class.java.getMethod("inflate", LayoutInflater::class.java)
-    return method.invoke(null, LayoutInflater.from(BaseApplication.appContext)) as VB
+    return inflateBinding(LayoutInflater.from(BaseApplication.appContext))
 }
 
 @Suppress("UNCHECKED_CAST")
