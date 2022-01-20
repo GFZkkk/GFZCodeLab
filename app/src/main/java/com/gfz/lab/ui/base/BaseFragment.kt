@@ -60,7 +60,7 @@ abstract class BaseFragment : Fragment(), BasePageTools {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mActivity = context as BaseActivity
+        mActivity = context as? BaseActivity
     }
 
     override fun onDetach() {

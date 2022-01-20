@@ -12,7 +12,8 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseVBFragment<VB : ViewBinding> : BaseFragment() {
 
     private var _binding: VB? = null
-    val binding: VB get() = _binding!!
+    val binding: VB
+        get() = _binding!!
     var needSaveView = false
 
     override fun onCreateView(
