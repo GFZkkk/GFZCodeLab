@@ -1,4 +1,4 @@
-package com.gfz.lab.ui.base
+package com.gfz.common.utils
 
 import androidx.appcompat.app.AppCompatActivity
 import android.app.Dialog
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 import com.gfz.common.base.BaseApplication
-import com.gfz.lab.app.KTApp
 
 /**
  *

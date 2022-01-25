@@ -1,9 +1,8 @@
-package com.gfz.lab.ui.base
+package com.gfz.common.base
 
 import android.view.LayoutInflater
 import androidx.viewbinding.ViewBinding
 import com.gfz.common.ext.getClass
-import java.lang.reflect.ParameterizedType
 
 abstract class BaseVBActivity<VB : ViewBinding> : BaseActivity() {
 

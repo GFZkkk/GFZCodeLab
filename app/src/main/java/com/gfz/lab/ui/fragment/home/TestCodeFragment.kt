@@ -2,7 +2,7 @@ package com.gfz.lab.ui.fragment.home
 
 import com.gfz.common.utils.TimeCell
 import com.gfz.lab.databinding.FragmentCodeBinding
-import com.gfz.lab.ui.base.BaseVBFragment
+import com.gfz.common.base.BaseVBFragment
 
 /**
  *

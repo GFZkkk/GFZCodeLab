@@ -1,4 +1,4 @@
-package com.gfz.lab.ui.base
+package com.gfz.common.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import com.gfz.common.ext.getClass
-import java.lang.reflect.ParameterizedType
 
 abstract class BaseVBFragment<VB : ViewBinding> : BaseFragment() {
 

@@ -1,9 +1,7 @@
 package com.gfz.lab.ui.fragment.mine
 
 import com.gfz.lab.databinding.FragmentMineBinding
-import com.gfz.lab.databinding.FragmentTabMainBinding
-import com.gfz.lab.ui.base.BaseFragment
-import com.gfz.lab.ui.base.BaseVBFragment
+import com.gfz.common.base.BaseVBFragment
 
 /**
  *

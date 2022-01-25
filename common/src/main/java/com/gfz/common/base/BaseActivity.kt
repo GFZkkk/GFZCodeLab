@@ -1,4 +1,4 @@
-package com.gfz.lab.ui.base
+package com.gfz.common.base
 
 import android.content.Intent
 import android.os.Bundle

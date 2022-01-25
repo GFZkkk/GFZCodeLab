@@ -1,13 +1,12 @@
 package com.gfz.lab.ui.fragment.home
 
 import android.content.Context
-import android.os.Looper
 import android.view.MotionEvent
 import android.view.ViewTreeObserver
 import com.gfz.lab.databinding.FragmentMapBinding
 import com.gfz.common.ext.round
 import com.gfz.common.ext.toPX
-import com.gfz.lab.ui.base.BaseVBFragment
+import com.gfz.common.base.BaseVBFragment
 import com.gfz.common.utils.ScreenUtil
 import com.gfz.common.utils.TimeLoop
 

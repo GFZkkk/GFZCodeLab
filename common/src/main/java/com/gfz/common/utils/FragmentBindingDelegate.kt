@@ -1,4 +1,4 @@
-package com.gfz.lab.ui.base
+package com.gfz.common.utils
 
 import android.view.View
 import androidx.fragment.app.Fragment

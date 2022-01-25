@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.lab.adapter.TestMoveAdapter
 import com.gfz.lab.databinding.FragmentMoveBinding
 import com.gfz.lab.model.bean.MoveBean
-import com.gfz.lab.ui.base.BaseVBFragment
+import com.gfz.common.base.BaseVBFragment
 
 /**
  * Created by gaofengze on 2020/8/22.

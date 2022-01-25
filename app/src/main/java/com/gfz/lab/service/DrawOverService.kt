@@ -11,7 +11,7 @@ import com.gfz.lab.R
 import com.gfz.lab.databinding.LayoutCountDownBinding
 import com.gfz.common.ext.getCompatColor
 import com.gfz.common.ext.setDisplay
-import com.gfz.lab.ui.base.viewBind
+import com.gfz.common.utils.viewBind
 import com.gfz.lab.utils.OverlayUtil
 import java.text.SimpleDateFormat
 import java.util.*
