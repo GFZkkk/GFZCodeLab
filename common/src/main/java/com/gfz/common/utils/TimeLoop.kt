@@ -8,7 +8,7 @@ import android.os.SystemClock
  * 在同一场景下有多个Runnable，请提供公共Handler
  * Created by gaofengze on 2021/10/8.
  */
-class TimeLoop(private val handler: Handler?, runnable: Runnable, private val time: Int) {
+class TimeLoop(private val handler: Handler?, private val period: Int = 1000, runnable: Runnable) {
 
     private val timeRunnable: Runnable
 
@@ -17,30 +17,28 @@ class TimeLoop(private val handler: Handler?, runnable: Runnable, private val ti
 
     private var remove: Boolean
 
-    //补偿时间
+    //初次进入循环的时间点
     private var makeUpTime = -1
 
     init {
         isRun = false
         remove = false
         timeRunnable = Runnable {
-            if (isRun) {
-                if (makeUpTime == -1) {
-                    makeUpTime = (SystemClock.uptimeMillis() % time).toInt()
-                }
-                runnable.run()
-                timeLoop()
+            if (!isRun) {
+                return@Runnable
             }
+            runnable.run()
+            timeLoop()
         }
     }
 
     /**
      * 在指定延迟后开始循环
      */
-    fun runAfterDelay(time: Int = this.time): TimeLoop {
+    fun runAfterDelay(period: Int = this.period): TimeLoop {
         if (!isRun && !remove && handler != null) {
             isRun = true
-            handler.postDelayed(timeRunnable, time.toLong())
+            handler.postDelayed(timeRunnable, period.toLong())
         }
         return this
     }
@@ -68,12 +66,20 @@ class TimeLoop(private val handler: Handler?, runnable: Runnable, private val ti
         pause()
     }
 
+    private fun getFixTime(): Int{
+        // 检查补偿时间是否初始化
+        if (makeUpTime == -1) {
+            makeUpTime = (SystemClock.uptimeMillis() % period).toInt()
+        }
+        return makeUpTime
+    }
+
     /**
      * 计时器循环
      */
     private fun timeLoop() {
         val now = SystemClock.uptimeMillis()
-        val next = now + (time - now % time) + makeUpTime
+        val next = now + (period - now % period) + getFixTime()
         handler?.postAtTime(timeRunnable, next)
     }
 }
