@@ -21,7 +21,7 @@ class LaunchActivity : BaseActivity(), CancelAdapt {
             }
             start(RootActivity::class.java)
             finish()
-        }, 2000)
+        }, 1000)
     }
 
 
