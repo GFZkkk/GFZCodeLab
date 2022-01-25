@@ -1,18 +1,15 @@
-package com.gfz.common.base
+package com.gfz.lab.ui.base
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.gfz.common.utils.TimeCell
-import com.gfz.lab.R
-import com.gfz.common.ext.getCompatColor
 import com.gfz.common.utils.ToastUtil
 
 
@@ -58,9 +55,10 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
     }
 
     open fun setWindowStatus() {
-        val window: Window = window
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = getCompatColor(R.color.col_b07529)
+        window.apply {
+            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+//            statusBarColor = getCompatColor(R.color.col_b07529)
+        }
     }
 
     @IdRes

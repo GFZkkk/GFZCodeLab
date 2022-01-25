@@ -6,7 +6,7 @@ import com.gfz.lab.adapter.TestCalendarAdapter
 import com.gfz.lab.databinding.FragmentCalendarBinding
 import com.gfz.common.ext.setColorRes
 import com.gfz.common.ext.toShortDateStr
-import com.gfz.common.base.BaseVBFragment
+import com.gfz.lab.ui.base.BaseVBFragment
 import com.gfz.common.utils.DateUtil
 
 /**

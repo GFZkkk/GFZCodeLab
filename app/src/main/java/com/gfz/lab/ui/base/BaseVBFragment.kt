@@ -1,10 +1,9 @@
-package com.gfz.common.base
+package com.gfz.lab.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.*
 import androidx.viewbinding.ViewBinding
 import com.gfz.common.ext.getClass
 

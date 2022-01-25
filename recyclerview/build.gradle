@@ -34,5 +34,5 @@ dependencies {
 
     implementation project(path: ':common')
 
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 }

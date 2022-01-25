@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.lab.adapter.TestExtAdapter
 import com.gfz.lab.databinding.FragmentExtlayoutBinding
 import com.gfz.lab.databinding.LayoutHeaderTestBinding
-import com.gfz.common.base.BaseVBFragment
+import com.gfz.lab.ui.base.BaseVBFragment
 import com.gfz.common.utils.viewBind
 
 /**

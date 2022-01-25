@@ -85,9 +85,9 @@ dependencies {
 
     // ui
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
 
     // Jetpack
-
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     // LiveData
@@ -98,6 +98,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
     // Annotation processor
     implementation "androidx.lifecycle:lifecycle-common:$lifecycle_version"
+
+    // navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    implementation "androidx.navigation:navigation-compose:$nav_version"
 
     // 网络请求
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

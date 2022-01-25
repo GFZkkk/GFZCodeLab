@@ -8,7 +8,7 @@ import com.gfz.lab.adapter.TestClockAdapter
 import com.gfz.recyclerview.decoration.NormalDecoration
 import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.lab.databinding.FragmentClockBinding
-import com.gfz.common.base.BaseVBFragment
+import com.gfz.lab.ui.base.BaseVBFragment
 import com.gfz.common.utils.TopLog
 import com.gfz.common.ext.toPX
 import java.util.ArrayList

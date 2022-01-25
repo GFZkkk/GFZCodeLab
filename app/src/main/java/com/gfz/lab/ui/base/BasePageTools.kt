@@ -1,4 +1,4 @@
-package com.gfz.common.base
+package com.gfz.lab.ui.base
 
 import android.os.Bundle
 import androidx.annotation.IdRes
