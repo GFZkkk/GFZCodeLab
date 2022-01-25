@@ -9,30 +9,7 @@
         android:id="@+id/tabMainFragment"
         android:name="com.gfz.lab.ui.fragment.TabMainFragment"
         android:label="TabMainFragment"
-        tools:layout="@layout/fragment_tab_main">
-
-        <action
-            android:id="@+id/to_testAnimationFragment"
-            app:destination="@id/testAnimationFragment" />
-        <action
-            android:id="@+id/to_testCalendarFragment"
-            app:destination="@id/testCalendarFragment" />
-        <action
-            android:id="@+id/to_testClockFragment"
-            app:destination="@id/testClockFragment" />
-        <action
-            android:id="@+id/to_testCountDownFragment"
-            app:destination="@id/testCountDownFragment" />
-        <action
-            android:id="@+id/to_testExtAdapterFragment"
-            app:destination="@id/testExtAdapterFragment" />
-        <action
-            android:id="@+id/to_testMoveFragment"
-            app:destination="@id/testMoveFragment" />
-        <action
-            android:id="@+id/to_testMultipleChooseFragment"
-            app:destination="@id/testMultipleChooseFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_tab_main"/>
     <fragment
         android:id="@+id/testAnimationFragment"
         android:name="com.gfz.lab.ui.fragment.home.TestAnimationFragment"
