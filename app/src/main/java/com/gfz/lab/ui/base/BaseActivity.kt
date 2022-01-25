@@ -3,6 +3,7 @@ package com.gfz.lab.ui.base
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.Window
 import android.view.WindowManager
 import androidx.annotation.IdRes
@@ -31,6 +32,12 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         TimeCell()
     }
 
+    abstract fun loadView()
+
+    open fun initView() {}
+
+    abstract fun initData()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setWindowStatus()
@@ -56,12 +63,6 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         window.statusBarColor = getCompatColor(R.color.col_b07529)
     }
 
-    abstract fun loadView()
-
-    open fun initView() {}
-
-    abstract fun initData()
-
     @IdRes
     open fun getNavId(): Int? {
         return null
@@ -72,6 +73,9 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         return navHostFragment.navController
     }
 
+    fun getContext() = this
+
+    // region 工具方法
     override fun start(activity: Class<out BaseActivity>, bundle: Bundle?) {
         val intent = Intent(this, activity)
         bundle?.apply {
@@ -96,9 +100,6 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         handler?.postDelayed(runnable, delayed)
     }
 
-    // region 工具方法
-    fun getContext() = this
-
     /**
      * 显示吐司
      */
@@ -117,5 +118,12 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
      * @return 是否连续调用
      */
     override fun fastClick(tag: Int, dur: Int) = timeCell.fastClick(tag, dur)
+
+    override fun addIdleTask(keep: Boolean, block: () -> Unit) {
+        Looper.myQueue().addIdleHandler {
+            block()
+            keep
+        }
+    }
     // endregion
 }

@@ -93,4 +93,11 @@ abstract class BaseFragment : Fragment(), BasePageTools {
     }
 
     override fun fastClick(tag: Int, dur: Int) = timeCell.fastClick(tag, dur)
+
+    override fun addIdleTask(keep: Boolean, block: () -> Unit) {
+        Looper.myQueue().addIdleHandler {
+            block()
+            keep
+        }
+    }
 }
