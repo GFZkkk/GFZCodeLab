@@ -39,11 +39,12 @@ class TestMapFragment : BaseVBFragment<FragmentMapBinding>() {
         // 测量
         binding.root.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
         // 准备
-        val timeLoop = TimeLoop(handler, { execute() }, frame)
+        val timeLoop = TimeLoop(handler, frame){
+            execute()
+        }
         // 准备好之后开始
-        Looper.myQueue().addIdleHandler {
+        addIdleTask {
             timeLoop.run()
-            false
         }
     }
 
