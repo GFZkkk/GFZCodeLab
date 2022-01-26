@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
-import com.gfz.common.base.BaseApplication
 import com.gfz.common.ext.getCompatDrawable
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -19,24 +18,24 @@ object BitmapUtil {
     /**
      * 将view的内容绘制成bit数组
      */
-    suspend fun convertViewToByteArray(view: View?, quality: Int): ByteArray? {
+    fun convertViewToByteArray(view: View?, quality: Int): ByteArray? {
         return bmpToByteArray(convertViewToBitmap(view), quality)
     }
 
     /**
      * 将view的内容绘制成bit数组
      */
-    suspend fun convertViewToFile(fileName: String, view: View?, quality: Int = 100) {
+    fun convertViewToFile(fileName: String, view: View?, quality: Int = 100) {
         return saveBitmapToFile(fileName, convertViewToBitmap(view), quality)
     }
 
-    suspend fun saveBitmapToFile(fileName: String, bmp: Bitmap?, quality: Int = 100) {
+    fun saveBitmapToFile(fileName: String, bmp: Bitmap?, quality: Int = 100) {
         bmp?.let {
-            val path = LocalFileUtil.getFilePath(BaseApplication.appContext, "images")
+            val path = LocalFileUtil.getFilePath("images")
             val file = File(path, fileName.plus(".jpg"))
             val output = FileOutputStream(file)
-            bmp.compress(Bitmap.CompressFormat.JPEG, quality, output)
-            bmp.recycle()
+            it.compress(Bitmap.CompressFormat.JPEG, quality, output)
+            it.recycle()
             try{
                 output.flush()
                 output.close()
@@ -47,11 +46,11 @@ object BitmapUtil {
     }
 
     @JvmOverloads
-    suspend fun bmpToByteArray(bmp: Bitmap?, quality: Int = 100): ByteArray? {
+    fun bmpToByteArray(bmp: Bitmap?, quality: Int = 100): ByteArray? {
         return bmp?.let {
             val output = ByteArrayOutputStream()
-            bmp.compress(Bitmap.CompressFormat.JPEG, quality, output)
-            bmp.recycle()
+            it.compress(Bitmap.CompressFormat.JPEG, quality, output)
+            it.recycle()
             val result = output.toByteArray()
             try {
                 output.flush()
@@ -66,7 +65,7 @@ object BitmapUtil {
     /**
      * 将view的内容绘制成Bitmap
      */
-    suspend fun convertViewToBitmap(view: View?): Bitmap? {
+    fun convertViewToBitmap(view: View?): Bitmap? {
         return view?.let {
             val w = it.measuredWidth
             val h = it.measuredHeight
