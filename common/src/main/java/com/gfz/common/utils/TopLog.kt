@@ -46,32 +46,19 @@ object TopLog {
         msg: Any
     ) {
         if (IS_SHOW_LOG) {
-            val contents = wrapperContent(tagStr, msg)
-            val tag = contents[0]
-            val msg = contents[1]
-            val headString = contents[2]
-            printLog(type, tag, headString + msg)
+            val contents = wrapperContent(msg)
+            val tag = tagStr ?: "com.gfz.lab"
+            printLog(type, tag, contents)
         }
     }
 
-    private fun wrapperContent(
-        tagStr: String?,
-        msg: Any
-    ): Array<String> {
+    private fun wrapperContent(msg: Any): String {
         val stackTrace =
-            Thread.currentThread().stackTrace
-        val index: Byte = 5
-        val className = stackTrace[index.toInt()].fileName
-        val methodName = stackTrace[index.toInt()].methodName
-        val lineNumber = stackTrace[index.toInt()].lineNumber
-        val methodNameShort =
-            methodName.substring(0, 1).uppercase() + methodName.substring(1)
-        val stringBuilder = StringBuilder()
-        stringBuilder.append("[ (").append(className).append(":").append(lineNumber).append(")#")
-            .append(methodNameShort).append(" ] ")
-        val tag = tagStr ?: className
-        val headString = stringBuilder.toString()
-        return arrayOf(tag.toString(), msg.toString(), headString)
+            Thread.currentThread().stackTrace[5]
+        val className = stackTrace.fileName
+        val methodName = stackTrace.methodName
+        val lineNumber = stackTrace.lineNumber
+        return "[($className:$lineNumber)#$methodName] $msg"
     }
 
     /**
