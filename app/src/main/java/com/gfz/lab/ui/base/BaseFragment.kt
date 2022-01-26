@@ -24,7 +24,7 @@ abstract class BaseFragment : Fragment(), BasePageTools {
         Handler(Looper.getMainLooper())
     }
 
-    private val timeCell: TimeCell by lazy {
+    val timeCell: TimeCell by lazy {
         TimeCell()
     }
 
