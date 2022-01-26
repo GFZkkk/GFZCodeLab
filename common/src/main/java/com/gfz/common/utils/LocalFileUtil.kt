@@ -2,6 +2,7 @@ package com.gfz.common.utils
 
 import android.content.Context
 import android.os.Environment
+import com.gfz.common.base.BaseApplication
 import java.io.File
 
 /**
@@ -10,14 +11,11 @@ import java.io.File
  */
 object LocalFileUtil {
 
-    private fun getAppFilePath(context: Context): String {
-        return context.filesDir.toString() + File.separator
-    }
-
     /**
      * 获取文件存储位置，优先外部存储
      */
-    fun getFilePath(context: Context, dir: String): String? {
+    fun getFilePath(dir: String): String? {
+        val context = BaseApplication.appContext
         return (if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) { //判断外部存储是否可用
             context.getExternalFilesDir(dir)?.absolutePath
         } else { //没外部存储就使用内部存储
@@ -42,5 +40,9 @@ object LocalFileUtil {
         } catch (e: Exception) {
             TopLog.e("生成文件夹失败：" + e.message)
         }
+    }
+
+    private fun getAppFilePath(context: Context): String {
+        return context.filesDir.toString() + File.separator
     }
 }
