@@ -10,11 +10,14 @@ import android.os.SystemClock
  */
 class TimeLoop(private val handler: Handler?, private val period: Int = 1000, runnable: Runnable) {
 
+    // 自循环的任务
     private val timeRunnable: Runnable
 
+    // 是否正在循环
     var isRun: Boolean
         private set
 
+    // 是否已经移除（不可恢复）
     private var remove: Boolean
 
     //初次进入循环的时间点
@@ -44,7 +47,7 @@ class TimeLoop(private val handler: Handler?, private val period: Int = 1000, ru
     }
 
     /**
-     * 直接开始循环
+     * 直接开始循环，不进入message队列
      */
     fun run(): TimeLoop {
         if (!isRun && !remove) {
@@ -54,6 +57,9 @@ class TimeLoop(private val handler: Handler?, private val period: Int = 1000, ru
         return this
     }
 
+    /**
+     * 暂停循环
+     */
     fun pause(): TimeLoop {
         isRun = false
         handler?.removeCallbacks(timeRunnable)
@@ -61,6 +67,9 @@ class TimeLoop(private val handler: Handler?, private val period: Int = 1000, ru
         return this
     }
 
+    /**
+     * 移除循环
+     */
     fun remove() {
         remove = true
         pause()
