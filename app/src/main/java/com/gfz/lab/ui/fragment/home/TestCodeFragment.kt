@@ -10,10 +10,6 @@ import com.gfz.lab.ui.base.BaseVBFragment
  */
 class TestCodeFragment : BaseVBFragment<FragmentCodeBinding>() {
 
-    val timeCell: TimeCell by lazy {
-        TimeCell()
-    }
-
     override fun initView() {
 
     }
