@@ -18,7 +18,7 @@ class TimeLoop(private val handler: Handler?, private val period: Int = 1000, ru
     private var remove: Boolean
 
     //初次进入循环的时间点
-    private var makeUpTime = -1
+    private var startTime = -1
 
     init {
         isRun = false
@@ -57,7 +57,7 @@ class TimeLoop(private val handler: Handler?, private val period: Int = 1000, ru
     fun pause(): TimeLoop {
         isRun = false
         handler?.removeCallbacks(timeRunnable)
-        makeUpTime = -1
+        startTime = -1
         return this
     }
 
@@ -66,12 +66,12 @@ class TimeLoop(private val handler: Handler?, private val period: Int = 1000, ru
         pause()
     }
 
-    private fun getFixTime(): Int{
+    private fun getStartTime(): Int{
         // 检查补偿时间是否初始化
-        if (makeUpTime == -1) {
-            makeUpTime = (SystemClock.uptimeMillis() % period).toInt()
+        if (startTime == -1) {
+            startTime = (SystemClock.uptimeMillis() % period).toInt()
         }
-        return makeUpTime
+        return startTime
     }
 
     /**
@@ -79,7 +79,7 @@ class TimeLoop(private val handler: Handler?, private val period: Int = 1000, ru
      */
     private fun timeLoop() {
         val now = SystemClock.uptimeMillis()
-        val next = now + (period - now % period) + getFixTime()
+        val next = now + (period - now % period) + getStartTime()
         handler?.postAtTime(timeRunnable, next)
     }
 }
