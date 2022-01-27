@@ -18,12 +18,21 @@ class ExampleUnitTest {
 
     @Test
     fun addition_isCorrect() {
+        println(listOf(1, 2, 3) == listOf(1, 2, 3))
+        println(listOf(1, 2, 3).asSequence() == listOf(1, 2, 3).asSequence())
+        println(sequenceOf(1, 2, 3) == sequenceOf(1, 2, 3))
+
+    }
+
+    @Test
+    fun printApi(){
         buildApi(
             listOf(
                 ApiBean("mm_sync_data/save_user_speech_info_record.do", "保存用户跟读打分使用记录")
             )
         )
     }
+
 
     @Test
     fun random() {
