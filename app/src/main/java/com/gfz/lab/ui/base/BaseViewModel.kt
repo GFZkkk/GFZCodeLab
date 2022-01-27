@@ -1,4 +1,4 @@
-package com.gfz.lab.viewmodel
+package com.gfz.lab.ui.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
