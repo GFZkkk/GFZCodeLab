@@ -11,7 +11,7 @@ import com.gfz.common.utils.viewBind
  *
  * created by gaofengze on 2021/2/22
  */
-class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>(){
+class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>() {
 
     override fun initView() {
 
@@ -20,7 +20,7 @@ class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>(){
             val adapter = TestExtAdapter()
             rvList.adapter = adapter
             rvList.layoutManager = LinearLayoutManager(requireContext())
-            adapter.refresh(listOf(1,2,3,4))
+            adapter.refresh(listOf(1, 2, 3, 4))
             val headerBinding: LayoutHeaderTestBinding = viewBind(rvList)
 
             adapter.headerViewBinding = headerBinding

@@ -62,7 +62,7 @@ class TestClockFragment : BaseVBFragment<FragmentClockBinding>() {
     }
 
     override fun getTitleText(): String {
-        return "时钟试验区"
+        return "时钟实验区"
     }
 
     private fun getIndexByOffset(position: Int, positionOffset: Float): Int {
