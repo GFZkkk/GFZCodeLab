@@ -15,7 +15,7 @@
         android:id="@+id/v_bottom"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:background="@color/col_94949B"
+        android:background="@color/col_94949b"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

@@ -40,7 +40,7 @@ class TestCalendarAdapter(sDate: String, eDate: String):
             binding.tvDate.setTextColor(getColor(
                 when(data.date.isToday()){
                     MMDateEnum.SAME -> R.color.col_00b19b
-                    MMDateEnum.BEFORE -> R.color.col_94949B
+                    MMDateEnum.BEFORE -> R.color.col_94949b
                     MMDateEnum.AFTER -> R.color.col_323640
                 }
             ))

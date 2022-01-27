@@ -49,7 +49,7 @@ class TestCalendarFragment : BaseVBFragment<FragmentCalendarBinding>() {
     }
 
     private fun updateBtnVisible() {
-        binding.tvPre.setColorRes(if (adapter.havePre()) R.color.col_323640 else R.color.col_94949B)
-        binding.tvNext.setColorRes(if (adapter.haveNext()) R.color.col_323640 else R.color.col_94949B)
+        binding.tvPre.setColorRes(if (adapter.havePre()) R.color.col_323640 else R.color.col_94949b)
+        binding.tvNext.setColorRes(if (adapter.haveNext()) R.color.col_323640 else R.color.col_94949b)
     }
 }

@@ -69,7 +69,7 @@ public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextV
         paintDotted = new Paint();
         paintDotted.setStyle(Paint.Style.STROKE);
         paintDotted.setStrokeWidth(dottedHeight);
-        paintDotted.setColor(ContextCompat.getColor(context, R.color.col_94949B));
+        paintDotted.setColor(ContextCompat.getColor(context, R.color.col_94949b));
         paintDotted.setAlpha((int) (255 * 0.6));
 
         paint = new Paint();

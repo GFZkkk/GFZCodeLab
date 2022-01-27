@@ -14,7 +14,7 @@
         android:id="@+id/tv_bottom_des"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/col_94949B"
+        android:textColor="@color/col_94949b"
         android:textSize="11dp"
         tools:text="首页"
         android:layout_marginBottom="5dp"
