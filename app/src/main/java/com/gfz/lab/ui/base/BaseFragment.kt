@@ -33,6 +33,10 @@ abstract class BaseFragment : Fragment(), BasePageTools {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        init(view, savedInstanceState)
+    }
+
+    protected open fun init(view: View, savedInstanceState: Bundle?){
         nav = findNavController()
         setTitleView(view)
         initView()
