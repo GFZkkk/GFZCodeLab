@@ -21,7 +21,7 @@ object RandomUtil {
     /**
      * 从list中取一个随机的list,不改变原有list
      */
-    fun <T> getRandomList(list: MutableList<T>, num: Int = list.size): List<T> {
+    fun <T> getRandomList(list: List<T>, num: Int = list.size): List<T> {
 
         randomList(ArrayList(list), num)
 
