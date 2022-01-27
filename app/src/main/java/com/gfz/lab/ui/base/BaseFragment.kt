@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.gfz.common.ext.setVisible
 import com.gfz.lab.R
 
 import com.gfz.common.utils.TimeCell
@@ -99,5 +100,9 @@ abstract class BaseFragment : Fragment(), BasePageTools {
             block()
             keep
         }
+    }
+
+    override fun showLoading(show: Boolean) {
+        view?.findViewById<View>(R.id.loading).setVisible(show)
     }
 }

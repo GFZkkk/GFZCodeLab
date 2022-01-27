@@ -16,4 +16,5 @@ interface BasePageTools {
     fun showToast(textRes: Int)
     fun fastClick(tag: Int = 0, dur: Int = 500): Boolean
     fun addIdleTask(keep: Boolean = false, block: () -> Unit)
+    fun showLoading(show: Boolean)
 }
