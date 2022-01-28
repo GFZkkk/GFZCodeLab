@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gfz.common.ext.asLiveData
 import com.gfz.common.task.JobHelper
+import com.gfz.common.task.JobItem
 import com.gfz.common.task.JobManager
 import kotlinx.coroutines.CoroutineScope
 
@@ -25,16 +26,34 @@ abstract class BaseViewModel : ViewModel(), JobHelper {
         super.onCleared()
     }
 
-    override fun changeLoadingStatus(show: Boolean) {
-        showLoading(show)
+    override fun startJob(
+        loading: Boolean,
+        tag: Int,
+        onError: ((Throwable) -> Unit)?,
+        onComplete: ((Boolean) -> Unit)?,
+        block: suspend CoroutineScope.() -> Unit
+    ) {
+        jobManager.startJob(loading, tag, onError, onComplete, block)
     }
 
-    override fun getScope(): CoroutineScope {
-        return viewModelScope
+    override fun startSingleJob(
+        loading: Boolean,
+        tag: Int,
+        onError: ((Throwable) -> Unit)?,
+        onComplete: ((Boolean) -> Unit)?,
+        block: suspend CoroutineScope.() -> Unit
+    ) {
+        jobManager.startSingleJob(loading, tag, onError, onComplete, block)
     }
 
-    override fun startJob(tag: Int, loading: Boolean, block: suspend () -> Unit) {
-        jobManager.startJob(tag, loading, block)
+    override fun reStartSingleJob(
+        loading: Boolean,
+        tag: Int,
+        onError: ((Throwable) -> Unit)?,
+        onComplete: ((Boolean) -> Unit)?,
+        block: suspend CoroutineScope.() -> Unit
+    ) {
+        jobManager.reStartSingleJob(loading, tag, onError, onComplete, block)
     }
 
     override fun stopJob(tag: Int) {
@@ -47,5 +66,13 @@ abstract class BaseViewModel : ViewModel(), JobHelper {
 
     override fun hideLoading(tag: Int) {
         jobManager.hideLoading(tag)
+    }
+
+    override fun changeLoadingStatus(show: Boolean) {
+        showLoading(show)
+    }
+
+    override fun getScope(): CoroutineScope {
+        return viewModelScope
     }
 }
