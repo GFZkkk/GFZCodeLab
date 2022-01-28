@@ -1,7 +1,7 @@
 package com.gfz.lab
 
 import com.gfz.lab.ui.activity.RootActivity
-import com.gfz.lab.ui.base.BaseActivity
+import com.gfz.lab.base.BaseActivity
 import me.jessyan.autosize.internal.CancelAdapt
 
 /**

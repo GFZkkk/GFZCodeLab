@@ -1,7 +1,7 @@
 package com.gfz.lab.ui.fragment.home
 
 import com.gfz.lab.databinding.FragmentAnimationBinding
-import com.gfz.lab.ui.base.BaseVBFragment
+import com.gfz.lab.base.BaseVBFragment
 
 /**
  * Created by gaofengze on 2020/9/15.
