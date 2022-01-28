@@ -2,6 +2,7 @@ package com.gfz.common.utils
 
 import androidx.appcompat.app.AppCompatActivity
 import android.app.Dialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
@@ -34,9 +35,10 @@ inline fun <reified VB : ViewBinding> viewBind(parent: ViewGroup): VB {
     return method.invoke(null, LayoutInflater.from(parent.context), parent, false) as VB
 }
 
-inline fun <reified VB : ViewBinding> viewBind(): VB {
-    return inflateBinding(LayoutInflater.from(BaseApplication.appContext))
-}
+inline fun <reified VB : ViewBinding> viewBind(context: Context = BaseApplication.appContext) =
+    lazy<VB> {
+        inflateBinding(LayoutInflater.from(context))
+    }
 
 @Suppress("UNCHECKED_CAST")
 inline fun <reified VB : ViewBinding> inflateBinding(layoutInflater: LayoutInflater) =
