@@ -1,5 +1,6 @@
 package com.gfz.common.utils
 
+import android.os.SystemClock
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -14,7 +15,7 @@ object RandomUtil {
     }
 
     fun getRandomIndex(size: Int): Int {
-        random.setSeed(System.currentTimeMillis())
+        random.setSeed(SystemClock.uptimeMillis())
         return random.nextInt(size)
     }
 
@@ -22,13 +23,15 @@ object RandomUtil {
      * 从list中取一个随机的list,不改变原有list
      */
     fun <T> getRandomList(list: List<T>, num: Int = list.size): List<T> {
-
-        randomList(ArrayList(list), num)
-
-        return if (num >= list.size) {
-            list
+        if (num <= 0) {
+            return ArrayList()
+        }
+        val newList = ArrayList(list)
+        randomList(newList, num)
+        return if (num >= newList.size) {
+            newList
         } else {
-            list.subList(0, num)
+            newList.subList(0, num)
         }
     }
 
@@ -36,11 +39,11 @@ object RandomUtil {
      * 乱序一个list
      */
     fun <T> randomList(list: MutableList<T>, num: Int = list.size) {
-
-        random.setSeed(System.currentTimeMillis())
-
+        if (num <= 0) {
+            return
+        }
+        random.setSeed(SystemClock.uptimeMillis())
         val size = num.coerceAtMost(list.size)
-
         list.forEachIndexed { index, t ->
             val randomIndex = random.nextInt(size)
             list[index] = list[randomIndex]
