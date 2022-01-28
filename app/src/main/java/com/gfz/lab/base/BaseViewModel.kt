@@ -3,14 +3,21 @@ package com.gfz.lab.base
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gfz.common.ext.launchSafe
 import com.gfz.common.ext.asLiveData
+import com.gfz.common.task.JobHelper
+import com.gfz.common.task.JobManager
+import kotlinx.coroutines.CoroutineScope
 
-abstract class BaseViewModel : ViewModel() {
+
+abstract class BaseViewModel : ViewModel(), JobHelper {
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading = _isLoading.asLiveData()
 
-    fun showLoading(show: Boolean){
+    private val jobManager: JobManager by lazy {
+        JobManager(this)
+    }
+
+    fun showLoading(show: Boolean) {
         _isLoading.value = show
     }
 
@@ -18,9 +25,27 @@ abstract class BaseViewModel : ViewModel() {
         super.onCleared()
     }
 
-    fun startJob(loading: Boolean = false, block: suspend () -> Unit){
-        viewModelScope.launchSafe {
-            block()
-        }
+    override fun changeLoadingStatus(show: Boolean) {
+        showLoading(show)
+    }
+
+    override fun getScope(): CoroutineScope {
+        return viewModelScope
+    }
+
+    override fun startJob(tag: Int, loading: Boolean, block: suspend () -> Unit) {
+        jobManager.startJob(tag, loading, block)
+    }
+
+    override fun stopJob(tag: Int) {
+        jobManager.stopJob(tag)
+    }
+
+    override fun showLoading(tag: Int) {
+        jobManager.showLoading(tag)
+    }
+
+    override fun hideLoading(tag: Int) {
+        jobManager.hideLoading(tag)
     }
 }

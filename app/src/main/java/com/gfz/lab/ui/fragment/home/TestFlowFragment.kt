@@ -20,7 +20,9 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
     override val viewModel: FlowViewModel by viewModels()
 
     override fun initView() {
-
+        binding.root.setOnClickListener {
+            viewModel.stop()
+        }
     }
 
     override fun initData() {

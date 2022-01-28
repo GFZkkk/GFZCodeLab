@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import com.gfz.common.utils.TopLog
 import kotlin.math.max
 
 /**
@@ -49,6 +50,7 @@ class FlowLayout @JvmOverloads constructor(
             val childHeight = childView.measuredHeight.plus(
                 childLayoutParams.topMargin + childLayoutParams.bottomMargin
             )
+
             // 检查是否需要换行
             if (lineWidth + childWidth > childEnd) {
                 // 宽度取最宽
