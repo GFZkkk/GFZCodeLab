@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.gfz.common.ext.asLiveData
 import com.gfz.common.ext.launchSafe
+import com.gfz.common.task.JobItem
 import com.gfz.common.utils.RandomUtil
 import com.gfz.common.utils.TopLog
 import com.gfz.lab.base.BaseViewModel
@@ -36,14 +37,31 @@ class FlowViewModel : BaseViewModel() {
         "122112"
     )
     fun getData(){
-        viewModelScope
-        startJob(1, true) {
+        startSingleJob(true){
+            task()
+        }
+    }
+
+    fun start(){
+        startJob(true){
+            task()
+        }
+    }
+
+    fun reStart(){
+        reStartSingleJob(true){
+            task()
+        }
+    }
+
+    fun startSingle(){
+        startSingleJob(true){
             task()
         }
     }
 
     fun stop(){
-        stopJob(1)
+        stopJob()
     }
 
     private suspend fun task(){

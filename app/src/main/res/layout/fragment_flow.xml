@@ -13,5 +13,37 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:padding="2dp"
         android:background="@color/col_ccccd2"/>
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginBottom="150dp"/>
+    <Button
+        android:id="@+id/btnStartSingle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始一次"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btnStart"
+        android:layout_marginBottom="150dp"/>
+    <Button
+        android:id="@+id/btnReStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="重新开始"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btnStartSingle"
+        android:layout_marginBottom="150dp"/>
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="停止"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btnReStart"
+        android:layout_marginBottom="150dp"/>
     <include layout="@layout/layout_loading"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
