@@ -11,7 +11,9 @@ import kotlin.properties.Delegates
  * Created by xueya on 2022/1/19
  */
 abstract class BaseApplication : Application() {
+
     companion object {
+        var isDebug = true
         var appContext: Context by Delegates.notNull()
     }
 
@@ -21,7 +23,6 @@ abstract class BaseApplication : Application() {
         if (shouldInit()) {
             init()
         }
-
     }
 
     abstract fun init()
