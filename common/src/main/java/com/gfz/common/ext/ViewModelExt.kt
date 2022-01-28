@@ -9,6 +9,6 @@ import kotlin.reflect.KClass
 /**
  * Created by xueya on 2022/1/27
  */
-fun <T> MutableLiveData<T>.toLiveData(): LiveData<T>{
+fun <T> MutableLiveData<T>.asLiveData(): LiveData<T>{
     return this
 }

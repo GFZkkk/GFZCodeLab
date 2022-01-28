@@ -12,7 +12,7 @@ import com.gfz.lab.model.bean.TabItemBean
  * 底部导航栏item
  * created by gaofengze on 2021/5/13
  */
-class BottomBarAdapter : BaseRecyclerViewAdapter<TabItemBean>() {
+class BottomBarAdapter(dataList: List<TabItemBean> = ArrayList()) : BaseRecyclerViewAdapter<TabItemBean>(dataList) {
 
     init {
         needAutoRefreshClickItem = true

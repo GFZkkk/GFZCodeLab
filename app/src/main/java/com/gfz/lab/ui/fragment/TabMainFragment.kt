@@ -34,35 +34,32 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
         binding.vpMain.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         // 初始化bottombar
-        val adapter = BottomBarAdapter()
-        adapter.setDataList(
-            listOf(
-                TabItemBean(
-                    R.drawable.ic_home_active,
-                    R.drawable.ic_home_default,
-                    R.string.tab_main,
-                    R.color.tab_active,
-                    R.color.tab_default,
-                    R.id.homeFragment
-                ),
-                TabItemBean(
-                    R.drawable.ic_all_active,
-                    R.drawable.ic_all_default,
-                    R.string.tab_function,
-                    R.color.tab_active,
-                    R.color.tab_default,
-                    R.id.funcFragment
-                ),
-                TabItemBean(
-                    R.drawable.ic_account_active,
-                    R.drawable.ic_account_default,
-                    R.string.tab_mine,
-                    R.color.tab_active,
-                    R.color.tab_default,
-                    R.id.mineFragment
-                )
+        val adapter = BottomBarAdapter(listOf(
+            TabItemBean(
+                R.drawable.ic_home_active,
+                R.drawable.ic_home_default,
+                R.string.tab_main,
+                R.color.tab_active,
+                R.color.tab_default,
+                R.id.homeFragment
+            ),
+            TabItemBean(
+                R.drawable.ic_all_active,
+                R.drawable.ic_all_default,
+                R.string.tab_function,
+                R.color.tab_active,
+                R.color.tab_default,
+                R.id.funcFragment
+            ),
+            TabItemBean(
+                R.drawable.ic_account_active,
+                R.drawable.ic_account_default,
+                R.string.tab_mine,
+                R.color.tab_active,
+                R.color.tab_default,
+                R.id.mineFragment
             )
-        )
+        ))
         binding.rvBottom.adapter = adapter
         binding.rvBottom.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
@@ -76,7 +73,6 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
         adapter.setOnItemClickListener { _, position ->
             binding.vpMain.setCurrentItem(position, false)
         }
-
 
         binding.vpMain.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {

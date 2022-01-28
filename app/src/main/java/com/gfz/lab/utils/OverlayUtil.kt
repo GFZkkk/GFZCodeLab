@@ -8,7 +8,6 @@ import android.view.View
 import android.view.WindowManager
 import com.gfz.common.base.BaseApplication
 import com.gfz.common.utils.ScreenUtil
-import com.gfz.lab.app.KTApp
 import com.gfz.common.ext.toPX
 
 /**

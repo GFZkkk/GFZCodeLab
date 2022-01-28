@@ -21,9 +21,6 @@ import java.util.*
  **/
 class DrawOverService : Service() {
 
-    //状态栏高度.（接下来会用到）
-    private var statusBarHeight = -1
-
     private var handler: Handler? = null
 
     private var sum = 0
@@ -32,7 +29,7 @@ class DrawOverService : Service() {
 
     private val simpleDateFormat = SimpleDateFormat("HH:mm:ss:SS", Locale.CHINESE)
 
-    private val binding: LayoutCountDownBinding = viewBind()
+    private val binding: LayoutCountDownBinding by viewBind()
 
     private val overlayManager: OverlayUtil = OverlayUtil()
 
