@@ -1,4 +1,4 @@
-package com.gfz.lab.ui.base
+package com.gfz.lab.base
 
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import com.gfz.common.ext.setDisplay
 import com.gfz.common.ext.setVisible
 import com.gfz.lab.R
 
@@ -107,6 +108,6 @@ abstract class BaseFragment : Fragment(), BasePageTools {
     }
 
     override fun showLoading(show: Boolean) {
-        view?.findViewById<View>(R.id.loading).setVisible(show)
+        view?.findViewById<View>(R.id.loading).setDisplay(show)
     }
 }

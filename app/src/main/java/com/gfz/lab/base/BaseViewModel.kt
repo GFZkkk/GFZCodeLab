@@ -1,6 +1,5 @@
-package com.gfz.lab.ui.base
+package com.gfz.lab.base
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gfz.common.ext.toLiveData
@@ -13,4 +12,7 @@ abstract class BaseViewModel : ViewModel() {
         _isLoading.value = show
     }
 
+    override fun onCleared() {
+        super.onCleared()
+    }
 }
