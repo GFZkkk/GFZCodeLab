@@ -37,6 +37,7 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
     }
 
     override fun initData() {
+        viewModel.getData()
     }
 
     override fun initObserver() {

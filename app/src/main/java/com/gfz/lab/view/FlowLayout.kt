@@ -25,7 +25,7 @@ class FlowLayout @JvmOverloads constructor(
         val height = MeasureSpec.getSize(heightMeasureSpec)
 
         val paddingH = paddingLeft + paddingRight
-        val childEnd = width - paddingH
+        val maxWidth = width - paddingH
 
         var lineWidth = 0
         var lineMaxHeight = 0
@@ -52,7 +52,7 @@ class FlowLayout @JvmOverloads constructor(
             )
 
             // 检查是否需要换行
-            if (lineWidth + childWidth > childEnd) {
+            if (lineWidth + childWidth > maxWidth) {
                 // 宽度取最宽
                 realWidth = max(lineWidth, realWidth)
                 // 高度取末尾item高度相加
@@ -103,7 +103,7 @@ class FlowLayout @JvmOverloads constructor(
             val marginLayoutParams = view.layoutParams as MarginLayoutParams
 
             left = lineWidth + marginLayoutParams.leftMargin
-            right = left + width
+            right = left + width + marginLayoutParams.rightMargin
 
             if (right > childEnd) {
                 // 换行
@@ -113,7 +113,7 @@ class FlowLayout @JvmOverloads constructor(
                 lineWidth = paddingLeft
                 // 重新计算
                 left = lineWidth + marginLayoutParams.leftMargin
-                right = left + width
+                right = left + width + marginLayoutParams.rightMargin
             }
             top = lineHeight + marginLayoutParams.topMargin
             bottom = top + height

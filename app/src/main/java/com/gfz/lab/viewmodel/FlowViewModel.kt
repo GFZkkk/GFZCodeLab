@@ -33,36 +33,37 @@ class FlowViewModel : BaseViewModel() {
         "112332131",
         "122112"
     )
-    fun getData(){
-        startSingleJob(true){
+
+    fun getData() {
+        _dataList.value = listOf(
+            "112332131", "122112", "122112", "11", "123", "12233", "112332131"
+        )
+    }
+
+    fun start() {
+        startJob(true) {
             autoCancel()
         }
     }
 
-    fun start(){
-        startJob(true){
-            autoCancel()
-        }
-    }
-
-    fun reStart(){
-        reStartSingleJob(true){
+    fun reStart() {
+        reStartSingleJob(true) {
             task()
         }
     }
 
-    fun startSingle(){
-        startSingleJob(true){
+    fun startSingle() {
+        startSingleJob(true) {
             task()
         }
     }
 
-    fun stop(){
+    fun stop() {
         stopSingleJob()
     }
 
-    private suspend fun CoroutineScope.task(){
-        while (true){
+    private suspend fun CoroutineScope.task() {
+        while (true) {
             delay(1500)
             val list = RandomUtil.getRandomList(
                 testList,
@@ -72,9 +73,9 @@ class FlowViewModel : BaseViewModel() {
         }
     }
 
-    private suspend fun CoroutineScope.autoCancel(){
+    private suspend fun CoroutineScope.autoCancel() {
         var i = 10
-        while (i-- > 0){
+        while (i-- > 0) {
             delay(1500)
             val list = RandomUtil.getRandomList(
                 testList,
