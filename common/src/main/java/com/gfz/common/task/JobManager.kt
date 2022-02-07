@@ -7,6 +7,7 @@ import com.gfz.common.ext.launchSafe
 import com.gfz.common.utils.TopLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.isActive
 
 /**
  * Created by xueya on 2022/1/28
@@ -27,7 +28,7 @@ class JobManager(private val helper: JobHelper) {
         onComplete: ((Boolean) -> Unit)? = null,
         block: suspend CoroutineScope.() -> Unit
     ) {
-        stopJob(tag)
+        stopSingleJob(tag)
         startSingleJob(loading, tag, onError, onComplete, block)
     }
 
@@ -37,17 +38,19 @@ class JobManager(private val helper: JobHelper) {
         onError: ((Throwable) -> Unit)? = null,
         onComplete: ((Boolean) -> Unit)? = null,
         block: suspend CoroutineScope.() -> Unit
-    ) {
+    ): Job {
         if (loading) {
             showLoading(tag)
         }
 
-        val job = getJob(onError, block){
+        val job = getJob(onError, block) {
             if (loading) {
                 hideLoading(tag)
             }
             onComplete?.invoke(it)
         }
+
+        return job
     }
 
     fun startSingleJob(
@@ -57,7 +60,7 @@ class JobManager(private val helper: JobHelper) {
         onComplete: ((Boolean) -> Unit)? = null,
         block: suspend CoroutineScope.() -> Unit
     ) {
-        if (jobArray.indexOfKey(tag) > 0) {
+        if (jobArray.indexOfKey(tag) > -1) {
             TopLog.e("$tag 正在执行")
             return
         }
@@ -66,7 +69,7 @@ class JobManager(private val helper: JobHelper) {
             showLoading(tag)
         }
 
-        val job = getJob(onError, block){
+        val job = getJob(onError, block) {
             jobArray.remove(tag)
             if (loading) {
                 hideLoading(tag)
@@ -78,7 +81,7 @@ class JobManager(private val helper: JobHelper) {
 
     }
 
-    fun stopJob(tag: Int = 0) {
+    fun stopSingleJob(tag: Int = 0) {
         jobArray[tag]?.let {
             it.cancel()
             jobArray.remove(tag)
@@ -90,12 +93,11 @@ class JobManager(private val helper: JobHelper) {
         block: suspend CoroutineScope.() -> Unit,
         onComplete: ((Boolean) -> Unit)
     ): Job {
-        return helper.getScope()
-            .launchSafe(
-                onError = onError,
-                onComplete = onComplete,
-                block = block
-            )
+        return helper.getScope().launchSafe(
+            onError = onError,
+            onComplete = onComplete,
+            block = block
+        )
     }
 
     fun showLoading(tag: Int) {
@@ -120,14 +122,17 @@ class JobManager(private val helper: JobHelper) {
 }
 
 interface JobHelper {
+
     fun getScope(): CoroutineScope
+
     fun startJob(
         loading: Boolean = false,
         tag: Int = -1,
         onError: ((Throwable) -> Unit)? = null,
         onComplete: ((Boolean) -> Unit)? = null,
         block: suspend CoroutineScope.() -> Unit
-    )
+    ): Job
+
     fun startSingleJob(
         loading: Boolean = false,
         tag: Int = 0,
@@ -135,6 +140,7 @@ interface JobHelper {
         onComplete: ((Boolean) -> Unit)? = null,
         block: suspend CoroutineScope.() -> Unit
     )
+
     fun reStartSingleJob(
         loading: Boolean = false,
         tag: Int = 0,
@@ -142,7 +148,8 @@ interface JobHelper {
         onComplete: ((Boolean) -> Unit)? = null,
         block: suspend CoroutineScope.() -> Unit
     )
-    fun stopJob(tag: Int = 0)
+
+    fun stopSingleJob(tag: Int = 0)
     fun showLoading(tag: Int)
     fun hideLoading(tag: Int)
     fun changeLoadingStatus(show: Boolean)

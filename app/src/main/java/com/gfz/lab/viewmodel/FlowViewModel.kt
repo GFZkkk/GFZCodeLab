@@ -1,13 +1,10 @@
 package com.gfz.lab.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.gfz.common.ext.asLiveData
-import com.gfz.common.ext.launchSafe
-import com.gfz.common.task.JobItem
 import com.gfz.common.utils.RandomUtil
-import com.gfz.common.utils.TopLog
 import com.gfz.lab.base.BaseViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
 /**
@@ -38,13 +35,13 @@ class FlowViewModel : BaseViewModel() {
     )
     fun getData(){
         startSingleJob(true){
-            task()
+            autoCancel()
         }
     }
 
     fun start(){
         startJob(true){
-            task()
+            autoCancel()
         }
     }
 
@@ -61,17 +58,28 @@ class FlowViewModel : BaseViewModel() {
     }
 
     fun stop(){
-        stopJob()
+        stopSingleJob()
     }
 
-    private suspend fun task(){
+    private suspend fun CoroutineScope.task(){
         while (true){
             delay(1500)
             val list = RandomUtil.getRandomList(
                 testList,
                 RandomUtil.getRandomIndex(testList.size - 1)
             )
-            TopLog.e(list.toString())
+            _dataList.value = list
+        }
+    }
+
+    private suspend fun CoroutineScope.autoCancel(){
+        var i = 10
+        while (i-- > 0){
+            delay(1500)
+            val list = RandomUtil.getRandomList(
+                testList,
+                RandomUtil.getRandomIndex(testList.size - 1)
+            )
             _dataList.value = list
         }
     }

@@ -5,9 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gfz.common.ext.asLiveData
 import com.gfz.common.task.JobHelper
-import com.gfz.common.task.JobItem
 import com.gfz.common.task.JobManager
+import com.gfz.common.utils.TopLog
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 
 
 abstract class BaseViewModel : ViewModel(), JobHelper {
@@ -32,8 +33,8 @@ abstract class BaseViewModel : ViewModel(), JobHelper {
         onError: ((Throwable) -> Unit)?,
         onComplete: ((Boolean) -> Unit)?,
         block: suspend CoroutineScope.() -> Unit
-    ) {
-        jobManager.startJob(loading, tag, onError, onComplete, block)
+    ): Job {
+        return jobManager.startJob(loading, tag, onError, onComplete, block)
     }
 
     override fun startSingleJob(
@@ -56,8 +57,9 @@ abstract class BaseViewModel : ViewModel(), JobHelper {
         jobManager.reStartSingleJob(loading, tag, onError, onComplete, block)
     }
 
-    override fun stopJob(tag: Int) {
-        jobManager.stopJob(tag)
+    override fun stopSingleJob(tag: Int) {
+        TopLog.e("stop")
+        jobManager.stopSingleJob(tag)
     }
 
     override fun showLoading(tag: Int) {
