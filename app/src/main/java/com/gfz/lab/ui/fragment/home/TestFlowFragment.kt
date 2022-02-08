@@ -20,7 +20,7 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
     override val viewModel: FlowViewModel by viewModels()
 
     override fun initView() {
-        with(binding){
+        with(binding) {
             btnStart.setOnClickListener {
                 viewModel.start()
             }
@@ -41,8 +41,8 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
     }
 
     override fun initObserver() {
-        viewModel.dataList.observe(this){
-            it.forEachIndexed{ index, data ->
+        viewModel.dataList.observe(this) {
+            it.forEachIndexed { index, data ->
                 addView(index, data)
             }
             hideLeftView(it.size)
@@ -50,10 +50,10 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
         }
     }
 
-    private fun addView(index: Int, content: String){
-        with(binding){
-            if (flContent.childCount <= index){
-                binding.flContent.addView(TextView(context).apply {
+    private fun addView(index: Int, content: String) {
+        with(binding) {
+            if (flContent.childCount <= index) {
+                flContent.addView(TextView(context).apply {
                     text = content
                     layoutParams = ViewGroup.MarginLayoutParams(
                         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -67,7 +67,8 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
                     }
                 })
             } else {
-                (flContent.getChildAt(index) as? TextView)?.apply {
+                val textView = flContent.getChildAt(index) as? TextView
+                textView?.apply {
                     text = content
                     setVisible(true)
                 }
@@ -75,13 +76,13 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
         }
     }
 
-    private fun hideLeftView(size: Int){
-        with(binding){
+    private fun hideLeftView(size: Int) {
+        with(binding) {
             TopLog.e("$size ${flContent.childCount}")
-            if (size >= flContent.childCount){
+            if (size >= flContent.childCount) {
                 return
             }
-            (size .. flContent.childCount).forEach {
+            (size..flContent.childCount).forEach {
                 flContent.getChildAt(it).setDisplay(false)
             }
         }
