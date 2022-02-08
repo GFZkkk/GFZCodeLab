@@ -22,8 +22,9 @@ object BitmapUtil {
     /**
      * 将view的内容绘制成bit数组
      */
-    suspend fun convertViewToByteArray(view: View?, quality: Int): ByteArray? {
-        return convertViewToBitmap(view)?.let {
+    suspend fun convertViewToByteArray(view: View, quality: Int): ByteArray? {
+        val bitmap = convertViewToBitmap(view)
+        return bitmap?.let {
             bmpToByteArray(it, quality)
         }
     }
@@ -31,11 +32,11 @@ object BitmapUtil {
     /**
      * 将view的内容绘制成bit数组
      */
-    suspend fun convertViewToFile(fileName: String, view: View?, quality: Int = 100) {
-        convertViewToBitmap(view)?.let {
+    suspend fun convertViewToFile(fileName: String, view: View, quality: Int = 100) {
+        val bitmap = convertViewToBitmap(view)
+        bitmap?.let {
             saveBitmapToFile(fileName, it, quality)
         }
-
     }
 
     suspend fun saveBitmapToFile(fileName: String, bmp: Bitmap, quality: Int = 100) =
@@ -72,20 +73,18 @@ object BitmapUtil {
     /**
      * 将view的内容绘制成Bitmap
      */
-    fun convertViewToBitmap(view: View?): Bitmap? {
-        return view?.let {
-            val w = it.measuredWidth
-            val h = it.measuredHeight
-            if (w <= 0 || h <= 0) {
-                return null
-            }
-            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            //利用bitmap生成画布
-            val canvas = Canvas(bitmap)
-            //把view中的内容绘制在画布上
-            it.draw(canvas)
-            bitmap
+    suspend fun convertViewToBitmap(view: View): Bitmap? = withContext(Dispatchers.IO) {
+        val w = view.measuredWidth
+        val h = view.measuredHeight
+        if (w <= 0 || h <= 0) {
+            return@withContext null
         }
+        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565)
+        //利用bitmap生成画布
+        val canvas = Canvas(bitmap)
+        //把view中的内容绘制在画布上
+        view.draw(canvas)
+        bitmap
     }
 
     /**
