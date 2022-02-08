@@ -1,10 +1,14 @@
-package com.gfz.common.utils
+package com.gfz.bitmap
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.view.View
 import com.gfz.common.ext.getCompatDrawable
+import com.gfz.common.utils.LocalFileUtil
+import com.gfz.common.utils.TopLog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -18,39 +22,43 @@ object BitmapUtil {
     /**
      * 将view的内容绘制成bit数组
      */
-    fun convertViewToByteArray(view: View?, quality: Int): ByteArray? {
-        return bmpToByteArray(convertViewToBitmap(view), quality)
+    suspend fun convertViewToByteArray(view: View?, quality: Int): ByteArray? {
+        return convertViewToBitmap(view)?.let {
+            bmpToByteArray(it, quality)
+        }
     }
 
     /**
      * 将view的内容绘制成bit数组
      */
-    fun convertViewToFile(fileName: String, view: View?, quality: Int = 100) {
-        return saveBitmapToFile(fileName, convertViewToBitmap(view), quality)
+    suspend fun convertViewToFile(fileName: String, view: View?, quality: Int = 100) {
+        convertViewToBitmap(view)?.let {
+            saveBitmapToFile(fileName, it, quality)
+        }
+
     }
 
-    fun saveBitmapToFile(fileName: String, bmp: Bitmap?, quality: Int = 100) {
-        bmp?.let {
+    suspend fun saveBitmapToFile(fileName: String, bmp: Bitmap, quality: Int = 100) =
+        withContext(Dispatchers.IO) {
             val path = LocalFileUtil.getFilePath("images")
             val file = File(path, fileName.plus(".jpg"))
             val output = FileOutputStream(file)
-            it.compress(Bitmap.CompressFormat.JPEG, quality, output)
-            it.recycle()
-            try{
+            bmp.compress(Bitmap.CompressFormat.JPEG, quality, output)
+            bmp.recycle()
+            try {
                 output.flush()
                 output.close()
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 TopLog.e(e)
             }
         }
-    }
 
     @JvmOverloads
-    fun bmpToByteArray(bmp: Bitmap?, quality: Int = 100): ByteArray? {
-        return bmp?.let {
+    suspend fun bmpToByteArray(bmp: Bitmap, quality: Int = 100): ByteArray =
+        withContext(Dispatchers.IO) {
             val output = ByteArrayOutputStream()
-            it.compress(Bitmap.CompressFormat.JPEG, quality, output)
-            it.recycle()
+            bmp.compress(Bitmap.CompressFormat.JPEG, quality, output)
+            bmp.recycle()
             val result = output.toByteArray()
             try {
                 output.flush()
@@ -60,7 +68,6 @@ object BitmapUtil {
             }
             result
         }
-    }
 
     /**
      * 将view的内容绘制成Bitmap

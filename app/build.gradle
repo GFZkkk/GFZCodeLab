@@ -57,7 +57,7 @@ android {
         }
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding true
 //        compose true
     }
@@ -82,9 +82,14 @@ android {
 dependencies {
     implementation project(path: ':common')
     implementation project(path: ':recyclerview')
+    implementation project(path: ':bitmap')
     // 基础配置
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "androidx.startup:startup-runtime:1.1.0-alpha01"
+
+    implementation "androidx.core:core-ktx:$core_ktx_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+
+    implementation "androidx.startup:startup-runtime:1.1.0-beta01"
 
     // kotlin
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
