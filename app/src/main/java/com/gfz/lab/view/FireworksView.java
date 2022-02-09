@@ -21,8 +21,8 @@ import android.view.animation.LinearInterpolator;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import com.gfz.bitmap.BitmapUtil;
 import com.gfz.lab.R;
-import com.gfz.common.utils.BitmapUtil;
 
 import java.util.Random;
 
