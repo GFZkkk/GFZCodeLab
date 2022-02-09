@@ -2,8 +2,10 @@ package com.gfz.bitmap
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.view.View
+import com.gfz.bitmap.gifEncoder.AnimatedGifEncoder
 import com.gfz.common.ext.getCompatDrawable
 import com.gfz.common.utils.LocalFileUtil
 import com.gfz.common.utils.TopLog
@@ -18,6 +20,31 @@ import java.io.FileOutputStream
  * created by gfz on 2021/2/15
  **/
 object BitmapUtil {
+
+    private val gifEncoder: AnimatedGifEncoder by lazy {
+        AnimatedGifEncoder().apply {
+            setRepeat(0)
+            setDelay(1000)
+        }
+    }
+
+    /**
+     * 获取矢量图
+     */
+    fun getVectorBitmap(context: Context, resId: Int): Bitmap? {
+        // 矢量图需要在21之后的版本处理
+        return context.getCompatDrawable(resId)?.let {
+            val bitmap = Bitmap.createBitmap(
+                it.intrinsicWidth,
+                it.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            it.setBounds(0, 0, canvas.width, canvas.height)
+            it.draw(canvas)
+            bitmap
+        }
+    }
 
     /**
      * 将view的内容绘制成bit数组
@@ -39,11 +66,9 @@ object BitmapUtil {
         }
     }
 
-    suspend fun saveBitmapToFile(fileName: String, bmp: Bitmap, quality: Int = 100) =
+    suspend fun saveBitmapToFile(filePath: String, bmp: Bitmap, quality: Int = 100) =
         withContext(Dispatchers.IO) {
-            val path = LocalFileUtil.getFilePath("images")
-            val file = File(path, fileName.plus(".jpg"))
-            val output = FileOutputStream(file)
+            val output = FileOutputStream(filePath)
             bmp.compress(Bitmap.CompressFormat.JPEG, quality, output)
             bmp.recycle()
             try {
@@ -52,6 +77,7 @@ object BitmapUtil {
             } catch (e: Exception) {
                 TopLog.e(e)
             }
+            TopLog.e(filePath)
         }
 
     @JvmOverloads
@@ -87,21 +113,54 @@ object BitmapUtil {
         bitmap
     }
 
-    /**
-     * 获取矢量图
-     */
-    fun getVectorBitmap(context: Context, resId: Int): Bitmap? {
-        // 矢量图需要在21之后的版本处理
-        return context.getCompatDrawable(resId)?.let {
-            val bitmap = Bitmap.createBitmap(
-                it.intrinsicWidth,
-                it.intrinsicHeight,
-                Bitmap.Config.ARGB_8888
-            )
-            val canvas = Canvas(bitmap)
-            it.setBounds(0, 0, canvas.width, canvas.height)
-            it.draw(canvas)
-            bitmap
+    suspend fun createGif(
+        picPath: String,
+        gifPath: String,
+        build: AnimatedGifEncoder.() -> Unit = {}
+    ): Boolean =
+        withContext(Dispatchers.IO) {
+            val inputFile = File(picPath)
+            if (!inputFile.exists() || !inputFile.isDirectory) {
+                return@withContext false
+            }
+            createGif(gifPath, build) {
+                inputFile.list()?.forEach {
+                    val filePath = inputFile.absolutePath + File.separator + it
+                    val bitmap = BitmapFactory.decodeFile(filePath)
+                    addFrame(bitmap)
+                }
+            }
+
         }
-    }
+
+    suspend fun createGif(
+        bitmapArray: List<Bitmap>,
+        gifPath: String,
+        build: AnimatedGifEncoder.() -> Unit = {}
+    ): Boolean =
+        withContext(Dispatchers.IO) {
+            if (bitmapArray.isEmpty()) {
+                return@withContext false
+            }
+            createGif(gifPath, build) {
+                bitmapArray.forEach {
+                    addFrame(it)
+                }
+            }
+
+        }
+
+    suspend fun createGif(
+        gifPath: String,
+        build: AnimatedGifEncoder.() -> Unit = {},
+        addFrames: AnimatedGifEncoder.() -> Unit
+    ): Boolean =
+        withContext(Dispatchers.IO) {
+            val baos = ByteArrayOutputStream()
+            build(gifEncoder)
+            gifEncoder.start(baos)
+            addFrames(gifEncoder)
+            gifEncoder.finish()
+            LocalFileUtil.writeFile(gifPath, baos)
+        }
 }
