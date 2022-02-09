@@ -1,17 +1,26 @@
 package com.gfz.lab.ui.fragment.home
 
+import android.os.SystemClock
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.compose.ui.text.toLowerCase
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.gfz.bitmap.BitmapUtil
 import com.gfz.common.ext.setDisplay
 import com.gfz.common.ext.setVisible
 import com.gfz.common.ext.toDP
 import com.gfz.common.ext.toPX
+import com.gfz.common.utils.LocalFileUtil
 import com.gfz.common.utils.TopLog
 import com.gfz.lab.databinding.FragmentFlowBinding
 import com.gfz.lab.base.BaseVMFragment
 import com.gfz.lab.viewmodel.FlowViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import java.io.File
 
 /**
  * Created by xueya on 2022/1/11
@@ -38,6 +47,20 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
 
     override fun initData() {
         viewModel.getData()
+        viewModel.startJob {
+            val path = LocalFileUtil.getCacheFilePath()
+            TopLog.e(path)
+            var fileName: String
+            var i = 10
+            while (i-- > 0){
+                delay(1000)
+                fileName = "${this@TestFlowFragment.javaClass.simpleName}${SystemClock.uptimeMillis()}".lowercase()
+                val name = "$path$fileName.jpg"
+                BitmapUtil.convertViewToFile(name, binding.flContent)
+            }
+            BitmapUtil.createGif(path, path + "abc.gif")
+        }
+
     }
 
     override fun initObserver() {

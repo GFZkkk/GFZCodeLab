@@ -62,9 +62,9 @@ class FlowViewModel : BaseViewModel() {
         stopSingleJob()
     }
 
-    private suspend fun CoroutineScope.task() {
+    private suspend fun task() {
         while (true) {
-            delay(1500)
+            delay(1000)
             val list = RandomUtil.getRandomList(
                 testList,
                 RandomUtil.getRandomIndex(testList.size - 1)
@@ -73,7 +73,7 @@ class FlowViewModel : BaseViewModel() {
         }
     }
 
-    private suspend fun CoroutineScope.autoCancel() {
+    private suspend fun autoCancel() {
         var i = 10
         while (i-- > 0) {
             delay(1500)
