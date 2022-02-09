@@ -1,9 +1,11 @@
 package com.gfz.common.utils
 
+import android.R.attr.path
 import android.content.Context
 import android.os.Environment
 import com.gfz.common.base.BaseApplication
-import java.io.File
+import java.io.*
+
 
 /**
  * 本地文件管理
@@ -14,16 +16,39 @@ object LocalFileUtil {
     /**
      * 获取文件存储位置，优先外部存储
      */
-    fun getFilePath(dir: String): String? {
-        val context = BaseApplication.appContext
-        return (if (Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()) { //判断外部存储是否可用
-            context.getExternalFilesDir(dir)?.absolutePath
-        } else { //没外部存储就使用内部存储
-            getAppFilePath(context).plus(dir)
-        })?.let {
-            makeRootDirectory(it)
-            it.plus(File.separator)
+    fun getFilePath(dir: String, context: Context = BaseApplication.appContext): String {
+        val filePath = getExternalFilePath(dir, context) ?: getAppFilePath(dir, context)
+        makeRootDirectory(filePath)
+        return filePath.plus(File.separator)
+    }
+
+    /**
+     * 获取文件存储位置，优先外部存储
+     */
+    fun getCacheFilePath(dir: String? = null, context: Context = BaseApplication.appContext): String {
+        val path = getExternalCachePath(context) ?: getAppCachePath(context)
+        var filePath = path
+        dir?.let {
+            filePath = filePath.plus(File.separator)
+            filePath = filePath.plus(it)
         }
+        makeRootDirectory(filePath)
+        return filePath.plus(File.separator)
+    }
+
+    fun writeFile(filePath: String, inputStream: ByteArrayOutputStream): Boolean {
+        try {
+            val fos = FileOutputStream(filePath)
+            inputStream.writeTo(fos)
+            inputStream.flush()
+            fos.flush()
+            inputStream.close()
+            fos.close()
+        } catch (e: Exception) {
+            TopLog.e(e)
+            return false
+        }
+        return true
     }
 
     /**
@@ -42,7 +67,31 @@ object LocalFileUtil {
         }
     }
 
-    private fun getAppFilePath(context: Context): String {
-        return context.filesDir.toString() + File.separator
+    private fun getAppFilePath(dir: String, context: Context): String {
+        return context.filesDir.toString().plus(File.separator).plus(dir)
+    }
+
+    private fun getExternalFilePath(dir: String, context: Context): String? {
+        return if (haveExternalStorage()){
+            context.getExternalFilesDir(dir)?.absolutePath
+        } else{
+            null
+        }
+    }
+
+    private fun getAppCachePath(context: Context): String {
+        return context.cacheDir.toString() + File.separator + "cache"
+    }
+
+    private fun getExternalCachePath(context: Context): String? {
+        return if (haveExternalStorage()){
+            context.externalCacheDir?.absolutePath
+        } else{
+            null
+        }
+    }
+
+    private fun haveExternalStorage(): Boolean {
+        return Environment.MEDIA_MOUNTED == Environment.getExternalStorageState()
     }
 }
