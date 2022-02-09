@@ -123,14 +123,15 @@ object BitmapUtil {
             if (!inputFile.exists() || !inputFile.isDirectory) {
                 return@withContext false
             }
-            createGif(gifPath, build) {
-                inputFile.list()?.forEach {
+            inputFile.list()?.let { files ->
+                val bitmapList = ArrayList<Bitmap>(files.size)
+                files.forEach {
                     val filePath = inputFile.absolutePath + File.separator + it
                     val bitmap = BitmapFactory.decodeFile(filePath)
-                    addFrame(bitmap)
+                    bitmapList.add(bitmap)
                 }
-            }
-
+                createGif(bitmapList, gifPath, build)
+            } ?: false
         }
 
     suspend fun createGif(
@@ -142,12 +143,21 @@ object BitmapUtil {
             if (bitmapArray.isEmpty()) {
                 return@withContext false
             }
-            createGif(gifPath, build) {
+            var width = 0
+            var height = 0
+            bitmapArray.forEach {
+                width = it.width.coerceAtLeast(width)
+                height = it.height.coerceAtLeast(height)
+            }
+
+            createGif(gifPath, {
+                build()
+                setSize(width, height)
+            }) {
                 bitmapArray.forEach {
                     addFrame(it)
                 }
             }
-
         }
 
     suspend fun createGif(
