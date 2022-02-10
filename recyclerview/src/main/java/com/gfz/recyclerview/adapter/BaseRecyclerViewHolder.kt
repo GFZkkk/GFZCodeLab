@@ -46,7 +46,7 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
     }
 
     open fun getHolderPosition(): Int {
-        return layoutPosition
+        return bindingAdapterPosition
     }
 
     open fun initEvent() {}
@@ -61,14 +61,20 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
     protected open fun setHolderListener(vararg views: View) {
         for (view in views) {
             view.setOnClickListener { v ->
-                listener?.invoke(v, getHolderPosition())
+                click(v)
             }
         }
     }
 
     //将点击事件传出去
     protected open fun click(v: View) {
-        listener?.invoke(v, getHolderPosition())
+        listener?.let {
+            val position = getHolderPosition()
+            if (position == -1){
+                return
+            }
+            it.invoke(v, position)
+        }
     }
 
     // region 工具方法
