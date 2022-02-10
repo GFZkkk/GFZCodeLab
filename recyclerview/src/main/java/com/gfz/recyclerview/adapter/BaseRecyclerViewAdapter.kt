@@ -67,7 +67,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
         val holder = onCreateViewHolder(LayoutInflater.from(parent.context), parent, viewType)
-        setHolderListener(holder)
+        holder.setHolderListener(::clickEvent)
         return holder
     }
 
@@ -122,26 +122,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     }
 
     /**
-     * 设置item中控件的点击事件
-     */
-    protected fun setListener(view: View?, position: Int) {
-        if (isItemIndex(position)) {
-            view?.setOnClickListener {
-                clickEvent(view, position)
-            }
-        }
-    }
-
-    /**
-     * 设置item中控件的点击事件
-     */
-    protected fun setHolderListener(holder: BaseRecyclerViewHolder<*>) {
-        holder.itemView.setOnClickListener {
-            clickEvent(it, holder.getHolderPosition())
-        }
-    }
-
-    /**
      * 处理内部点击事件
      * 可用于处理点击去重
      * @return 是否消费掉了此次点击事件
@@ -153,13 +133,23 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * @param v 点击的视图
      */
     open fun clickEvent(v: View, position: Int) {
-        if (!fastClick() && !click(v, position)) {
-            if (needAutoSetClickIndex) {
-                setClickIndex(position)
-            }
-            listener?.invoke(v, position)
+        // item范围
+        if(!isItemIndex(position)) return
+        // 快速点击
+        if (fastClick()) return
+        // 内部消耗
+        if (click(v, position)) return
+        // 更新选中下标
+        if (needAutoSetClickIndex) {
+            setClickIndex(position)
+        }
+        // view点击事件
+        listener?.invoke(v, position)
+        // 数据点击事件
+        if (isDataIndex(position)){
             dataListener?.invoke(v, position, getDataByPosition(position))
         }
+
     }
     // endregion
 

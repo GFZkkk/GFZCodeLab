@@ -1,6 +1,7 @@
 package com.gfz.lab.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.gfz.lab.R
 import com.gfz.recyclerview.adapter.BaseMultipleChooseAdapter
@@ -36,6 +37,11 @@ class TestMultipleChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList(
 
     inner class ViewHolder(binding: ItemMultipleChooseBinding) : BaseVBRecyclerViewHolder<MultipleChooseBean, ItemMultipleChooseBinding>(binding) {
 
+        override fun initEvent() {
+            super.initEvent()
+            binding.ivChoose.addClickListener()
+        }
+
         override fun onBindViewHolder(data: MultipleChooseBean, position: Int) {
             with(binding){
                 clTitle.setDisplay(isNewGroup(position))
@@ -54,7 +60,6 @@ class TestMultipleChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList(
                 clTitleChoose.setOnClickListener {
                     changeGroupChooseStatus(position)
                 }
-                setListener(ivChoose, position)
             }
         }
     }

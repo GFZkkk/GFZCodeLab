@@ -24,9 +24,7 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
         initEvent()
     }
 
-    // region 加载方法
-    open fun initEvent() {}
-
+    // region 对外方法
     fun bindViewHolder(data: T?, position: Int) {
         if (data != null) {
             onBindViewHolder(data, position)
@@ -35,12 +33,6 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
         }
     }
 
-    protected abstract fun onBindViewHolder(data: T, position: Int)
-
-    protected open fun bindNoDataViewHolder() {}
-    // endregion
-
-    // region 对外方法
     open fun getHolderPosition(): Int {
         return bindingAdapterPosition
     }
@@ -50,24 +42,32 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
     }
     // endregion
 
+    // region 内部方法
+    protected open fun initEvent() {
+        itemView.addClickListener()
+    }
+
+    protected abstract fun onBindViewHolder(data: T, position: Int)
+
+    protected open fun bindNoDataViewHolder() {}
+    // endregion
+
     // region 工具方法
-    protected fun setViewOnClickListener(vararg views: View) {
+    protected fun addClickListeners(vararg views: View) {
         for (view in views) {
-            view.setOnClickListener { v ->
-                click(v)
-            }
+            view.addClickListener()
+        }
+    }
+
+    protected fun View.addClickListener(){
+        setOnClickListener { v ->
+            click(v)
         }
     }
 
     //将点击事件传出去
     protected fun click(v: View) {
-        listener?.let {
-            val position = getHolderPosition()
-            if (position == -1) {
-                return
-            }
-            it.invoke(v, position)
-        }
+        listener?.invoke(v, getHolderPosition())
     }
 
     fun TextView.setTextColorRes(@ColorRes color: Int) {

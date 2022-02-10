@@ -26,19 +26,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     var emptyViewBinding: ViewBinding? = null
     var headerViewBinding: ViewBinding? = null
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerViewHolder<T> {
-        val holder: BaseRecyclerViewHolder<T> =
-            onCreateViewHolder(LayoutInflater.from(parent.context), parent, viewType)
-        if (isDataViewType(viewType)) {
-            setHolderListener(holder)
-        } else {
-            // 不会主动添加点击事件
-            holder.setHolderListener(::clickEvent)
-        }
-        return holder
-    }
-
     override fun onCreateViewHolder(
         layoutInflater: LayoutInflater,
         parent: ViewGroup,
