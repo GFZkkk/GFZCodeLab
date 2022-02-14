@@ -221,8 +221,8 @@ abstract class BaseCenterAdapter<T>(
 
     open fun <VH : BaseRecyclerViewHolder<T>?> getHolderByPosition(position: Int): VH? {
         if (isItemIndex(position)) {
-            return mLayoutManager?.findViewByPosition(position)?.let {
-                mRecyclerView?.getChildViewHolder(it) as? VH
+            return mLayoutManager.findViewByPosition(position)?.let {
+                mRecyclerView.getChildViewHolder(it) as? VH
             }
         }
         return null
