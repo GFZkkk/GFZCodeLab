@@ -100,11 +100,11 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
             val toPosition = target.layoutPosition
             if (fromPosition < toPosition) {
                 for (i in fromPosition until toPosition) {
-                    Collections.swap(adapter.getData(), i, i + 1)
+                    Collections.swap(adapter.getDataList(), i, i + 1)
                 }
             } else {
                 for (i in fromPosition downTo toPosition + 1) {
-                    Collections.swap(adapter.getData(), i, i - 1)
+                    Collections.swap(adapter.getDataList(), i, i - 1)
                 }
             }
             adapter.notifyItemMoved(fromPosition, toPosition)
