@@ -58,6 +58,36 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         return if (isFootView(position)) FOOT else getEFItemViewType(getDataPosition(position))
     }
 
+
+    /**
+     * 如果是GridLayoutManager布局，空布局需要独占一行
+     * 重写该方法时注意处理
+     */
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        val manager = recyclerView.layoutManager
+        if (manager is GridLayoutManager) {
+            manager.spanSizeLookup = object : SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return if (isDataPosition(position)) {
+                        1
+                    } else manager.spanCount
+                }
+            }
+        }
+    }
+
+    //针对流式布局
+    override fun onViewAttachedToWindow(holder: BaseRecyclerViewHolder<T>) {
+        val layoutPosition: Int = holder.layoutPosition
+        if (isExtView(layoutPosition)) {
+            val layoutParams: ViewGroup.LayoutParams = holder.itemView.layoutParams
+            if (layoutParams is StaggeredGridLayoutManager.LayoutParams) {
+                //占领全部空间;
+                layoutParams.isFullSpan = true
+            }
+        }
+    }
+
     // region 数据
 
     override fun getData(position: Int): T? {
@@ -74,7 +104,103 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
 
     // endregion
 
+    // region 工具方法
+    /**
+     * 根据列表中的位置获取数据中的位置
+     * 如果是扩展类型则不做处理
+     */
+    open fun getDataPosition(viewPosition: Int): Int {
+        var dataPosition = viewPosition
+        if (isDataPosition(viewPosition)) {
+            if (isHaveHead()) {
+                dataPosition = viewPosition - getHeaderNum()
+            }
+        }
+        return dataPosition
+    }
+
+    /**
+     * 获取数据长度
+     */
+    open fun getDataItemCount(): Int {
+        return length
+    }
+
+    protected open fun getEFItemViewType(position: Int): Int {
+        return 0
+    }
+
+    protected open fun getHeaderNum(): Int {
+        return if (isHaveHead()) 1 else 0
+    }
+
+    protected open fun getFooterNum(): Int {
+        return if (isHaveFoot()) 1 else 0
+    }
+    // endregion
+
+    // region 判断方法
+    /**
+     * 是否是数据的类型
+     */
+    protected open fun isDataViewType(viewType: Int): Boolean {
+        return viewType >= 0
+    }
+
+    /**
+     * 是否是数据的位置
+     */
+    protected open fun isDataPosition(adapterPosition: Int): Boolean {
+        return !isExtView(adapterPosition)
+    }
+
+    /**
+     * 是否是空布局
+     */
+    protected open fun isEmptyView(): Boolean {
+        return isHaveEmpty() && getDataItemCount() == 0
+    }
+
+    /**
+     * 是否是足布局
+     */
+    protected open fun isFootView(adapterPosition: Int): Boolean {
+        return isHaveFoot() && getDataItemCount() == adapterPosition
+    }
+
+    /**
+     * 是否是头布局
+     */
+    protected open fun isHeadView(adapterPosition: Int): Boolean {
+        return isHaveHead() && adapterPosition == 0
+    }
+
+    protected open fun isExtView(adapterPosition: Int): Boolean {
+        return isHeadView(adapterPosition) || isFootView(adapterPosition) || isEmptyView()
+    }
+    // endregion
+
     // region 额外布局
+    /**
+     * 是否有足布局
+     */
+    protected open fun isHaveHead(): Boolean {
+        return headerViewBinding != null || getHeaderViewBindingClass() != null
+    }
+
+    /**
+     * 是否有头布局
+     */
+    protected open fun isHaveFoot(): Boolean {
+        return footerViewBinding != null || getFooterViewBindingClass() != null
+    }
+
+    /**
+     * 是否有空布局
+     */
+    protected open fun isHaveEmpty(): Boolean {
+        return emptyViewBinding != null || getEmptyViewBindingClass() != null
+    }
 
     protected open fun getEmptyViewBindingClass(): Class<*>? {
         return null
@@ -143,134 +269,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         )?.invoke(null, layoutInflater, parent, false) as VB
     }
 
-    /**
-     * 如果是GridLayoutManager布局，空布局需要独占一行
-     * 重写该方法时注意处理
-     */
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        val manager = recyclerView.layoutManager
-        if (manager is GridLayoutManager) {
-            manager.spanSizeLookup = object : SpanSizeLookup() {
-                override fun getSpanSize(position: Int): Int {
-                    return if (isDataPosition(position)) {
-                        1
-                    } else manager.spanCount
-                }
-            }
-        }
-    }
-
-    //针对流式布局
-    override fun onViewAttachedToWindow(holder: BaseRecyclerViewHolder<T>) {
-        val layoutPosition: Int = holder.layoutPosition
-        if (isExtView(layoutPosition)) {
-            val layoutParams: ViewGroup.LayoutParams = holder.itemView.layoutParams
-            if (layoutParams is StaggeredGridLayoutManager.LayoutParams) {
-                //占领全部空间;
-                layoutParams.isFullSpan = true
-            }
-        }
-    }
-    // endregion
-
-    // region 工具方法
-    /**
-     * 根据列表中的位置获取数据中的位置
-     * 如果是扩展类型则不做处理
-     */
-    open fun getDataPosition(viewPosition: Int): Int {
-        var dataPosition = viewPosition
-        if (isDataPosition(viewPosition)) {
-            if (isHaveHead()) {
-                dataPosition = viewPosition - getHeaderNum()
-            }
-        }
-        return dataPosition
-    }
-
-    /**
-     * 获取数据长度
-     */
-    open fun getDataItemCount(): Int {
-        return length
-    }
-
-    protected open fun getEFItemViewType(position: Int): Int {
-        return 0
-    }
-
-    protected open fun getHeaderNum(): Int {
-        return if (isHaveHead()) 1 else 0
-    }
-
-    protected open fun getFooterNum(): Int {
-        return if (isHaveFoot()) 1 else 0
-    }
-    // endregion
-
-    // region 判断方法
-    /**
-     * 是否是数据的类型
-     */
-    protected open fun isDataViewType(viewType: Int): Boolean {
-        return viewType >= 0
-    }
-
-    /**
-     * 是否是数据的位置
-     */
-    protected open fun isDataPosition(adapterPosition: Int): Boolean {
-        return !isExtView(adapterPosition)
-    }
-
-    /**
-     * 是否有足布局
-     */
-    protected open fun isHaveHead(): Boolean {
-        return headerViewBinding != null || getHeaderViewBindingClass() != null
-    }
-
-    /**
-     * 是否有头布局
-     */
-    protected open fun isHaveFoot(): Boolean {
-        return footerViewBinding != null || getFooterViewBindingClass() != null
-    }
-
-    /**
-     * 是否有空布局
-     */
-    protected open fun isHaveEmpty(): Boolean {
-        return emptyViewBinding != null || getEmptyViewBindingClass() != null
-    }
-
-    /**
-     * 是否是空布局
-     */
-    protected open fun isEmptyView(): Boolean {
-        return isHaveEmpty() && getDataItemCount() == 0
-    }
-
-    /**
-     * 是否是足布局
-     */
-    protected open fun isFootView(adapterPosition: Int): Boolean {
-        return isHaveFoot() && getDataItemCount() == adapterPosition
-    }
-
-    /**
-     * 是否是头布局
-     */
-    protected open fun isHeadView(adapterPosition: Int): Boolean {
-        return isHaveHead() && adapterPosition == 0
-    }
-
-    protected open fun isExtView(adapterPosition: Int): Boolean {
-        return isHeadView(adapterPosition) || isFootView(adapterPosition) || isEmptyView()
-    }
-    // endregion
-
-    // endregion
 
     //数据viewholder需要继承的布局
     abstract class DataViewHolder<T, VB : ViewBinding>(binding: VB) :
@@ -293,4 +291,5 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     class FooterViewHolder<VB : ViewBinding>(binding: VB) : ExtViewHolder<VB>(binding)
 
     class HeaderViewHolder<VB : ViewBinding>(binding: VB) : ExtViewHolder<VB>(binding)
+    // endregion
 }

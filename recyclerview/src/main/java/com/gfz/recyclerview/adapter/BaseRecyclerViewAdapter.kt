@@ -273,7 +273,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      */
     open fun removeData(position: Int) {
         if (isDataIndex(position)) {
-            TopLog.e(position)
             list.removeAt(position)
         }
     }
@@ -343,4 +342,5 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     private fun fastClick(): Boolean {
         return timeCell.fastClick(0, 500)
     }
+    // endregion
 }
