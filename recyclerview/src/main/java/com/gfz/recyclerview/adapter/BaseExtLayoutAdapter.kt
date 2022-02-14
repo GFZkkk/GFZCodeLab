@@ -188,12 +188,16 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         return length
     }
 
-    open fun notifyAllDataChanged() {
-        notifyItemRangeChanged(getHeaderNum(), getDataItemCount())
+    override fun notifyDataRangeInserted(position: Int, length: Int) {
+        super.notifyDataRangeInserted(getDataPosition(position), length)
     }
 
-    open fun notifyDataChanged(dataPosition: Int) {
-        notifyChanged(dataPosition + getHeaderNum())
+    override fun notifyDataRangeChanged(position: Int, length: Int) {
+        super.notifyDataRangeChanged(getDataPosition(position), length)
+    }
+
+    override fun notifyDataRangeRemoved(position: Int, length: Int) {
+        super.notifyDataRangeRemoved(getDataPosition(position), length)
     }
 
     protected open fun getEFItemViewType(position: Int): Int {
