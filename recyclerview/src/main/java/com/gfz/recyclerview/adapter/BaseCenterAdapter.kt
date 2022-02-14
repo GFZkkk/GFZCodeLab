@@ -4,11 +4,14 @@ import android.content.Context
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup.MarginLayoutParams
+import android.view.animation.Interpolator
 import androidx.annotation.Px
 import androidx.recyclerview.widget.*
 import com.gfz.common.utils.ScreenUtil
 import com.gfz.common.ext.toPX
 import com.gfz.recyclerview.decoration.NormalDecoration
+import kotlin.math.ceil
+import kotlin.math.sqrt
 
 /**
  * 可以滚动到中间的适配器
@@ -228,7 +231,11 @@ abstract class BaseCenterAdapter<T>(
         return null
     }
 
-    protected open fun getScroller(position: Int): CenterScroller {
+    protected open fun getScroller(context: Context?, time: Float): CenterScroller {
+        return CenterScroller(context, smoothTime)
+    }
+
+    private fun getScroller(position: Int): CenterScroller {
         val centerScroller = CenterScroller(context, smoothTime)
         centerScroller.targetPosition = position
         return centerScroller
@@ -240,7 +247,7 @@ abstract class BaseCenterAdapter<T>(
         return centerScroller
     }
 
-    class CenterScroller(context: Context?, private val time: Float) :
+    open class CenterScroller(context: Context?, private val time: Float) :
         LinearSmoothScroller(context) {
         override fun calculateDtToFit(
             viewStart: Int,
@@ -254,6 +261,25 @@ abstract class BaseCenterAdapter<T>(
 
         override fun calculateSpeedPerPixel(displayMetrics: DisplayMetrics): Float {
             return time / displayMetrics.densityDpi
+        }
+    }
+
+    abstract class CustomCenterScroller(private val interpolator: Interpolator, context: Context?, time: Float) :
+        CenterScroller(context, time) {
+
+        override fun onTargetFound(targetView: View, state: RecyclerView.State, action: Action) {
+            super.onTargetFound(targetView, state, action)
+            val dx = calculateDxToMakeVisible(targetView, horizontalSnapPreference)
+            val dy = calculateDyToMakeVisible(targetView, verticalSnapPreference)
+            val distance = sqrt((dx * dx + dy * dy).toDouble()).toInt()
+            val time = calculateTimeForDeceleration(distance)
+            if (time > 0) {
+                action.update(-dx, -dy, time, interpolator)
+            }
+        }
+
+        override fun calculateTimeForDeceleration(dx: Int): Int {
+            return ceil(calculateTimeForScrolling(dx).toDouble()).toInt()
         }
     }
 }

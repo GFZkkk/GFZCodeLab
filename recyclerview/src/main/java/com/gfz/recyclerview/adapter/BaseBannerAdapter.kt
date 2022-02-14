@@ -72,10 +72,10 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int, pri
     }
 
     private fun addTouchEvent(recyclerView: RecyclerView){
-        if (filterUserActions){
-            return
-        }
         recyclerView.setOnTouchListener { _, event ->
+            if (filterUserActions) {
+                return@setOnTouchListener true
+            }
             action = event.action
             when (action) {
                 MotionEvent.ACTION_DOWN -> {
