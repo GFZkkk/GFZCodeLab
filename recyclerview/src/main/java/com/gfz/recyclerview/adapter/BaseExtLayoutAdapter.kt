@@ -48,13 +48,12 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         viewType: Int
     ): BaseRecyclerViewHolder<T>
 
-    override fun onBindViewHolder(holder: BaseRecyclerViewHolder<T>, position: Int) {
-        val index = getDataPosition(position)
-        holder.bindViewHolder(getData(index), index)
-    }
-
     override fun getItemCount(): Int {
         return if (isHaveEmpty() && getDataItemCount() == 0) 1 else getDataItemCount() + getHeaderNum() + getFooterNum()
+    }
+
+    override fun getData(position: Int): T? {
+        return super.getData(getDataPosition(position))
     }
 
     override fun getItemViewType(position: Int): Int {

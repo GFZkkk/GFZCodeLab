@@ -59,7 +59,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      */
     var needAutoFilterEmptyData = true
 
-    private val timeCell: TimeCell by lazy {
+    val timeCell: TimeCell by lazy {
         TimeCell()
     }
 
@@ -169,7 +169,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * @return 绑定的某个位置的数据
      */
-    fun getData(position: Int): T? = if (isDataIndex(position)) list[position] else null
+    open fun getData(position: Int): T? = if (isDataIndex(position)) list[position] else null
 
     // region 修改并刷新
     /**
