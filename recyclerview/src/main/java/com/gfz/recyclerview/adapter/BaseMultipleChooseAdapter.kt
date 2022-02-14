@@ -116,7 +116,7 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
     fun setTitleItemStatus(position: Int, change: Boolean) {
         val groupId = getGroupIdByPosition(position)
         chooseTitleItem.append(groupId, change)
-        getData().forEachIndexed { index, t ->
+        getDataList().forEachIndexed { index, t ->
             if (t?.getBaseGroupId() == groupId && isNewGroup(index)) {
                 notifyItemChanged(index)
                 return@forEachIndexed
@@ -127,7 +127,7 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
     fun updateMultipleItem(position: Int) {
         val groupId = getGroupIdByPosition(position)
         val change = isMultipleChooseItem(position)
-        getData().forEachIndexed { index, multipleChooseBean ->
+        getDataList().forEachIndexed { index, multipleChooseBean ->
             if (multipleChooseBean?.getBaseGroupId() == groupId) {
                 if (change != isChooseItem(index)) {
                     chooseItem(index, change)
@@ -148,7 +148,7 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
         val groupId = getGroupIdByPosition(position)
         val multipleChoose: Boolean = isMultipleChooseItem(position)
         var allChoose = true
-        getData().forEachIndexed { index, t ->
+        getDataList().forEachIndexed { index, t ->
             if (t?.getBaseGroupId() == groupId) {
                 if (!isChooseItem(index)) {
                     allChoose = false
