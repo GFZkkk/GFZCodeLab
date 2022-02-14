@@ -52,15 +52,27 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         return if (isHaveEmpty() && getDataItemCount() == 0) 1 else getDataItemCount() + getHeaderNum() + getFooterNum()
     }
 
-    override fun getData(position: Int): T? {
-        return super.getData(getDataPosition(position))
-    }
-
     override fun getItemViewType(position: Int): Int {
         if (isEmptyView()) return EMPTY
         if (isHeadView(position)) return HEAD
         return if (isFootView(position)) FOOT else getEFItemViewType(getDataPosition(position))
     }
+
+    // region 数据
+
+    override fun getData(position: Int): T? {
+        return super.getData(getDataPosition(position))
+    }
+
+    override fun removeData(position: Int) {
+        super.removeData(getDataPosition(position))
+    }
+
+    override fun setData(position: Int, data: T?) {
+        super.setData(getDataPosition(position), data)
+    }
+
+    // endregion
 
     // region 额外布局
 
@@ -181,18 +193,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
      */
     open fun getDataItemCount(): Int {
         return length
-    }
-
-    override fun notifyDataRangeInserted(position: Int, length: Int) {
-        super.notifyDataRangeInserted(getDataPosition(position), length)
-    }
-
-    override fun notifyDataRangeChanged(position: Int, length: Int) {
-        super.notifyDataRangeChanged(getDataPosition(position), length)
-    }
-
-    override fun notifyDataRangeRemoved(position: Int, length: Int) {
-        super.notifyDataRangeRemoved(getDataPosition(position), length)
     }
 
     protected open fun getEFItemViewType(position: Int): Int {

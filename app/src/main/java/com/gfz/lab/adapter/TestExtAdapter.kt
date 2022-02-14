@@ -7,6 +7,7 @@ import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.lab.databinding.ItemExtDataBinding
 import com.gfz.lab.databinding.LayoutHeaderTestBinding
 import com.gfz.common.ext.toLog
+import com.gfz.common.utils.TopLog
 
 /**
  * 测试扩展布局
@@ -24,11 +25,17 @@ class TestExtAdapter : BaseExtLayoutAdapter<Number>() {
 
     inner class ViewHolder(binding: ItemExtDataBinding) : DataViewHolder<Number, ItemExtDataBinding>(binding){
 
-        override fun onBindViewHolder(data: Number, position: Int) {
-            binding.tvTest.text = ""
-            (headerViewBinding as? LayoutHeaderTestBinding)?.apply {
-                (tvHeader.text.toString()+position.toString()).toLog()
+        override fun initEvent() {
+            super.initEvent()
+            with(binding){
+                tvAdd.addClickListener()
+                tvDelete.addClickListener()
             }
+        }
+
+        override fun onBindViewHolder(data: Number, position: Int) {
+            binding.tvTest.text = data.toString()
+            TopLog.e(position)
         }
 
     }

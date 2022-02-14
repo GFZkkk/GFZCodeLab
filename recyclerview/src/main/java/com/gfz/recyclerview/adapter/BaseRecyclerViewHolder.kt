@@ -19,13 +19,14 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
         get() = itemView.context
 
     private var listener: ((View, Int) -> Unit)? = null
-
-    init {
-        initEvent()
-    }
+    // 是否已经成功初始化
+    var isInit = false
 
     // region 对外方法
     fun bindViewHolder(data: T?, position: Int) {
+        if (!isInit){
+            isInit = onInit()
+        }
         if (data != null) {
             onBindViewHolder(data, position)
         } else {
@@ -43,6 +44,10 @@ abstract class BaseRecyclerViewHolder<T>(itemView: View) : RecyclerView.ViewHold
     // endregion
 
     // region 内部方法
+    protected open fun onInit(): Boolean{
+        initEvent()
+        return true
+    }
     protected open fun initEvent() {
         itemView.addClickListener()
     }

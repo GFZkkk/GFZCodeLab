@@ -1,11 +1,13 @@
 package com.gfz.lab.ui.fragment.home
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gfz.common.utils.TopLog
 import com.gfz.lab.adapter.TestExtAdapter
 import com.gfz.lab.databinding.FragmentExtlayoutBinding
 import com.gfz.lab.databinding.LayoutHeaderTestBinding
 import com.gfz.lab.base.BaseVBFragment
 import com.gfz.common.utils.viewBind
+import com.gfz.lab.R
 
 /**
  *
@@ -17,7 +19,19 @@ class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>() {
 
         with(binding) {
 
-            val adapter = TestExtAdapter()
+            val adapter = TestExtAdapter().apply {
+                setOnItemClickDataListener { view, i, number ->
+                    when(view.id){
+                        R.id.tv_add -> {
+                            add(number)
+                        }
+                        R.id.tv_delete -> {
+                            remove(i)
+                        }
+
+                    }
+                }
+            }
             rvList.adapter = adapter
             rvList.layoutManager = LinearLayoutManager(requireContext())
             adapter.refresh(listOf(1, 2, 3, 4))
