@@ -178,14 +178,8 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      */
     fun refresh(data: List<T?>?) {
         val oldLength = length
-        val newLength = data?.size ?: 0
         setDataList(data)
-        notifyDataRangeChanged(0, oldLength.coerceAtMost(newLength))
-        if (oldLength > newLength){
-            notifyDataRangeRemoved(newLength, oldLength - newLength)
-        } else if(oldLength < newLength){
-            notifyDataRangeInserted(oldLength, newLength - oldLength)
-        }
+        notifyDataAllChanged(oldLength)
     }
 
     /**
@@ -305,6 +299,15 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     // region 刷新
 
+    open fun notifyDataAllChanged(oldLength: Int){
+        val newLength = length
+        notifyDataRangeChanged(0, oldLength.coerceAtMost(newLength))
+        if (oldLength > newLength){
+            notifyDataRangeRemoved(newLength, oldLength - newLength)
+        } else if(oldLength < newLength){
+            notifyDataRangeInserted(oldLength, newLength - oldLength)
+        }
+    }
     /**
      * 刷新改变item的位置
      */
