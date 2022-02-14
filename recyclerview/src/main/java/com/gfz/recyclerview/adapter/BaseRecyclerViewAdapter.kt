@@ -107,8 +107,8 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         val preClickIndex = this.clickIndex
         this.clickIndex = clickIndex
         if (needAutoRefreshClickItem && preClickIndex != clickIndex) {
-            notifyChanged(preClickIndex)
-            notifyChanged(clickIndex)
+            notifyDataRangeChanged(preClickIndex)
+            notifyDataRangeChanged(clickIndex)
         }
     }
 
@@ -176,8 +176,15 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 刷新全部数据
      */
     open fun refresh(data: List<T?>?) {
+        val oldLength = length
+        val newLength = data?.size ?: 0
         setDataList(data)
-        notifyDataSetChanged()
+        notifyDataRangeChanged(0, oldLength.coerceAtMost(newLength))
+        if (oldLength > newLength){
+            notifyDataRangeRemoved(newLength, oldLength - newLength)
+        } else if(oldLength < newLength){
+            notifyDataRangeInserted(oldLength, newLength - oldLength)
+        }
     }
 
     /**
@@ -185,7 +192,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      */
     open fun addAll(data: List<T?>) {
         addAllData(data)
-        notifyItemRangeInserted(itemCount - data.size, data.size)
+        notifyDataRangeInserted(itemCount - data.size, data.size)
     }
 
     /**
@@ -193,7 +200,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      */
     open fun add(data: T) {
         addData(data)
-        notifyItemInserted(itemCount)
+        notifyDataRangeInserted(itemCount)
     }
 
     /**
@@ -201,7 +208,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      */
     open fun replace(position: Int, data: T) {
         setData(position, data)
-        notifyItemChanged(position)
+        notifyDataRangeChanged(position)
     }
 
     /**
@@ -209,7 +216,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      */
     open fun remove(position: Int) {
         removeData(position)
-        notifyItemRemoved(position)
+        notifyDataRangeRemoved(position)
     }
     // endregion
 
@@ -309,25 +316,25 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 刷新改变item的位置
      */
-    open fun notifyInserted(position: Int) {
-        notifyItemInserted(position)
+    open fun notifyDataRangeInserted(position: Int, length: Int = 1) {
+        notifyItemRangeInserted(position, length)
     }
 
     /**
      * 刷新改变item的位置
      */
-    open fun notifyChanged(position: Int) {
+    open fun notifyDataRangeChanged(position: Int, length: Int = 1) {
         if (isItemIndex(position)) {
-            notifyItemChanged(position)
+            notifyItemRangeChanged(position, length)
         }
     }
 
     /**
      * 刷新删除item的位置
      */
-    open fun notifyRemoved(position: Int) {
+    open fun notifyDataRangeRemoved(position: Int, length: Int = 1) {
         if (isItemIndex(position)) {
-            notifyItemRemoved(position)
+            notifyItemRangeRemoved(position, length)
         }
     }
 
@@ -345,97 +352,4 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     private fun fastClick(): Boolean {
         return timeCell.fastClick(0, 500)
     }
-
-    /**
-     * 时间间隔工具类
-     */
-    class TimeCell(size: Int = 5) {
-
-        private val timeArray: SparseArray<Long> by lazy {
-            SparseArray<Long>(size)
-        }
-
-        private var lastTime = 0L
-
-        /**
-         * 是否是重复点击
-         */
-        fun fastClick(tag: Int = 0, dur: Int): Boolean {
-            val now = getNowTime()
-            val last = getLastTime(tag)
-            if (!overTimeInterval(now, last, dur)) {
-                return true
-            }
-            saveLastTime(tag, now)
-            return false
-        }
-
-        /**
-         * 开始计时
-         */
-        fun start(tag: Int = 0) {
-            saveLastTime(tag, getNowTime())
-        }
-
-        /**
-         * 结束计时
-         */
-        fun end(tag: Int = 0): Long {
-            val time = getNowTime() - getLastTime(tag)
-            start(tag)
-            return time
-        }
-
-        /**
-         * 是否超时
-         */
-        fun overTime(dur: Int, tag: Int = 0): Boolean {
-            return overTimeInterval(getNowTime(), getLastTime(tag), dur)
-        }
-
-        fun isNewTag(tag: Int): Boolean {
-            return if (tag == 0) {
-                lastTime == 0L
-            } else {
-                timeArray.indexOfKey(tag) < 0
-            }
-        }
-
-        /**
-         * 判断两个时间的间隔是否已经超过条件
-         */
-        private fun overTimeInterval(now: Long, last: Long, dur: Int): Boolean {
-            return now - last > dur
-        }
-
-        /**
-         * 获取当前时间
-         */
-        private fun getNowTime(): Long {
-            return SystemClock.elapsedRealtime()
-        }
-
-        /**
-         * 获取上一次记录时间
-         */
-        private fun getLastTime(tag: Int): Long {
-            return if (tag == 0) {
-                lastTime
-            } else {
-                timeArray[tag, 0L]
-            }
-        }
-
-        /**
-         * 保存记录时间
-         */
-        private fun saveLastTime(tag: Int, now: Long) {
-            if (tag == 0) {
-                lastTime = now
-            } else {
-                timeArray.append(tag, now)
-            }
-        }
-    }
-    // endregion
 }
