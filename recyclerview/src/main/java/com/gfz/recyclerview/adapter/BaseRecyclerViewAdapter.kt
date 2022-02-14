@@ -147,7 +147,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         // view点击事件
         listener?.invoke(v, position)
         // 数据点击事件
-        getDataByPosition(position)?.let {
+        getData(position)?.let {
             dataListener?.invoke(v, position, it)
         }
 
@@ -298,15 +298,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     open fun isFirstData(position: Int) = position == 0
 
     open fun isLastData(position: Int) = position == length - 1
-
-    /**
-     * 根据item的位置获取数据
-     * @param holderPosition
-     * @return
-     */
-    protected open fun getDataByPosition(holderPosition: Int): T? {
-        return getData(holderPosition)
-    }
     // endregion
 
     // endregion

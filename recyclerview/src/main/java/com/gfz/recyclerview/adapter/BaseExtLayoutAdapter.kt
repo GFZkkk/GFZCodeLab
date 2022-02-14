@@ -62,10 +62,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         return if (isFootView(position)) FOOT else getEFItemViewType(getDataPosition(position))
     }
 
-    override fun getDataByPosition(holderPosition: Int): T? {
-        return super.getDataByPosition(getDataPosition(holderPosition))
-    }
-
     // region 额外布局
 
     protected open fun getEmptyViewBindingClass(): Class<*>? {
