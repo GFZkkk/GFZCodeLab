@@ -47,20 +47,6 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
 
     override fun initData() {
         viewModel.getData()
-        viewModel.startJob {
-            val path = LocalFileUtil.getCacheFilePath()
-            TopLog.e(path)
-            var fileName: String
-            var i = 10
-            while (i-- > 0){
-                delay(1000)
-                fileName = "${this@TestFlowFragment.javaClass.simpleName}${SystemClock.uptimeMillis()}".lowercase()
-                val name = "$path$fileName.jpg"
-                BitmapUtil.convertViewToFile(name, binding.flContent)
-            }
-            BitmapUtil.createGif(path, path + "abc.gif")
-        }
-
     }
 
     override fun initObserver() {
