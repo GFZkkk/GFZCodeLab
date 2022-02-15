@@ -9,10 +9,12 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.Nullable;
 
+import com.gfz.common.utils.ScreenUtil;
 import com.gfz.common.utils.TopLog;
 
 /**
@@ -60,6 +62,7 @@ public class InterpolatorView extends View implements ValueAnimator.AnimatorUpda
         ObjectAnimator animator1 = ObjectAnimator.ofFloat(this, "progressY", 0, 1);
 //        animator1.setRepeatCount(ValueAnimator.INFINITE);
         animator1.setInterpolator(new EaseCubicInterpolator(0.66f, 0, 0.34f, 1));
+//        animator1.setInterpolator(new AccelerateDecelerateInterpolator());
         animatorSet = new AnimatorSet();
         animatorSet.playTogether(animator, animator1);
 
@@ -81,7 +84,7 @@ public class InterpolatorView extends View implements ValueAnimator.AnimatorUpda
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int width = 1000;
+        int width = getMeasuredWidth();
         path.lineTo(width * progressX, width - width * progressY);
         canvas.drawPath(path, paint);
         TopLog.INSTANCE.e(progressY);
