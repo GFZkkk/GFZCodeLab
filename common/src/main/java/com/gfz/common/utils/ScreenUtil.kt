@@ -2,6 +2,8 @@ package com.gfz.common.utils
 
 import android.content.Context
 import com.gfz.common.base.BaseApplication
+import com.gfz.common.ext.toDP
+import com.gfz.common.ext.toPX
 
 /**
  * 屏幕相关操作
@@ -20,4 +22,7 @@ object ScreenUtil {
      */
     fun getScreenHeight(context: Context? = BaseApplication.appContext): Int =
         context?.resources?.displayMetrics?.heightPixels ?: 0
+
+    fun toPx(dp: Int, context: Context = BaseApplication.appContext): Int = dp.toPX(context)
+    fun toDP(px: Int, context: Context = BaseApplication.appContext): Int = px.toDP(context)
 }
