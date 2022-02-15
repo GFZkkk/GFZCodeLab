@@ -9,6 +9,7 @@ import androidx.annotation.Px
 import androidx.recyclerview.widget.*
 import com.gfz.common.utils.ScreenUtil
 import com.gfz.common.ext.toPX
+import com.gfz.common.utils.ScreenUtil.getScreenWidth
 import com.gfz.recyclerview.decoration.NormalDecoration
 import kotlin.math.ceil
 import kotlin.math.sqrt
@@ -67,7 +68,7 @@ abstract class BaseCenterAdapter<T>(
             snapHelper = getSnapHelper()
         }
         offset = if (getItemWidth() != 0) {
-            (ScreenUtil.getScreenWidth(context) - getItemWidth().toPX(context)) / 2
+            (getScreenWidth(context) - getItemWidth()) / 2
         } else {
             0
         }
@@ -82,7 +83,7 @@ abstract class BaseCenterAdapter<T>(
     }
 
     fun setHeadDecorations(headDecorations: Int) {
-        this.headDecorations = headDecorations.toPX(context)
+        this.headDecorations = headDecorations
     }
 
     open fun getItemWidth(): Int {
@@ -91,6 +92,19 @@ abstract class BaseCenterAdapter<T>(
 
     protected open fun getSnapHelper(): SnapHelper {
         return PagerSnapHelper()
+    }
+
+    open fun <VH : BaseRecyclerViewHolder<T>?> getHolderByPosition(position: Int): VH? {
+        if (isItemIndex(position)) {
+            return mLayoutManager.findViewByPosition(position)?.let {
+                mRecyclerView.getChildViewHolder(it) as? VH
+            }
+        }
+        return null
+    }
+
+    protected open fun getScroller(context: Context?, time: Float): CenterScroller {
+        return CenterScroller(context, smoothTime)
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -112,10 +126,29 @@ abstract class BaseCenterAdapter<T>(
         }
     }
 
-    //需要避免检查过于频繁
-    protected open fun updatePosition() {
-        if (timeCell.overTime(CHECK_TAG, 10)) {
+    open fun smoothScrollToPosition(position: Int) {
+        if (isItemIndex(position)) {
+            mRecyclerView.post {
+                mLayoutManager.startSmoothScroll(getScroller(position))
+                if (!needChangeIndexAfterMoveEvent) {
+                    setClickIndex(position)
+                }
+            }
+        }
+    }
+
+    open fun scrollToPosition(position: Int) {
+        if (isItemIndex(position)) {
+            if (offset > 0) {
+                mLayoutManager.scrollToPositionWithOffset(position, offset)
+            } else {
+                mLayoutManager.scrollToPosition(position)
+            }
             checkPosition()
+            mRecyclerView.post {
+                mLayoutManager.startSmoothScroll(getQuickScroller(position))
+                setClickIndex(position)
+            }
         }
     }
 
@@ -133,6 +166,16 @@ abstract class BaseCenterAdapter<T>(
         // 通知item变动
         if (firstVisiblePosition != position) {
             onItemChange(position)
+        }
+    }
+
+    open fun onItemChange(position: Int) {
+        firstVisiblePosition = position
+        if (onItemChangeListener != null) {
+            onItemChangeListener!!.onItemChange(position)
+        }
+        if (needChangeIndexAfterMoveEvent) {
+            setClickIndex(position)
         }
     }
 
@@ -186,57 +229,15 @@ abstract class BaseCenterAdapter<T>(
         }
     }
 
-    open fun onItemChange(position: Int) {
-        firstVisiblePosition = position
-        if (onItemChangeListener != null) {
-            onItemChangeListener!!.onItemChange(position)
-        }
-        if (needChangeIndexAfterMoveEvent) {
-            setClickIndex(position)
-        }
-    }
-
-    open fun smoothScrollToPosition(position: Int) {
-        if (isItemIndex(position)) {
-            mRecyclerView.post {
-                mLayoutManager.startSmoothScroll(getScroller(position))
-                if (!needChangeIndexAfterMoveEvent) {
-                    setClickIndex(position)
-                }
-            }
-        }
-    }
-
-    open fun scrollToPosition(position: Int) {
-        if (isItemIndex(position)) {
-            if (offset > 0) {
-                mLayoutManager.scrollToPositionWithOffset(position, offset)
-            } else {
-                mLayoutManager.scrollToPosition(position)
-            }
+    //需要避免检查过于频繁
+    protected open fun updatePosition() {
+        if (timeCell.overTime(CHECK_TAG, 10)) {
             checkPosition()
-            mRecyclerView.post {
-                mLayoutManager.startSmoothScroll(getQuickScroller(position))
-                setClickIndex(position)
-            }
         }
-    }
-
-    open fun <VH : BaseRecyclerViewHolder<T>?> getHolderByPosition(position: Int): VH? {
-        if (isItemIndex(position)) {
-            return mLayoutManager.findViewByPosition(position)?.let {
-                mRecyclerView.getChildViewHolder(it) as? VH
-            }
-        }
-        return null
-    }
-
-    protected open fun getScroller(context: Context?, time: Float): CenterScroller {
-        return CenterScroller(context, smoothTime)
     }
 
     private fun getScroller(position: Int): CenterScroller {
-        val centerScroller = CenterScroller(context, smoothTime)
+        val centerScroller = getScroller(context, smoothTime)
         centerScroller.targetPosition = position
         return centerScroller
     }
@@ -264,7 +265,7 @@ abstract class BaseCenterAdapter<T>(
         }
     }
 
-    abstract class CustomCenterScroller(private val interpolator: Interpolator, context: Context?, time: Float) :
+    open class CustomCenterScroller(private val interpolator: Interpolator, context: Context?, time: Float) :
         CenterScroller(context, time) {
 
         override fun onTargetFound(targetView: View, state: RecyclerView.State, action: Action) {
