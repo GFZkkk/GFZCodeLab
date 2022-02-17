@@ -108,8 +108,8 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         val preClickIndex = this.clickIndex
         this.clickIndex = clickIndex
         if (needAutoRefreshClickItem && preClickIndex != clickIndex) {
-            notifyDataRangeChanged(preClickIndex)
-            notifyDataRangeChanged(clickIndex)
+            notifyDataRangeChange(preClickIndex)
+            notifyDataRangeChange(clickIndex)
         }
     }
 
@@ -177,41 +177,59 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 刷新全部数据
      */
     fun refresh(data: List<T?>?) {
-        val oldLength = length
-        setDataList(data)
-        notifyDataAllChanged(oldLength)
+        notifyDataAllChange{
+            setDataList(data)
+        }
     }
 
     /**
      * 刷新添加数据列表后的视图
      */
-    fun addAll(data: List<T?>) {
-        addAllData(data)
-        notifyDataRangeInserted(itemCount - data.size, data.size)
+    fun addAll(data: List<T?>, position: Int = length) {
+        notifyDataRangeInsert(position){
+            addAllData(data, position)
+        }
     }
 
     /**
      * 刷新添加某个数据后的视图
      */
-    fun add(data: T) {
-        addData(data)
-        notifyDataRangeInserted(itemCount)
+    fun add(data: T, position: Int = length) {
+        notifyDataRangeInsert(position){
+            addData(data, position)
+        }
     }
 
     /**
      * 刷新某个数据
      */
     fun replace(position: Int, data: T) {
-        setData(position, data)
-        notifyDataRangeChanged(position)
+        notifyDataRangeChange(position){
+            setData(position, data)
+        }
     }
 
     /**
      * 刷新移除某个位置的数据后的视图
      */
     fun remove(position: Int) {
-        removeData(position)
-        notifyDataRangeRemoved(position)
+        notifyDataRangeRemove(position){
+            removeData(position)
+        }
+    }
+
+    fun removeIf(block: T?.() -> Boolean){
+        val it = getDataList().iterator()
+        while (it.hasNext()){
+            val data = it.next()
+            val delete = block(data)
+            if (delete){
+                val index = getDataList().indexOf(data)
+                if (isDataIndex(index)){
+                    remove(index)
+                }
+            }
+        }
     }
     // endregion
 
@@ -227,14 +245,15 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 添加数据列表
      */
-    fun addAllData(dataList: List<T?>?) {
+    fun addAllData(dataList: List<T?>?, position: Int = length) {
         if (dataList != null) {
-            if (needAutoFilterEmptyData) {
-                for (data in dataList) {
-                    addData(data)
-                }
-            } else {
-                list.addAll(dataList)
+            val newList = dataList.filter {
+                !needAutoFilterEmptyData || it != null
+            }
+            if (isDataIndex(position)){
+                list.addAll(position, newList)
+            } else if(position == length){
+                list.addAll(newList)
             }
         }
     }
@@ -242,11 +261,15 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 添加单个数据
      */
-    fun addData(data: T?) {
+    fun addData(data: T?, position: Int = length) {
         if (needAutoFilterEmptyData && data == null) {
             return
         }
-        list.add(data)
+        if (isDataIndex(position)){
+            list.add(position, data)
+        } else if(position == length){
+            list.add(data)
+        }
     }
 
     /**
@@ -299,33 +322,39 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     // region 刷新
 
-    open fun notifyDataAllChanged(oldLength: Int){
+    open fun notifyDataAllChange(block: () -> Unit){
+        val oldLength = length
+        block()
         val newLength = length
-        notifyDataRangeChanged(0, oldLength.coerceAtMost(newLength))
+
+        notifyItemRangeChanged(0, oldLength.coerceAtMost(newLength))
         if (oldLength > newLength){
-            notifyDataRangeRemoved(newLength, oldLength - newLength)
+            notifyItemRangeRemoved(newLength, oldLength - newLength)
         } else if(oldLength < newLength){
-            notifyDataRangeInserted(oldLength, newLength - oldLength)
+            notifyItemRangeInserted(oldLength, newLength - oldLength)
         }
     }
     /**
      * 刷新改变item的位置
      */
-    open fun notifyDataRangeInserted(position: Int, length: Int = 1) {
+    open fun notifyDataRangeInsert(position: Int, length: Int = 1, block: () -> Unit = {}) {
+        block()
         notifyItemRangeInserted(position, length)
     }
 
     /**
      * 刷新删除item的位置
      */
-    open fun notifyDataRangeRemoved(position: Int, length: Int = 1) {
+    open fun notifyDataRangeRemove(position: Int, length: Int = 1, block: () -> Unit = {}) {
+        block()
         notifyItemRangeRemoved(position, length)
     }
 
     /**
      * 刷新改变item的位置
      */
-    open fun notifyDataRangeChanged(position: Int, length: Int = 1) {
+    open fun notifyDataRangeChange(position: Int, length: Int = 1, block: () -> Unit = {}) {
+        block()
         if (isItemIndex(position)) {
             notifyItemRangeChanged(position, length)
         }

@@ -33,13 +33,13 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int, pri
     }
 
     fun readyData(data: List<T?>) {
-        val oldLength = length
-        bannerNum = data.size
-        clear()
-        addData(data[data.size - 1])
-        addAllData(data)
-        addData(data[0])
-        notifyDataAllChanged(oldLength)
+        notifyDataAllChange{
+            bannerNum = data.size
+            clear()
+            addData(data[data.size - 1])
+            addAllData(data)
+            addData(data[0])
+        }
     }
 
     fun getBannerNum(): Int {
