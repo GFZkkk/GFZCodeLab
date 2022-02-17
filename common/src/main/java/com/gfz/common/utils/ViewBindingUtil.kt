@@ -1,6 +1,6 @@
 package com.gfz.common.utils
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import com.gfz.common.base.BaseApplication
  * created by gaofengze on 2021/1/27
  */
 
-inline fun <reified VB : ViewBinding> AppCompatActivity.viewBind() = lazy {
+inline fun <reified VB : ViewBinding> Activity.viewBind() = lazy {
     inflateBinding<VB>(layoutInflater).apply {
         setContentView(root)
     }
