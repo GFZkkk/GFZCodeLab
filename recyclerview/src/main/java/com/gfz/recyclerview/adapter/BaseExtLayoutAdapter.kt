@@ -192,21 +192,26 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         }
 
         abstract inner class RangeStatus {
-            lateinit var oldRange: Range
-                private set
-            lateinit var newRange: Range
-                private set
-            lateinit var moveRange: Range
-                private set
+            private val oldRange by lazy {
+                Range()
+            }
 
-            abstract fun buildRange(): Range
+            private val newRange by lazy {
+                Range()
+            }
+
+            val moveRange by lazy {
+                Range()
+            }
+
+            abstract fun recordRange(range: Range)
 
             fun recordOld() {
-                oldRange = buildRange()
+                recordRange(oldRange)
             }
 
             fun recordNew() {
-                newRange = buildRange()
+                recordRange(newRange)
                 mergeRange()
             }
 
@@ -226,37 +231,39 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
                 val unChangeLength = newRange.length.coerceAtMost(oldRange.length)
                 val start = newRange.start + unChangeLength
                 val moveLength = newRange.length - oldRange.length
-                moveRange = Range(start, moveLength)
+                moveRange.start = start
+                moveRange.length = moveLength
             }
         }
 
         inner class EmptyRangeStatus() : RangeStatus() {
-            override fun buildRange(): Range {
-                return Range(0, getEmptyNum())
+            override fun recordRange(range: Range) {
+                range.start = 0
+                range.length = getEmptyNum()
             }
         }
 
         inner class HeaderRangeStatus() : RangeStatus() {
-            override fun buildRange(): Range {
-                return Range(0, getHeaderNum())
+            override fun recordRange(range: Range) {
+                range.start = 0
+                range.length = getHeaderNum()
             }
         }
 
         inner class FooterRangeStatus() : RangeStatus() {
-            override fun buildRange(): Range {
-                return Range(
-                    if (dataSize == 0) {
-                        getEmptyNum()
-                    } else {
-                        getHeaderNum() + dataSize
-                    },
-                    getFooterNum()
-                )
+            override fun recordRange(range: Range) {
+                range.start = if (dataSize == 0) {
+                    getEmptyNum()
+                } else {
+                    getHeaderNum() + dataSize
+                }
+
+                range.length = getFooterNum()
             }
         }
-    }
 
-    data class Range(val start: Int = 0, val length: Int = 0)
+        inner class Range(var start: Int = 0, var length: Int = 0)
+    }
 
     // endregion
 
