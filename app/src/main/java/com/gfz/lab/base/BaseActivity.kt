@@ -10,6 +10,7 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import com.gfz.common.ext.getCompatColor
 import com.gfz.common.ext.setVisible
 import com.gfz.common.utils.TimeCell
 import com.gfz.common.utils.ToastUtil
@@ -60,7 +61,7 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
     open fun setWindowStatus() {
         window.apply {
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-//            statusBarColor = getCompatColor(R.color.col_b07529)
+            statusBarColor = getCompatColor(R.color.col_b07529)
         }
     }
 
