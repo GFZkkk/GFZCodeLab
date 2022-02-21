@@ -189,8 +189,8 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 刷新添加某个数据后的视图
      */
-    open fun add(data: T, block: () -> Unit = {}) {
-        add(data, dataSize, block)
+    open fun add(data: T) {
+        add(data, dataSize)
     }
 
     /**
@@ -207,9 +207,8 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 刷新添加某个数据后的视图
      * @param position item
      */
-    fun add(data: T, position: Int = dataSize, block: () -> Unit = {}) {
+    fun add(data: T, position: Int = dataSize) {
         notifyDataRangeInsert(position){
-            block()
             addData(data, position)
         }
     }
@@ -228,9 +227,8 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 刷新移除某个位置的数据后的视图
      * @param position item
      */
-    fun remove(position: Int, block: () -> Unit = {}) {
+    fun remove(position: Int) {
         notifyDataRangeRemove(position){
-            block()
             removeData(position)
         }
     }

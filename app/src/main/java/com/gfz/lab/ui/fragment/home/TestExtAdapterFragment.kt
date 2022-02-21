@@ -23,35 +23,17 @@ class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>() {
             setOnItemClickDataListener { view, i, number ->
                 when(view.id){
                     R.id.tv_add -> {
-                        add(number){
-                            TopLog.e("新增数据")
-                            toLogAdapter {
-                                haveHeader = RandomUtil.getRandomBoolean()
-                                haveFooter = RandomUtil.getRandomBoolean()
-                            }
-                        }
+                        add(number)
                     }
                     R.id.tv_delete -> {
 
-                        remove(i){
-                            TopLog.e("删除数据：$number")
-                            toLogAdapter {
-                                haveHeader = RandomUtil.getRandomBoolean()
-                                haveFooter = RandomUtil.getRandomBoolean()
-                            }
-                        }
+                        remove(i)
                     }
                     R.id.tv_update -> {
                         replace(i, RandomUtil.getRandomIndex(1000))
                     }
                     R.id.tv_insert -> {
-                        add(number, i){
-                            TopLog.e("新增数据")
-                            toLogAdapter {
-                                haveHeader = RandomUtil.getRandomBoolean()
-                                haveFooter = RandomUtil.getRandomBoolean()
-                            }
-                        }
+                        add(number, i + 1)
                     }
                 }
             }
@@ -78,40 +60,7 @@ class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>() {
 
             emptyBinding.tvEmpty.setOnClickListener {
 
-                adapter.add(RandomUtil.getRandomIndex(100)){
-                    TopLog.e("新增数据")
-                    toLogAdapter {
-                        adapter.haveHeader = RandomUtil.getRandomBoolean()
-                        adapter.haveFooter = RandomUtil.getRandomBoolean()
-                    }
-                }
-            }
-        }
-    }
-
-    private fun toLogAdapter(block: () -> Unit){
-        val oh = adapter.haveHeader
-        val of = adapter.haveFooter
-        block()
-        val nh = adapter.haveHeader
-        val nf = adapter.haveFooter
-        if (oh == nh){
-            TopLog.e("头布局无变化")
-        } else {
-            if (nh){
-                TopLog.e("新增头布局")
-            } else {
-                TopLog.e("删除头布局")
-            }
-        }
-
-        if (of == nf){
-            TopLog.e("足布局无变化")
-        } else {
-            if (nf) {
-                TopLog.e("新增足布局")
-            } else {
-                TopLog.e("删除足布局")
+                adapter.add(RandomUtil.getRandomIndex(100))
             }
         }
     }
