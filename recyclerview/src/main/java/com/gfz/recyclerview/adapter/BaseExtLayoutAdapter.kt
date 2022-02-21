@@ -26,6 +26,10 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     var emptyViewBinding: ViewBinding? = null
     var headerViewBinding: ViewBinding? = null
 
+    private val extViewNotifyHelper by lazy {
+        ExtViewNotifyHelper()
+    }
+
     override fun onCreateViewHolder(
         layoutInflater: LayoutInflater,
         parent: ViewGroup,
@@ -49,7 +53,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     ): BaseRecyclerViewHolder<T>
 
     override fun getItemCount(): Int {
-        return if (isHaveEmpty() && getDataItemCount() == 0) 1 else getDataItemCount() + getHeaderNum() + getFooterNum()
+        return getEmptyNum() + getHeaderNum() + getDataItemCount() + getFooterNum()
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -57,7 +61,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         if (isHeadView(position)) return HEAD
         return if (isFootView(position)) FOOT else getEFItemViewType(getDataPosition(position))
     }
-
 
     /**
      * 如果是GridLayoutManager布局，空布局需要独占一行
@@ -94,6 +97,22 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         return super.getData(getDataPosition(position))
     }
 
+    override fun addAll(data: List<T?>) {
+        addAll(data, getHeaderNum() + dataSize)
+    }
+
+    override fun add(data: T, block: () -> Unit) {
+        add(data, getHeaderNum() + dataSize, block)
+    }
+
+    override fun addAllData(dataList: List<T?>?, position: Int) {
+        super.addAllData(dataList, position - getHeaderNum())
+    }
+
+    override fun addData(data: T?, position: Int) {
+        super.addData(data, position - getHeaderNum())
+    }
+
     override fun removeData(position: Int) {
         super.removeData(getDataPosition(position))
     }
@@ -101,6 +120,142 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     override fun setData(position: Int, data: T?) {
         super.setData(getDataPosition(position), data)
     }
+
+    override fun notifyDataRangeInsert(position: Int, length: Int, block: () -> Unit) {
+        extViewNotifyHelper.notifyExtItemChange(block) {
+            TopLog.e(position + headerStatus.moveRange.length)
+            notifyItemRangeInserted(position + headerStatus.moveRange.length, length)
+        }
+        /*block()
+        notifyItemRangeInserted(position, length)*/
+    }
+
+    override fun notifyDataRangeRemove(position: Int, length: Int, block: () -> Unit) {
+        extViewNotifyHelper.notifyExtItemChange(block) {
+            notifyItemRangeRemoved(position + headerStatus.moveRange.length, length)
+        }
+    }
+
+    override fun notifyDataRangeChange(position: Int, length: Int, block: () -> Unit) {
+        extViewNotifyHelper.notifyExtItemChange(block) {
+            notifyItemRangeChanged(position + headerStatus.moveRange.length, length)
+        }
+    }
+
+    /**
+     * 额外布局刷新
+     */
+    inner class ExtViewNotifyHelper {
+        var emptyStatus: RangeStatus = EmptyRangeStatus()
+            private set
+        var headerStatus: RangeStatus = HeaderRangeStatus()
+            private set
+        var footerStatus: RangeStatus = FooterRangeStatus()
+            private set
+
+        // 通知额外布局刷新
+        fun notifyExtItemChange(
+            block: () -> Unit,
+            notifyDataChange: ExtViewNotifyHelper.() -> Unit
+        ) {
+            // 记录，更新数据
+            recordRangeBeforeChange()
+            TopLog.e(dataSize)
+            block()
+            TopLog.e(dataSize)
+            recordRangeAfterChange()
+            // 更新视图
+            notifyItemMoveByRange(emptyStatus)
+            notifyItemMoveByRange(headerStatus)
+            notifyDataChange(this)
+            notifyItemMoveByRange(footerStatus)
+        }
+
+        // 通知额外布局变化
+        private fun notifyItemMoveByRange(range: RangeStatus) {
+            with(range.moveRange) {
+                TopLog.e(this)
+                if (length > 0) {
+                    TopLog.e("Inserted")
+                    notifyItemRangeInserted(start, length)
+                } else if (length < 0) {
+                    TopLog.e("Removed")
+                    notifyItemRangeRemoved(start, -length)
+                }
+            }
+        }
+
+        // 记录数据变化之前
+        private fun recordRangeBeforeChange() {
+            emptyStatus.recordOld()
+            headerStatus.recordOld()
+            footerStatus.recordOld()
+        }
+
+        // 记录数据变化之后
+        private fun recordRangeAfterChange() {
+            emptyStatus.recordNew()
+            headerStatus.recordNew()
+            footerStatus.recordNew()
+        }
+
+        inner class EmptyRangeStatus() : RangeStatus() {
+            override fun buildRange(): Range {
+                return Range(0, getEmptyNum())
+            }
+        }
+
+        inner class HeaderRangeStatus() : RangeStatus() {
+            override fun buildRange(): Range {
+                return Range(0, getHeaderNum())
+            }
+        }
+
+        inner class FooterRangeStatus() : RangeStatus() {
+            override fun buildRange(): Range {
+                TopLog.e(dataSize)
+                return Range(
+                    if (dataSize == 0) {
+                        getEmptyNum()
+                    } else {
+                        getHeaderNum() + dataSize
+                    },
+                    getFooterNum()
+                )
+            }
+        }
+
+        abstract inner class RangeStatus {
+            lateinit var oldRange: Range
+                private set
+            lateinit var newRange: Range
+                private set
+            lateinit var moveRange: Range
+                private set
+
+            fun recordOld() {
+                oldRange = buildRange()
+            }
+
+            fun recordNew() {
+                newRange = buildRange()
+                mergeRange()
+            }
+
+            // 合并变化前后的range
+            private fun mergeRange() {
+                val unChangeLength = newRange.length.coerceAtMost(oldRange.length)
+                val start = newRange.start + unChangeLength
+                val moveLength = newRange.length - oldRange.length
+                moveRange = Range(start, moveLength)
+                TopLog.e(newRange)
+            }
+
+            abstract fun buildRange(): Range
+        }
+    }
+
+    data class Range(val start: Int = 0, val length: Int = 0)
 
     // endregion
 
@@ -123,7 +278,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
      * 获取数据长度
      */
     open fun getDataItemCount(): Int {
-        return length
+        return dataSize
     }
 
     protected open fun getEFItemViewType(position: Int): Int {
@@ -131,11 +286,15 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     }
 
     protected open fun getHeaderNum(): Int {
-        return if (isHaveHead()) 1 else 0
+        return if (isHaveHead() && getDataItemCount() > 0) 1 else 0
     }
 
     protected open fun getFooterNum(): Int {
-        return if (isHaveFoot()) 1 else 0
+        return if (isHaveFoot() && getDataItemCount() > 0) 1 else 0
+    }
+
+    protected fun getEmptyNum(): Int {
+        return if (isHaveEmpty() && getDataItemCount() == 0) 1 else 0
     }
     // endregion
 
@@ -165,7 +324,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
      * 是否是足布局
      */
     protected open fun isFootView(adapterPosition: Int): Boolean {
-        return isHaveFoot() && getDataItemCount() == adapterPosition
+        return isHaveFoot() && getHeaderNum() + getDataItemCount() == adapterPosition
     }
 
     /**
@@ -273,7 +432,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     //数据viewholder需要继承的布局
     abstract class DataViewHolder<T, VB : ViewBinding>(binding: VB) :
         BaseVBRecyclerViewHolder<T, VB>(binding) {
-
     }
 
     //扩展ViewHolder需要继承的布局

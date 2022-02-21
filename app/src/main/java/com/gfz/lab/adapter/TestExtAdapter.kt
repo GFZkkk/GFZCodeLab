@@ -7,13 +7,18 @@ import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.lab.databinding.ItemExtDataBinding
 import com.gfz.lab.databinding.LayoutHeaderTestBinding
 import com.gfz.common.ext.toLog
+import com.gfz.common.utils.RandomUtil
 import com.gfz.common.utils.TopLog
+import kotlin.random.Random
 
 /**
  * 测试扩展布局
  * created by gaofengze on 2021/2/22
  */
 class TestExtAdapter : BaseExtLayoutAdapter<Number>() {
+
+    var haveHeader = true
+    var haveFooter = true
 
     override fun onCreateDataViewHolder(
         layoutInflater: LayoutInflater,
@@ -23,13 +28,22 @@ class TestExtAdapter : BaseExtLayoutAdapter<Number>() {
         return ViewHolder(ItemExtDataBinding.inflate(layoutInflater, parent, false))
     }
 
+    override fun isHaveHead(): Boolean {
+
+        return super.isHaveHead() && haveHeader
+    }
+
+    override fun isHaveFoot(): Boolean {
+
+        return super.isHaveFoot() && haveFooter
+    }
+
     inner class ViewHolder(binding: ItemExtDataBinding) : DataViewHolder<Number, ItemExtDataBinding>(binding){
 
         override fun initEvent() {
             super.initEvent()
             with(binding){
-                tvAdd.addClickListener()
-                tvDelete.addClickListener()
+                addClickListeners(tvAdd, tvDelete, tvInsert, tvUpdate)
             }
         }
 

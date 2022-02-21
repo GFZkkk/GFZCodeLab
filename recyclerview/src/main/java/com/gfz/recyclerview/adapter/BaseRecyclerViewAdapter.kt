@@ -1,14 +1,11 @@
 package com.gfz.recyclerview.adapter
 
-import android.os.SystemClock
-import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.common.utils.TimeCell
-import com.gfz.common.utils.TopLog
 
 
 /**
@@ -27,7 +24,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 获取数据长度
      */
-    val length
+    val dataSize
         get() = getDataList().size
 
     /**
@@ -94,7 +91,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 列表长度
      */
-    override fun getItemCount(): Int = length
+    override fun getItemCount(): Int = dataSize
 
     /**
      * 得到当前点击的itemIndex
@@ -185,7 +182,22 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 刷新添加数据列表后的视图
      */
-    fun addAll(data: List<T?>, position: Int = length) {
+    open fun addAll(data: List<T?>) {
+        addAll(data, dataSize)
+    }
+
+    /**
+     * 刷新添加某个数据后的视图
+     */
+    open fun add(data: T, block: () -> Unit = {}) {
+        add(data, dataSize, block)
+    }
+
+    /**
+     * 刷新添加数据列表后的视图
+     * @param position item
+     */
+    fun addAll(data: List<T?>, position: Int = dataSize) {
         notifyDataRangeInsert(position){
             addAllData(data, position)
         }
@@ -193,15 +205,18 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     /**
      * 刷新添加某个数据后的视图
+     * @param position item
      */
-    fun add(data: T, position: Int = length) {
+    fun add(data: T, position: Int = dataSize, block: () -> Unit = {}) {
         notifyDataRangeInsert(position){
+            block()
             addData(data, position)
         }
     }
 
     /**
      * 刷新某个数据
+     * @param position item
      */
     fun replace(position: Int, data: T) {
         notifyDataRangeChange(position){
@@ -211,9 +226,11 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     /**
      * 刷新移除某个位置的数据后的视图
+     * @param position item
      */
-    fun remove(position: Int) {
+    fun remove(position: Int, block: () -> Unit = {}) {
         notifyDataRangeRemove(position){
+            block()
             removeData(position)
         }
     }
@@ -244,15 +261,16 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     /**
      * 添加数据列表
+     * @param position data
      */
-    fun addAllData(dataList: List<T?>?, position: Int = length) {
+    open fun addAllData(dataList: List<T?>?, position: Int = dataSize) {
         if (dataList != null) {
             val newList = dataList.filter {
                 !needAutoFilterEmptyData || it != null
             }
             if (isDataIndex(position)){
                 list.addAll(position, newList)
-            } else if(position == length){
+            } else if(position == dataSize){
                 list.addAll(newList)
             }
         }
@@ -260,20 +278,22 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     /**
      * 添加单个数据
+     * @param position data
      */
-    fun addData(data: T?, position: Int = length) {
+    open fun addData(data: T?, position: Int = dataSize) {
         if (needAutoFilterEmptyData && data == null) {
             return
         }
         if (isDataIndex(position)){
             list.add(position, data)
-        } else if(position == length){
+        } else if(position == dataSize){
             list.add(data)
         }
     }
 
     /**
      * 设置某个位置的数据
+     * @param position data
      */
     open fun setData(position: Int, data: T?) {
         if (isDataIndex(position)) {
@@ -287,6 +307,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     /**
      * 移除某个位置的数据
+     * @param position data
      */
     open fun removeData(position: Int) {
         if (isDataIndex(position)) {
@@ -297,7 +318,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 清空数据
      */
-    open fun clear() {
+    fun clear() {
         list.clear()
     }
     // endregion
@@ -306,7 +327,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 是否是数组下标
      */
-    open fun isDataIndex(position: Int): Boolean = position in 0 until length
+    open fun isDataIndex(position: Int): Boolean = position in 0 until dataSize
 
     /**
      * 是否是item下标
@@ -315,7 +336,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     open fun isFirstData(position: Int) = position == 0
 
-    open fun isLastData(position: Int) = position == length - 1
+    open fun isLastData(position: Int) = position == dataSize - 1
     // endregion
 
     // endregion
@@ -323,9 +344,9 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     // region 刷新
 
     open fun notifyDataAllChange(block: () -> Unit){
-        val oldLength = length
+        val oldLength = dataSize
         block()
-        val newLength = length
+        val newLength = dataSize
 
         notifyItemRangeChanged(0, oldLength.coerceAtMost(newLength))
         if (oldLength > newLength){
