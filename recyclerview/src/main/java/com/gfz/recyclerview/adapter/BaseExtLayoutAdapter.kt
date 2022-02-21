@@ -143,6 +143,8 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
 
     /**
      * 额外布局刷新
+     * 在数据变化前后记录额外布局变化。
+     * 根据变化在数据item刷新前更新空布局和头布局，之后更新足布局。
      */
     inner class ExtViewNotifyHelper {
         var emptyStatus: RangeStatus = EmptyRangeStatus()
@@ -152,45 +154,80 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         var footerStatus: RangeStatus = FooterRangeStatus()
             private set
 
-        // 通知额外布局刷新
         fun notifyExtItemChange(
             block: () -> Unit,
             notifyDataChange: ExtViewNotifyHelper.() -> Unit
         ) {
             // 记录，更新数据
-            recordRangeBeforeChange()
+            beforeDataChange()
             block()
-            recordRangeAfterChange()
+            afterDataChange()
             // 更新视图
-            notifyItemMoveByRange(emptyStatus)
-            notifyItemMoveByRange(headerStatus)
+            beforeItemChange()
             notifyDataChange(this)
-            notifyItemMoveByRange(footerStatus)
-        }
-
-        // 通知额外布局变化
-        private fun notifyItemMoveByRange(range: RangeStatus) {
-            with(range.moveRange) {
-                if (length > 0) {
-                    notifyItemRangeInserted(start, length)
-                } else if (length < 0) {
-                    notifyItemRangeRemoved(start, -length)
-                }
-            }
+            afterItemChange()
         }
 
         // 记录数据变化之前
-        private fun recordRangeBeforeChange() {
+        private fun beforeDataChange() {
             emptyStatus.recordOld()
             headerStatus.recordOld()
             footerStatus.recordOld()
         }
 
         // 记录数据变化之后
-        private fun recordRangeAfterChange() {
+        private fun afterDataChange() {
             emptyStatus.recordNew()
             headerStatus.recordNew()
             footerStatus.recordNew()
+        }
+
+        private fun beforeItemChange(){
+            emptyStatus.notifyItemChanged()
+            headerStatus.notifyItemChanged()
+        }
+
+        private fun afterItemChange(){
+            footerStatus.notifyItemChanged()
+        }
+
+        abstract inner class RangeStatus {
+            lateinit var oldRange: Range
+                private set
+            lateinit var newRange: Range
+                private set
+            lateinit var moveRange: Range
+                private set
+
+            abstract fun buildRange(): Range
+
+            fun recordOld() {
+                oldRange = buildRange()
+            }
+
+            fun recordNew() {
+                newRange = buildRange()
+                mergeRange()
+            }
+
+            // 刷新布局
+            fun notifyItemChanged() {
+                with(moveRange){
+                    if (length > 0) {
+                        notifyItemRangeInserted(start, length)
+                    } else if (length < 0) {
+                        notifyItemRangeRemoved(start, -length)
+                    }
+                }
+            }
+
+            // 合并变化前后的range
+            private fun mergeRange() {
+                val unChangeLength = newRange.length.coerceAtMost(oldRange.length)
+                val start = newRange.start + unChangeLength
+                val moveLength = newRange.length - oldRange.length
+                moveRange = Range(start, moveLength)
+            }
         }
 
         inner class EmptyRangeStatus() : RangeStatus() {
@@ -207,7 +244,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
 
         inner class FooterRangeStatus() : RangeStatus() {
             override fun buildRange(): Range {
-
                 return Range(
                     if (dataSize == 0) {
                         getEmptyNum()
@@ -217,34 +253,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
                     getFooterNum()
                 )
             }
-        }
-
-        abstract inner class RangeStatus {
-            lateinit var oldRange: Range
-                private set
-            lateinit var newRange: Range
-                private set
-            lateinit var moveRange: Range
-                private set
-
-            fun recordOld() {
-                oldRange = buildRange()
-            }
-
-            fun recordNew() {
-                newRange = buildRange()
-                mergeRange()
-            }
-
-            // 合并变化前后的range
-            private fun mergeRange() {
-                val unChangeLength = newRange.length.coerceAtMost(oldRange.length)
-                val start = newRange.start + unChangeLength
-                val moveLength = newRange.length - oldRange.length
-                moveRange = Range(start, moveLength)
-            }
-
-            abstract fun buildRange(): Range
         }
     }
 
