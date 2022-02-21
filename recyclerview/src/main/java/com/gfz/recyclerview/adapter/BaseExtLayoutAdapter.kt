@@ -101,8 +101,8 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         addAll(data, getHeaderNum() + dataSize)
     }
 
-    override fun add(data: T, block: () -> Unit) {
-        add(data, getHeaderNum() + dataSize, block)
+    override fun add(data: T) {
+        add(data, getHeaderNum() + dataSize)
     }
 
     override fun addAllData(dataList: List<T?>?, position: Int) {
