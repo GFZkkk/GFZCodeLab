@@ -123,7 +123,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
 
     override fun notifyDataRangeInsert(position: Int, length: Int, block: () -> Unit) {
         extViewNotifyHelper.notifyExtItemChange(block) {
-            TopLog.e(position + headerStatus.moveRange.length)
             notifyItemRangeInserted(position + headerStatus.moveRange.length, length)
         }
         /*block()
@@ -160,9 +159,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         ) {
             // 记录，更新数据
             recordRangeBeforeChange()
-            TopLog.e(dataSize)
             block()
-            TopLog.e(dataSize)
             recordRangeAfterChange()
             // 更新视图
             notifyItemMoveByRange(emptyStatus)
@@ -174,12 +171,9 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         // 通知额外布局变化
         private fun notifyItemMoveByRange(range: RangeStatus) {
             with(range.moveRange) {
-                TopLog.e(this)
                 if (length > 0) {
-                    TopLog.e("Inserted")
                     notifyItemRangeInserted(start, length)
                 } else if (length < 0) {
-                    TopLog.e("Removed")
                     notifyItemRangeRemoved(start, -length)
                 }
             }
@@ -213,7 +207,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
 
         inner class FooterRangeStatus() : RangeStatus() {
             override fun buildRange(): Range {
-                TopLog.e(dataSize)
+
                 return Range(
                     if (dataSize == 0) {
                         getEmptyNum()
@@ -248,7 +242,6 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
                 val start = newRange.start + unChangeLength
                 val moveLength = newRange.length - oldRange.length
                 moveRange = Range(start, moveLength)
-                TopLog.e(newRange)
             }
 
             abstract fun buildRange(): Range
