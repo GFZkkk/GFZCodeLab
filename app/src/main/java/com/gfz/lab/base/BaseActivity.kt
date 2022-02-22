@@ -25,7 +25,9 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
 
     lateinit var nav: NavController
 
-    var handler: Handler? = null
+    val handler: Handler by lazy {
+        Handler(mainLooper)
+    }
 
     val taskList: HashSet<Runnable> = HashSet()
 
@@ -43,18 +45,15 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         super.onCreate(savedInstanceState)
         setWindowStatus()
         loadView()
-        handler = Handler(mainLooper)
         getNavId()?.apply {
             nav = getNavControllerById(this)
         }
-
         initView()
         initData()
     }
 
     override fun onDestroy() {
-        handler?.removeMessages(0)
-        handler = null
+        handler.removeMessages(0)
         super.onDestroy()
     }
 
@@ -96,10 +95,6 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
 
     override fun popTo(action: Int, inclusive: Boolean) {
         nav.popBackStack(action, inclusive)
-    }
-
-    fun postDelayed(runnable: Runnable, delayed: Long) {
-        handler?.postDelayed(runnable, delayed)
     }
 
     /**

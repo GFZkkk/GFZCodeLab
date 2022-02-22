@@ -17,7 +17,7 @@ class LaunchActivity : BaseActivity(), CancelAdapt {
     }
 
     override fun initData() {
-        postDelayed({
+        handler.postDelayed({
             if (this.isFinishing) {
                 return@postDelayed
             }
