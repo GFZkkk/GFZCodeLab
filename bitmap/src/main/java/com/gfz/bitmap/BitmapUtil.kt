@@ -10,10 +10,12 @@ import com.gfz.common.ext.getCompatDrawable
 import com.gfz.common.utils.LocalFileUtil
 import com.gfz.common.utils.TopLog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import kotlin.coroutines.resume
 
 /**
  * 图片处理工具类
@@ -67,7 +69,7 @@ object BitmapUtil {
     }
 
     suspend fun saveBitmapToFile(filePath: String, bmp: Bitmap, quality: Int = 100) =
-        withContext(Dispatchers.IO) {
+        suspendCancellableCoroutine<Boolean> {
             val output = FileOutputStream(filePath)
             bmp.compress(Bitmap.CompressFormat.JPEG, quality, output)
             bmp.recycle()
@@ -77,12 +79,12 @@ object BitmapUtil {
             } catch (e: Exception) {
                 TopLog.e(e)
             }
-            TopLog.e(filePath)
+            it.resume(true)
         }
 
     @JvmOverloads
     suspend fun bmpToByteArray(bmp: Bitmap, quality: Int = 100): ByteArray =
-        withContext(Dispatchers.IO) {
+        suspendCancellableCoroutine {
             val output = ByteArrayOutputStream()
             bmp.compress(Bitmap.CompressFormat.JPEG, quality, output)
             bmp.recycle()
@@ -93,84 +95,91 @@ object BitmapUtil {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            result
+            it.resume(result)
         }
 
     /**
      * 将view的内容绘制成Bitmap
      */
-    suspend fun convertViewToBitmap(view: View): Bitmap? = withContext(Dispatchers.IO) {
+    suspend fun convertViewToBitmap(view: View): Bitmap? = suspendCancellableCoroutine {
         val w = view.measuredWidth
         val h = view.measuredHeight
         if (w <= 0 || h <= 0) {
-            return@withContext null
+            it.resume(null)
+            return@suspendCancellableCoroutine
         }
         val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565)
         //利用bitmap生成画布
         val canvas = Canvas(bitmap)
         //把view中的内容绘制在画布上
         view.draw(canvas)
-        bitmap
+        it.resume(bitmap)
     }
 
     suspend fun createGif(
         picPath: String,
         gifPath: String,
         build: AnimatedGifEncoder.() -> Unit = {}
-    ): Boolean =
-        withContext(Dispatchers.IO) {
-            val inputFile = File(picPath)
-            if (!inputFile.exists() || !inputFile.isDirectory) {
-                return@withContext false
-            }
-            inputFile.list()?.let { files ->
-                val bitmapList = ArrayList<Bitmap>(files.size)
-                files.forEach {
-                    val filePath = inputFile.absolutePath + File.separator + it
-                    val bitmap = BitmapFactory.decodeFile(filePath)
-                    bitmapList.add(bitmap)
-                }
-                createGif(bitmapList, gifPath, build)
-            } ?: false
+    ): Boolean {
+        val inputFile = File(picPath)
+        if (!inputFile.exists() || !inputFile.isDirectory) {
+            return false
         }
+        val result = inputFile.list()?.let { files ->
+            val bitmapList = ArrayList<Bitmap>(files.size)
+            files.forEach {
+                val filePath = inputFile.absolutePath + File.separator + it
+                val bitmap = BitmapFactory.decodeFile(filePath)
+                bitmapList.add(bitmap)
+            }
+            createGif(bitmapList, gifPath, build)
+        } ?: false
+
+        return result
+    }
 
     suspend fun createGif(
         bitmapArray: List<Bitmap>,
         gifPath: String,
         build: AnimatedGifEncoder.() -> Unit = {}
-    ): Boolean =
-        withContext(Dispatchers.IO) {
-            if (bitmapArray.isEmpty()) {
-                return@withContext false
-            }
-            var width = 0
-            var height = 0
-            bitmapArray.forEach {
-                width = it.width.coerceAtLeast(width)
-                height = it.height.coerceAtLeast(height)
-            }
+    ): Boolean {
+        if (bitmapArray.isEmpty()) {
+            return false
+        }
+        var width = 0
+        var height = 0
+        bitmapArray.forEach {
+            width = it.width.coerceAtLeast(width)
+            height = it.height.coerceAtLeast(height)
+        }
 
-            createGif(gifPath, {
-                build()
-                setSize(width, height)
-            }) {
-                bitmapArray.forEach {
-                    addFrame(it)
-                }
+        val result = createGif(gifPath, {
+            build()
+            setSize(width, height)
+        }) {
+            bitmapArray.forEach {
+                addFrame(it)
             }
         }
+        return result
+    }
 
     suspend fun createGif(
         gifPath: String,
         build: AnimatedGifEncoder.() -> Unit = {},
         addFrames: AnimatedGifEncoder.() -> Unit
-    ): Boolean =
-        withContext(Dispatchers.IO) {
+    ): Boolean = suspendCancellableCoroutine {
+        try {
             val baos = ByteArrayOutputStream()
             build(gifEncoder)
             gifEncoder.start(baos)
             addFrames(gifEncoder)
             gifEncoder.finish()
             LocalFileUtil.writeFile(gifPath, baos)
+            it.resume(true)
+        }catch (e: Exception){
+            it.resume(false)
         }
+
+    }
 }
