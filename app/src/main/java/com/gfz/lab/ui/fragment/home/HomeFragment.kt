@@ -25,21 +25,16 @@ class HomeFragment : BaseVBFragment<FragmentHomeBinding>() {
                 TestBean("日历实验区", R.id.testCalendarFragment),
                 TestBean("滑动多选实验区", R.id.testMultipleChooseFragment),
                 TestBean("悬浮计时实验区", R.id.testCountDownFragment),
-                TestBean("时钟实验区", R.id.testClockFragment),
+                TestBean("控件实验区", R.id.testCustomFragment),
                 TestBean("移动列表实验区", R.id.testMoveFragment),
                 TestBean("自定义动画实验区", R.id.testAnimationFragment),
                 TestBean("扩展布局实验区", R.id.testExtAdapterFragment),
-//                TestBean("算法实验区", R.id.testCodeFragment),
-                TestBean("战场实验区", R.id.testMapFragment),
                 TestBean("流式布局实验区", R.id.testFlowFragment),
-                TestBean("跑马灯实验区", R.id.testMarqueeFragment),
             )
         )
 
         adapter.setOnItemClickDataListener { _, _, testBean ->
-            testBean?.apply {
-                start(idRes)
-            }
+            start(testBean.idRes)
         }
     }
 }

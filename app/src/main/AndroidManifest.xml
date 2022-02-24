@@ -34,7 +34,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.gfz.lab.ui.activity.RootActivity" />
+        <activity android:name=".ui.activity.RootActivity" />
 
         <service android:name=".service.DrawOverService" />
     </application>

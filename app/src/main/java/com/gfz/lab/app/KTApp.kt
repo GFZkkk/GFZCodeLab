@@ -13,6 +13,10 @@ import com.gfz.common.utils.TopLog
 
 class KTApp : BaseApplication() {
 
+    companion object {
+        const val test = false
+    }
+
     override fun init() {
         TopLog.init(true)
         KTCatchException.init(this)

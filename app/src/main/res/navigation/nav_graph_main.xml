@@ -19,8 +19,8 @@
         android:name="com.gfz.lab.ui.fragment.home.TestCalendarFragment"
         android:label="TestCalendarFragment" />
     <fragment
-        android:id="@+id/testClockFragment"
-        android:name="com.gfz.lab.ui.fragment.home.TestClockFragment"
+        android:id="@+id/testCustomFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestCustomFragment"
         android:label="TestClockFragment" />
     <fragment
         android:id="@+id/testCountDownFragment"
@@ -39,20 +39,8 @@
         android:name="com.gfz.lab.ui.fragment.home.TestMultipleChooseFragment"
         android:label="TestMultipleChooseFragment" />
     <fragment
-        android:id="@+id/testMapFragment"
-        android:name="com.gfz.lab.ui.fragment.home.TestMapFragment"
-        android:label="TestMapFragment" />
-    <fragment
-        android:id="@+id/testCodeFragment"
-        android:name="com.gfz.lab.ui.fragment.home.TestCodeFragment"
-        android:label="TestCodeFragment" />
-    <fragment
         android:id="@+id/testFlowFragment"
         android:name="com.gfz.lab.ui.fragment.home.TestFlowFragment"
         android:label="TestFlowFragment" />
-    <fragment
-        android:id="@+id/testMarqueeFragment"
-        android:name="com.gfz.lab.ui.fragment.home.TestMarqueeFragment"
-        android:label="TestMarqueeFragment" />
 
 </navigation>

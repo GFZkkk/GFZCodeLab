@@ -1,5 +1,6 @@
 package com.gfz.lab.base
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.annotation.IdRes
 
@@ -8,7 +9,7 @@ import androidx.annotation.IdRes
  * created by gaofengze on 2021/5/13
  */
 interface BasePageTools {
-    fun start(activity: Class<out BaseActivity>, bundle: Bundle? = null)
+    fun start(activity: Class<out Activity>, bundle: Bundle? = null)
     fun start(@IdRes action: Int, bundle: Bundle? = null)
     fun pop()
     fun popTo(@IdRes action: Int, inclusive: Boolean)

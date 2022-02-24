@@ -57,15 +57,6 @@ android {
         }
     }
 
-    buildFeatures {
-        viewBinding true
-        compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_version
-    }
-
     compileOptions {
         sourceCompatibility java_version
         targetCompatibility java_version
@@ -75,6 +66,21 @@ android {
         jvmTarget = "1.8"
         freeCompilerArgs += "-Xjvm-default=all" // Only required for 2.x.
     }
+
+    buildFeatures {
+        viewBinding true
+//        compose true
+    }
+
+    /*composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }*/
 
     ndkVersion "21.3.6528147"
 }

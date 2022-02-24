@@ -1,5 +1,6 @@
 package com.gfz.lab.base
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -73,7 +74,7 @@ abstract class BaseFragment : Fragment(), BasePageTools {
         mActivity = null
     }
 
-    override fun start(activity: Class<out BaseActivity>, bundle: Bundle?) {
+    override fun start(activity: Class<out Activity>, bundle: Bundle?) {
         mActivity?.start(activity, bundle)
     }
 

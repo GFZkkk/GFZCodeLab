@@ -1,5 +1,6 @@
 package com.gfz.lab.base
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -28,8 +29,6 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
     val handler: Handler by lazy {
         Handler(mainLooper)
     }
-
-    val taskList: HashSet<Runnable> = HashSet()
 
     private val timeCell: TimeCell by lazy {
         TimeCell()
@@ -77,7 +76,7 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
     fun getContext() = this
 
     // region 工具方法
-    override fun start(activity: Class<out BaseActivity>, bundle: Bundle?) {
+    override fun start(activity: Class<out Activity>, bundle: Bundle?) {
         val intent = Intent(this, activity)
         bundle?.apply {
             intent.putExtras(this)
