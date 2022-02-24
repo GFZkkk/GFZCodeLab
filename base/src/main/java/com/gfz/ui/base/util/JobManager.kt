@@ -1,13 +1,12 @@
-package com.gfz.common.task
+package com.gfz.ui.base.util
 
-import android.os.Message
 import android.util.SparseArray
 import android.util.SparseIntArray
 import com.gfz.common.ext.launchSafe
 import com.gfz.common.utils.TopLog
+import com.gfz.ui.base.interfaces.JobHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.isActive
 
 /**
  * Created by xueya on 2022/1/28
@@ -121,40 +120,7 @@ class JobManager(private val helper: JobHelper) {
     }
 }
 
-interface JobHelper {
-
-    fun getScope(): CoroutineScope
-
-    fun startJob(
-        loading: Boolean = false,
-        tag: Int = -1,
-        onError: ((Throwable) -> Unit)? = null,
-        onComplete: ((Boolean) -> Unit)? = null,
-        block: suspend CoroutineScope.() -> Unit
-    ): Job
-
-    fun startSingleJob(
-        loading: Boolean = false,
-        tag: Int = 0,
-        onError: ((Throwable) -> Unit)? = null,
-        onComplete: ((Boolean) -> Unit)? = null,
-        block: suspend CoroutineScope.() -> Unit
-    )
-
-    fun reStartSingleJob(
-        loading: Boolean = false,
-        tag: Int = 0,
-        onError: ((Throwable) -> Unit)? = null,
-        onComplete: ((Boolean) -> Unit)? = null,
-        block: suspend CoroutineScope.() -> Unit
-    )
-
-    fun stopSingleJob(tag: Int = 0)
-    fun showLoading(tag: Int)
-    fun hideLoading(tag: Int)
-    fun changeLoadingStatus(show: Boolean)
-}
-
+/*
 data class JobItem(
     val tag: Int = 0,
     val loading: Boolean = false,
@@ -171,4 +137,4 @@ data class ScopeCallBack(
     val onError: ((Throwable) -> Unit)? = null,
     var onComplete: ((Boolean) -> Unit)? = null,
     val block: suspend CoroutineScope.() -> Unit
-)
+)*/

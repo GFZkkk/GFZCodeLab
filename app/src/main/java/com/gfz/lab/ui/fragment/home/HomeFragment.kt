@@ -5,7 +5,7 @@ import com.gfz.lab.R
 import com.gfz.lab.adapter.Test3Adapter
 import com.gfz.lab.databinding.FragmentHomeBinding
 import com.gfz.lab.model.bean.TestBean
-import com.gfz.lab.base.BaseVBFragment
+import com.gfz.ui.base.page.BaseVBFragment
 
 /**
  * 首页

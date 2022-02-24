@@ -1,4 +1,4 @@
-package com.gfz.common.ext
+package com.gfz.ui.base.ext
 
 import android.os.Looper
 import androidx.lifecycle.MutableLiveData

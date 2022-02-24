@@ -1,26 +1,15 @@
 package com.gfz.lab.ui.fragment.home
 
-import android.os.SystemClock
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.compose.ui.text.toLowerCase
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import com.gfz.bitmap.BitmapUtil
 import com.gfz.common.ext.setDisplay
 import com.gfz.common.ext.setVisible
-import com.gfz.common.ext.toDP
 import com.gfz.common.ext.toPX
-import com.gfz.common.utils.LocalFileUtil
 import com.gfz.common.utils.TopLog
 import com.gfz.lab.databinding.FragmentFlowBinding
-import com.gfz.lab.base.BaseVMFragment
 import com.gfz.lab.viewmodel.FlowViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import java.io.File
+import com.gfz.ui.base.page.BaseVMFragment
 
 /**
  * Created by xueya on 2022/1/11

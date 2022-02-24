@@ -1,12 +1,12 @@
-package com.gfz.lab.base
+package com.gfz.ui.base.page
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gfz.common.ext.asLiveData
-import com.gfz.common.task.JobHelper
-import com.gfz.common.task.JobManager
+import com.gfz.ui.base.ext.asLiveData
+import com.gfz.ui.base.util.JobManager
 import com.gfz.common.utils.TopLog
+import com.gfz.ui.base.interfaces.JobHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 

@@ -2,15 +2,14 @@ package com.gfz.lab.ui.fragment.home
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.common.utils.RandomUtil
-import com.gfz.common.utils.TopLog
+import com.gfz.ui.base.util.viewBind
 import com.gfz.lab.adapter.TestExtAdapter
 import com.gfz.lab.databinding.FragmentExtlayoutBinding
 import com.gfz.lab.databinding.LayoutHeaderTestBinding
-import com.gfz.lab.base.BaseVBFragment
-import com.gfz.common.utils.viewBind
 import com.gfz.lab.R
 import com.gfz.lab.databinding.LayoutEmptyTestBinding
 import com.gfz.lab.databinding.LayoutFooterTestBinding
+import com.gfz.ui.base.page.BaseVBFragment
 
 /**
  *

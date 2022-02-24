@@ -1,8 +1,7 @@
 package com.gfz.lab
 
-import com.gfz.lab.app.KTApp
 import com.gfz.lab.ui.activity.RootActivity
-import com.gfz.lab.base.BaseActivity
+import com.gfz.ui.base.page.BaseActivity
 import me.jessyan.autosize.internal.CancelAdapt
 
 /**
@@ -11,9 +10,7 @@ import me.jessyan.autosize.internal.CancelAdapt
  */
 class LaunchActivity : BaseActivity(), CancelAdapt {
 
-    override fun loadView() {
-        // 无ui
-    }
+    override fun loadView() {}
 
     override fun initData() {
         handler.postDelayed({
@@ -24,6 +21,4 @@ class LaunchActivity : BaseActivity(), CancelAdapt {
             finish()
         }, 1000)
     }
-
-
 }

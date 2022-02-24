@@ -5,12 +5,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.lab.adapter.TestClockAdapter
 import com.gfz.recyclerview.adapter.BaseCenterAdapter
-import com.gfz.lab.base.BaseVBFragment
 import com.gfz.common.utils.TopLog
 import com.gfz.common.ext.toPX
 import com.gfz.common.utils.ScreenUtil
 import com.gfz.lab.databinding.FragmentCustomBinding
 import com.gfz.recyclerview.decoration.NormalDecoration
+import com.gfz.ui.base.page.BaseVBFragment
 import java.lang.ref.WeakReference
 import kotlin.math.abs
 

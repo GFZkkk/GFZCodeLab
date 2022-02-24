@@ -1,10 +1,9 @@
 package com.gfz.lab.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.gfz.common.ext.asLiveData
+import com.gfz.ui.base.ext.asLiveData
 import com.gfz.common.utils.RandomUtil
-import com.gfz.lab.base.BaseViewModel
-import kotlinx.coroutines.CoroutineScope
+import com.gfz.ui.base.page.BaseViewModel
 import kotlinx.coroutines.delay
 
 /**

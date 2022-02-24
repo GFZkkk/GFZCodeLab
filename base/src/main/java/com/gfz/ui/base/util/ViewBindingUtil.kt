@@ -1,4 +1,4 @@
-package com.gfz.common.utils
+package com.gfz.ui.base.util
 
 import android.app.Activity
 import android.app.Dialog

@@ -1,13 +1,13 @@
 package com.gfz.lab.ui.fragment.home
 
 import androidx.recyclerview.widget.GridLayoutManager
+import com.gfz.common.ext.setColorRes
 import com.gfz.lab.R
 import com.gfz.lab.adapter.TestCalendarAdapter
 import com.gfz.lab.databinding.FragmentCalendarBinding
-import com.gfz.common.ext.setColorRes
 import com.gfz.common.ext.toShortDateStr
-import com.gfz.lab.base.BaseVBFragment
 import com.gfz.common.utils.DateUtil
+import com.gfz.ui.base.page.BaseVBFragment
 
 /**
  * created by gfz on 2020/4/6

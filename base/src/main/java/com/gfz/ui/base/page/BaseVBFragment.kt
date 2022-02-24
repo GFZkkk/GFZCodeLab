@@ -1,4 +1,4 @@
-package com.gfz.lab.base
+package com.gfz.ui.base.page
 
 import android.os.Bundle
 import android.view.LayoutInflater

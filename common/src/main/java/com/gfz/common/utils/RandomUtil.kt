@@ -19,12 +19,6 @@ object RandomUtil {
         return random.nextInt(size)
     }
 
-    fun getRandomBoolean(): Boolean{
-        random.setSeed(SystemClock.uptimeMillis())
-//        return random.nextBoolean()
-        return false
-    }
-
     /**
      * 从list中取一个随机的list,不改变原有list
      */

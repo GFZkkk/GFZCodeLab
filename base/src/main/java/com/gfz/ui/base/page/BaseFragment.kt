@@ -1,4 +1,4 @@
-package com.gfz.lab.base
+package com.gfz.ui.base.page
 
 import android.app.Activity
 import android.content.Context
@@ -11,9 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.gfz.common.ext.setDisplay
-import com.gfz.lab.R
-
 import com.gfz.common.utils.TimeCell
+import com.gfz.ui.base.interfaces.BasePageTools
 
 /**
  * created by gaofengze on 2020/4/30
@@ -37,7 +36,7 @@ abstract class BaseFragment : Fragment(), BasePageTools {
         init(view, savedInstanceState)
     }
 
-    protected open fun init(view: View, savedInstanceState: Bundle?){
+    protected open fun init(view: View, savedInstanceState: Bundle?) {
         nav = findNavController()
         setTitleView(view)
         initView()
@@ -45,7 +44,9 @@ abstract class BaseFragment : Fragment(), BasePageTools {
 
     protected abstract fun initView()
 
-    protected open fun getBackViewId() = R.id.tv_back
+    protected open fun getBackViewId(): Int = 0
+    protected open fun getHeadViewId(): Int = 0
+    protected open fun getLoadingViewId(): Int = 0
 
     protected open fun getTitleText(): String? = null
 
@@ -59,7 +60,7 @@ abstract class BaseFragment : Fragment(), BasePageTools {
         }
 
         getTitleText()?.also {
-            view.findViewById<TextView>(R.id.tv_header_title)?.text = it
+            view.findViewById<TextView>(getHeadViewId())?.text = it
         }
 
     }
@@ -108,6 +109,6 @@ abstract class BaseFragment : Fragment(), BasePageTools {
     }
 
     override fun showLoading(show: Boolean) {
-        view?.findViewById<View>(R.id.loading).setDisplay(show)
+        view?.findViewById<View>(getLoadingViewId()).setDisplay(show)
     }
 }

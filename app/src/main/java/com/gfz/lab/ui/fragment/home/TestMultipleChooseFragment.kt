@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.lab.adapter.TestMultipleChooseAdapter
 import com.gfz.lab.databinding.FragmentMultiChooseBinding
 import com.gfz.lab.model.bean.MultipleChooseBean
-import com.gfz.lab.base.BaseVBFragment
+import com.gfz.ui.base.page.BaseVBFragment
 import java.util.*
 
 

@@ -8,8 +8,8 @@ import android.view.MotionEvent
 import androidx.annotation.RequiresApi
 import com.gfz.lab.databinding.FragmentCountdownBinding
 import com.gfz.lab.service.DrawOverService
-import com.gfz.lab.base.BaseVBFragment
 import com.gfz.common.utils.ToastUtil
+import com.gfz.ui.base.page.BaseVBFragment
 
 /**
  * created by gfz on 2020/5/5

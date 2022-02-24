@@ -1,4 +1,4 @@
-package com.gfz.lab.base
+package com.gfz.ui.base.page
 
 import android.app.Activity
 import android.content.Intent
@@ -6,16 +6,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.WindowManager
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.gfz.common.ext.getCompatColor
 import com.gfz.common.ext.setVisible
 import com.gfz.common.utils.TimeCell
 import com.gfz.common.utils.ToastUtil
-import com.gfz.lab.R
+import com.gfz.ui.base.interfaces.BasePageTools
 
 
 /**
@@ -56,12 +54,11 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         super.onDestroy()
     }
 
-    open fun setWindowStatus() {
-        window.apply {
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            statusBarColor = getCompatColor(R.color.col_b07529)
-        }
+    protected open fun setWindowStatus() {
+
     }
+
+    protected open fun getLoadingViewId(): Int = 0
 
     @IdRes
     open fun getNavId(): Int? {
@@ -123,7 +120,7 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
     }
 
     override fun showLoading(show: Boolean) {
-        findViewById<View>(R.id.loading).setVisible(show)
+        findViewById<View>(getLoadingViewId()).setVisible(show)
     }
 
     // endregion

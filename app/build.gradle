@@ -87,6 +87,7 @@ android {
 
 dependencies {
     implementation project(path: ":common")
+    implementation project(path: ":base")
     implementation project(path: ":recyclerview")
     implementation project(path: ":bitmap")
     // 基础配置
