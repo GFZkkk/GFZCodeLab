@@ -116,7 +116,6 @@ abstract class BaseFragment : Fragment(), BasePageTools {
         if (loadingDialog.isResumed == show) return
         if (show){
             loadingDialog.showNow(parentFragmentManager, "loading")
-            loadingDialog.dialog?.setCanceledOnTouchOutside(false)
         } else {
             loadingDialog.dismiss()
         }

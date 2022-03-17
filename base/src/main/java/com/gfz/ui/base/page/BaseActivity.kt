@@ -126,7 +126,6 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         if (loadingDialog.isResumed == show) return
         if (show){
             loadingDialog.showNow(supportFragmentManager, "loading")
-            loadingDialog.dialog?.setCanceledOnTouchOutside(false)
         } else {
             loadingDialog.dismiss()
         }

@@ -1,6 +1,5 @@
 package com.gfz.ui.base.dialog
 
-import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.gfz.ui.base.R
@@ -11,4 +10,8 @@ import com.gfz.ui.base.R
  */
 class LoadingDialog() : DialogFragment(R.layout.layout_loading) {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_FRAME, 0)
+    }
 }
