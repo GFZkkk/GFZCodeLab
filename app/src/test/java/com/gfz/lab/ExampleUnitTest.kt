@@ -7,7 +7,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import java.lang.reflect.ParameterizedType
+import java.util.ArrayList
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -33,6 +33,62 @@ class ExampleUnitTest {
         )
     }
 
+    @Test
+    fun code(){
+        val list = listOf(
+            User(1, "部门1", 0),
+            User(2, "部门2", 1),
+            User(3, "部门3", 1),
+            User(4, "部门4", 3),
+            User(5, "部门5", 4),
+            User(6, "部门6", 4),
+        )
+        handler(list)
+        println(list.toString())
+    }
+
+    private fun handler(list: List<User>){
+        val map = HashMap<Int, MutableList<User>>()
+        // id不重复，id不是很多，pid比较分散
+        list.forEach {
+            val children = map[it.id]
+            if (children == null){
+                map[it.id] = it.children
+            } else {
+                it.children = children
+            }
+            if (it.pid != 0){
+                var parent = map[it.pid]
+                if (parent == null){
+                    parent = ArrayList()
+                    map[it.pid] = parent
+                }
+                parent.add(it)
+            }
+        }
+    }
+
+    data class User(
+        val id: Int,
+        val name: String,
+        val pid: Int,
+        var children: MutableList<User> = ArrayList()
+    )
+
+    @Test
+    fun flow(){
+        val list = sequence{
+            yield("String")
+            yield("Int")
+            yield("Boolean")
+        }.filter {
+            it.length > 3
+        }.map {
+            it.length
+        }.take(4).toList()
+
+        println(list.toString())
+    }
 
     @Test
     fun random() {
@@ -63,7 +119,7 @@ class ExampleUnitTest {
         }
         println()
         url.forEach {
-            bulidApiIml(it)
+            buildApiIml(it)
         }
 
     }
@@ -82,7 +138,7 @@ class ExampleUnitTest {
         println()
     }
 
-    private fun bulidApiIml(bean: ApiBean) {
+    private fun buildApiIml(bean: ApiBean) {
         val url = bean.url
         val tip = bean.tip
         val funName = getFunNameByUrl(url)

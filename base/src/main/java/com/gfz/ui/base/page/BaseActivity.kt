@@ -13,6 +13,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.gfz.common.ext.setVisible
 import com.gfz.common.utils.TimeCell
 import com.gfz.common.utils.ToastUtil
+import com.gfz.ui.base.dialog.LoadingDialog
 import com.gfz.ui.base.interfaces.BasePageTools
 
 
@@ -23,6 +24,10 @@ import com.gfz.ui.base.interfaces.BasePageTools
 abstract class BaseActivity : AppCompatActivity(), BasePageTools {
 
     lateinit var nav: NavController
+
+    private val loadingDialog by lazy {
+        LoadingDialog()
+    }
 
     val handler: Handler by lazy {
         Handler(mainLooper)
@@ -57,8 +62,6 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
     protected open fun setWindowStatus() {
 
     }
-
-    protected open fun getLoadingViewId(): Int = 0
 
     @IdRes
     open fun getNavId(): Int? {
@@ -120,7 +123,13 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
     }
 
     override fun showLoading(show: Boolean) {
-        findViewById<View>(getLoadingViewId()).setVisible(show)
+        if (loadingDialog.isResumed == show) return
+        if (show){
+            loadingDialog.showNow(supportFragmentManager, "loading")
+            loadingDialog.dialog?.setCanceledOnTouchOutside(false)
+        } else {
+            loadingDialog.dismiss()
+        }
     }
 
     // endregion

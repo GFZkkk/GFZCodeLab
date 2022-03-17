@@ -45,5 +45,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/btnReStart"
         android:layout_marginBottom="150dp"/>
-    <include layout="@layout/layout_loading"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

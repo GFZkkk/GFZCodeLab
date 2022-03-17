@@ -1,5 +1,6 @@
 package com.gfz.ui.base.page
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,12 +20,9 @@ abstract class BaseViewModel : ViewModel(), JobHelper {
         JobManager(this)
     }
 
-    fun showLoading(show: Boolean) {
+    private fun showLoading(show: Boolean) {
+        Log.getStackTraceString(Throwable("$show"))
         _isLoading.value = show
-    }
-
-    override fun onCleared() {
-        super.onCleared()
     }
 
     override fun startJob(

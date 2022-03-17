@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.gfz.common.ext.setDisplay
 import com.gfz.common.utils.TimeCell
+import com.gfz.ui.base.dialog.LoadingDialog
 import com.gfz.ui.base.interfaces.BasePageTools
 
 /**
@@ -20,6 +21,10 @@ import com.gfz.ui.base.interfaces.BasePageTools
 
 abstract class BaseFragment : Fragment(), BasePageTools {
     lateinit var nav: NavController
+
+    private val loadingDialog by lazy {
+        LoadingDialog()
+    }
 
     val handler by lazy {
         Handler(Looper.getMainLooper())
@@ -46,7 +51,6 @@ abstract class BaseFragment : Fragment(), BasePageTools {
 
     protected open fun getBackViewId(): Int = 0
     protected open fun getHeadViewId(): Int = 0
-    protected open fun getLoadingViewId(): Int = 0
 
     protected open fun getTitleText(): String? = null
 
@@ -109,6 +113,12 @@ abstract class BaseFragment : Fragment(), BasePageTools {
     }
 
     override fun showLoading(show: Boolean) {
-        view?.findViewById<View>(getLoadingViewId()).setDisplay(show)
+        if (loadingDialog.isResumed == show) return
+        if (show){
+            loadingDialog.showNow(parentFragmentManager, "loading")
+            loadingDialog.dialog?.setCanceledOnTouchOutside(false)
+        } else {
+            loadingDialog.dismiss()
+        }
     }
 }

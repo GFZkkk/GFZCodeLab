@@ -10,7 +10,7 @@ buildscript {
         version_code = 1
         version_name = '1.0'
 
-        java_version = JavaVersion.VERSION_1_8
+        java_version = JavaVersion.VERSION_11
 
         kotlin_version = '1.6.10'
         kotlin_coroutines_version = '1.6.0'
