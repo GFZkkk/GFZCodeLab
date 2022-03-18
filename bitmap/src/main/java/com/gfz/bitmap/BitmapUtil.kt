@@ -1,15 +1,16 @@
 package com.gfz.bitmap
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
+import android.graphics.*
 import android.view.View
+import androidx.core.graphics.applyCanvas
+import androidx.core.view.drawToBitmap
 import com.gfz.bitmap.gifEncoder.AnimatedGifEncoder
 import com.gfz.common.ext.getCompatDrawable
 import com.gfz.common.utils.LocalFileUtil
 import com.gfz.common.utils.TopLog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
@@ -101,20 +102,42 @@ object BitmapUtil {
     /**
      * 将view的内容绘制成Bitmap
      */
-    suspend fun convertViewToBitmap(view: View): Bitmap? = suspendCancellableCoroutine {
-        val w = view.measuredWidth
-        val h = view.measuredHeight
-        if (w <= 0 || h <= 0) {
-            it.resume(null)
-            return@suspendCancellableCoroutine
+    suspend fun convertViewToBitmap(
+        view: View,
+        w: Int = 0,
+        h: Int = 0,
+        isCenter: Boolean = true,
+        backgroundColor: Int = Color.WHITE,
+        config: Bitmap.Config = Bitmap.Config.RGB_565
+    ): Bitmap? =
+        suspendCancellableCoroutine {
+            val viewW = view.measuredWidth
+            val viewH = view.measuredHeight
+            if (viewW <= 0 || viewH <= 0) {
+                it.resume(null)
+                return@suspendCancellableCoroutine
+            }
+            if (w == 0 || h == 0) {
+                it.resume(view.drawToBitmap(config))
+            } else {
+                val scale = if (1f * viewW / viewH > 1f * w / h){
+                    1f * w / viewW
+                } else {
+                    1f * h / viewH
+                }
+                val x = if(isCenter) (w - (viewW * scale)) / 2 else 0f
+                val y = if(isCenter) (h - (viewH * scale)) / 2 else 0f
+                val paint = Paint(Paint.FILTER_BITMAP_FLAG)
+                val bitmap = Bitmap.createBitmap(w, h, config).applyCanvas {
+                    drawColor(backgroundColor)
+                    translate(x, y)
+                    drawBitmap(view.drawToBitmap(config), Matrix().apply {
+                        setScale(scale, scale)
+                    }, paint)
+                }
+                it.resume(bitmap)
+            }
         }
-        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.RGB_565)
-        //利用bitmap生成画布
-        val canvas = Canvas(bitmap)
-        //把view中的内容绘制在画布上
-        view.draw(canvas)
-        it.resume(bitmap)
-    }
 
     suspend fun createGif(
         picPath: String,
@@ -164,7 +187,7 @@ object BitmapUtil {
         return result
     }
 
-    suspend fun createGif(
+    private suspend fun createGif(
         gifPath: String,
         build: AnimatedGifEncoder.() -> Unit = {},
         addFrames: AnimatedGifEncoder.() -> Unit
@@ -177,7 +200,7 @@ object BitmapUtil {
             gifEncoder.finish()
             LocalFileUtil.writeFile(gifPath, baos)
             it.resume(true)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             it.resume(false)
         }
 

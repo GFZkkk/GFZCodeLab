@@ -18,6 +18,8 @@ class ExampleUnitTest {
 
     @Test
     fun addition_isCorrect() {
+
+
         println(listOf(1, 2, 3) == listOf(1, 2, 3))
         println(listOf(1, 2, 3).asSequence() == listOf(1, 2, 3).asSequence())
         println(sequenceOf(1, 2, 3) == sequenceOf(1, 2, 3))
@@ -32,6 +34,38 @@ class ExampleUnitTest {
             )
         )
     }
+
+    @Test
+    fun scale() {
+        val w = 300
+        val h = 200
+        val vw = 1702
+        val vh = 876
+        val scale = 1f * w / h
+        val scale2 = 1f * vw / vh
+        val s = if (scale < scale2){
+            1f * w / vw
+        } else {
+            1f * h / vh
+        }
+        val bw = (s * vw).toInt()
+        val bh = (s * vh).toInt()
+        val ss = 1f * bw / bh
+        println(Scale(w,h,vw,vh,scale,scale2,s,bw,bh,ss))
+    }
+
+    data class Scale(
+        val w: Int,
+        val h: Int,
+        val vw: Int,
+        val vh: Int,
+        val scale: Float,
+        val scale2: Float,
+        val s: Float,
+        val bw: Int,
+        val bh: Int,
+        val ss: Float,
+    )
 
     @Test
     fun code(){

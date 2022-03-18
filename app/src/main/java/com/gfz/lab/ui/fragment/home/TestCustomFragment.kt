@@ -1,14 +1,21 @@
 package com.gfz.lab.ui.fragment.home
 
+import android.graphics.Bitmap
 import android.view.View
+import androidx.core.os.postDelayed
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.gfz.bitmap.BitmapUtil
+import com.gfz.common.ext.*
 import com.gfz.lab.adapter.TestClockAdapter
 import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.common.utils.TopLog
-import com.gfz.common.ext.toPX
 import com.gfz.common.utils.ScreenUtil
+import com.gfz.common.utils.ToastUtil
+import com.gfz.lab.R
 import com.gfz.lab.databinding.FragmentCustomBinding
+import com.gfz.lab.ext.getColor
 import com.gfz.recyclerview.decoration.NormalDecoration
 import com.gfz.ui.base.page.BaseVBFragment
 import java.lang.ref.WeakReference
@@ -30,14 +37,27 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
     }
 
     override fun initView() {
-        with(binding){
+        // 截图
+        /*handler.postDelayed({
+            lifecycleScope.launchSafe {
+                val bitmap = BitmapUtil.convertViewToBitmap(
+                    requireView(),
+                    300.toPX(),
+                    300.toPX(),
+                    backgroundColor = getColor(R.color.transparent),
+                    config = Bitmap.Config.ARGB_8888
+                )
+                binding.ivTest.setImageBitmap(bitmap)
+                binding.ivTest.setVisible(true)
+            }
+        }, 2000)*/
+        with(binding) {
 
             tvMarquee.isSelected = true
 
-            val limit = (ScreenUtil.getScreenWidth(tvMarquee.context) / tvMarquee.textSize).toInt()
-            tvMarquee.text = getTextContent(limit)
+            tvMarquee.text = getTextContent()
             tvMarquee.postTask {
-                TopLog.e(width)
+
             }
             v1.setOnClickListener {
                 v2.bringToFront()
@@ -83,7 +103,7 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
         }
     }
 
-    fun getTextContent(limit: Int): CharSequence{
+    private fun getTextContent(): CharSequence {
         val list = listOf(
             "第一条第一条第一条第一条",
             "第二条第二条",
@@ -91,14 +111,9 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
             "第四条",
         )
         val text: StringBuilder = StringBuilder()
-
-        repeat(limit){
-            text.append("   ")
-        }
-        TopLog.e(text.length)
         list.forEach {
             text.append(it)
-            text.append("                              ")
+            text.append("                  ")
         }
         return text
     }
@@ -128,31 +143,5 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
             }
         }
         return -1
-    }
-
-    fun View.postTask(delay: Long = 0, task: View.() -> Unit){
-        postDelayed(object : ViewRunnable<View>(WeakReference(this)){
-            override fun run(view: View) {
-                task(view)
-            }
-        }, delay)
-    }
-
-    /*fun TextView.postTask(delay: Long = 0, task: TextView.() -> Unit){
-        postDelayed(object : ViewRunnable<TextView>(WeakReference(this)){
-            override fun run(view: TextView) {
-                task(view)
-            }
-        }, delay)
-    }*/
-
-    abstract class ViewRunnable<T: View>(private val view: WeakReference<T>) : Runnable{
-        override fun run() {
-            view.get()?.let {
-                run(it)
-            }
-        }
-
-        abstract fun run(view: T)
     }
 }

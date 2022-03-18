@@ -16,6 +16,7 @@
     <color name="black_70">#B3000000</color>
     <color name="black_50">#80000000</color>
     <color name="black_30">#4d000000</color>
+    <color name="transparent">#00000000</color>
 
     <color name="gary">#f0f0f2</color>
 </resources>
