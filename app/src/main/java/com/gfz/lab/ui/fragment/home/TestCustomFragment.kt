@@ -1,24 +1,14 @@
 package com.gfz.lab.ui.fragment.home
 
-import android.graphics.Bitmap
-import android.view.View
-import androidx.core.os.postDelayed
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gfz.bitmap.BitmapUtil
 import com.gfz.common.ext.*
 import com.gfz.lab.adapter.TestClockAdapter
 import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.common.utils.TopLog
-import com.gfz.common.utils.ScreenUtil
-import com.gfz.common.utils.ToastUtil
-import com.gfz.lab.R
 import com.gfz.lab.databinding.FragmentCustomBinding
-import com.gfz.lab.ext.getColor
 import com.gfz.recyclerview.decoration.NormalDecoration
 import com.gfz.ui.base.page.BaseVBFragment
-import java.lang.ref.WeakReference
 import kotlin.math.abs
 
 /**
@@ -56,9 +46,6 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
             tvMarquee.isSelected = true
 
             tvMarquee.text = getTextContent()
-            tvMarquee.postTask {
-
-            }
             v1.setOnClickListener {
                 v2.bringToFront()
             }

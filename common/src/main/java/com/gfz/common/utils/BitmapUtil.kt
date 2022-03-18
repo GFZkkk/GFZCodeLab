@@ -1,20 +1,13 @@
-package com.gfz.bitmap
+package com.gfz.common.utils
 
 import android.content.Context
 import android.graphics.*
 import android.view.View
 import androidx.core.graphics.applyCanvas
 import androidx.core.view.drawToBitmap
-import com.gfz.bitmap.gifEncoder.AnimatedGifEncoder
 import com.gfz.common.ext.getCompatDrawable
-import com.gfz.common.utils.LocalFileUtil
-import com.gfz.common.utils.TopLog
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.FileOutputStream
 import kotlin.coroutines.resume
 
@@ -23,13 +16,6 @@ import kotlin.coroutines.resume
  * created by gfz on 2021/2/15
  **/
 object BitmapUtil {
-
-    private val gifEncoder: AnimatedGifEncoder by lazy {
-        AnimatedGifEncoder().apply {
-            setRepeat(0)
-            setDelay(1000)
-        }
-    }
 
     /**
      * 获取矢量图
@@ -139,70 +125,5 @@ object BitmapUtil {
             }
         }
 
-    suspend fun createGif(
-        picPath: String,
-        gifPath: String,
-        build: AnimatedGifEncoder.() -> Unit = {}
-    ): Boolean {
-        val inputFile = File(picPath)
-        if (!inputFile.exists() || !inputFile.isDirectory) {
-            return false
-        }
-        val result = inputFile.list()?.let { files ->
-            val bitmapList = ArrayList<Bitmap>(files.size)
-            files.forEach {
-                val filePath = inputFile.absolutePath + File.separator + it
-                val bitmap = BitmapFactory.decodeFile(filePath)
-                bitmapList.add(bitmap)
-            }
-            createGif(bitmapList, gifPath, build)
-        } ?: false
 
-        return result
-    }
-
-    suspend fun createGif(
-        bitmapArray: List<Bitmap>,
-        gifPath: String,
-        build: AnimatedGifEncoder.() -> Unit = {}
-    ): Boolean {
-        if (bitmapArray.isEmpty()) {
-            return false
-        }
-        var width = 0
-        var height = 0
-        bitmapArray.forEach {
-            width = it.width.coerceAtLeast(width)
-            height = it.height.coerceAtLeast(height)
-        }
-
-        val result = createGif(gifPath, {
-            build()
-            setSize(width, height)
-        }) {
-            bitmapArray.forEach {
-                addFrame(it)
-            }
-        }
-        return result
-    }
-
-    private suspend fun createGif(
-        gifPath: String,
-        build: AnimatedGifEncoder.() -> Unit = {},
-        addFrames: AnimatedGifEncoder.() -> Unit
-    ): Boolean = suspendCancellableCoroutine {
-        try {
-            val baos = ByteArrayOutputStream()
-            build(gifEncoder)
-            gifEncoder.start(baos)
-            addFrames(gifEncoder)
-            gifEncoder.finish()
-            LocalFileUtil.writeFile(gifPath, baos)
-            it.resume(true)
-        } catch (e: Exception) {
-            it.resume(false)
-        }
-
-    }
 }

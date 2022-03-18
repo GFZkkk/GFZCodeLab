@@ -43,10 +43,11 @@ fun TextView?.setIcon(
         TOP -> this?.setCompoundDrawables(null, context.getDrawableWithBounds(resId), null, null)
         RIGHT -> this?.setCompoundDrawables(null, null, context.getDrawableWithBounds(resId), null)
         BOTTOM -> this?.setCompoundDrawables(null, null, null, context.getDrawableWithBounds(resId))
-        else -> {
-            this?.setCompoundDrawables(null, null, null, null)
-        }
     }
+}
+
+fun TextView?.clearIcon(){
+    this?.setCompoundDrawables(null, null, null, null)
 }
 
 /**
