@@ -33,7 +33,11 @@ object TopLog {
     }
 
     fun e(msg: Any?) {
-        printLog(E, null, msg!!)
+        if (msg is Throwable){
+            printError(E, null, msg)
+        } else {
+            printLog(E, null, msg!!)
+        }
     }
 
     fun e(tag: String?, msg: Any) {
@@ -47,6 +51,18 @@ object TopLog {
     ) {
         if (IS_SHOW_LOG) {
             val contents = wrapperContent(msg)
+            val tag = tagStr ?: "com.gfz.lab"
+            printLog(type, tag, contents)
+        }
+    }
+
+    fun printError(
+        type: Int,
+        tagStr: String?,
+        error: Throwable
+    ) {
+        if (IS_SHOW_LOG) {
+            val contents = Log.getStackTraceString(error)
             val tag = tagStr ?: "com.gfz.lab"
             printLog(type, tag, contents)
         }
