@@ -41,9 +41,7 @@ class FlowViewModel : BaseViewModel() {
     }
 
     fun start() {
-        startJob(true, onComplete = {
-            TopLog.e("执行完成")
-        }) {
+        val job = startJob(true) {
             autoCancel()
         }
     }

@@ -2,6 +2,9 @@ package com.gfz.ui.base.util
 
 import android.util.SparseArray
 import android.util.SparseIntArray
+import androidx.activity.OnBackPressedCallback
+import androidx.core.util.forEach
+import androidx.core.util.keyIterator
 import com.gfz.common.ext.launchSafe
 import com.gfz.common.utils.TopLog
 import com.gfz.ui.base.interfaces.JobHelper
@@ -11,7 +14,11 @@ import kotlinx.coroutines.Job
 /**
  * Created by xueya on 2022/1/28
  */
-class JobManager(private val helper: JobHelper) {
+class JobManager(private val helper: JobHelper){
+
+    private val isLoading
+        get() = loadingArray.size() > 0
+
     private val jobArray: SparseArray<Job> by lazy {
         SparseArray()
     }
@@ -42,7 +49,7 @@ class JobManager(private val helper: JobHelper) {
             showLoading(tag)
         }
 
-        val job = getJob(onError, block) {
+        val job = createJob(onError, block) {
             if (loading) {
                 hideLoading(tag)
             }
@@ -68,7 +75,7 @@ class JobManager(private val helper: JobHelper) {
             showLoading(tag)
         }
 
-        val job = getJob(onError, block) {
+        val job = createJob(onError, block) {
             jobArray.remove(tag)
             if (loading) {
                 hideLoading(tag)
@@ -87,7 +94,7 @@ class JobManager(private val helper: JobHelper) {
         }
     }
 
-    private fun getJob(
+    private fun createJob(
         onError: ((Throwable) -> Unit)? = null,
         block: suspend CoroutineScope.() -> Unit,
         onComplete: ((Boolean) -> Unit)
@@ -110,13 +117,13 @@ class JobManager(private val helper: JobHelper) {
         if (num - 1 <= 0) {
             loadingArray.delete(tag)
         } else {
-            loadingArray.append(tag, num)
+            loadingArray.append(tag, num - 1)
         }
         checkLoadingStatus()
     }
 
     private fun checkLoadingStatus() {
-        helper.changeLoadingStatus(loadingArray.size() > 0)
+        helper.changeLoadingStatus(isLoading)
     }
 }
 

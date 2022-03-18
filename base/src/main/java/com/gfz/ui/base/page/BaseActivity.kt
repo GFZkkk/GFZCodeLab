@@ -33,7 +33,7 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
         Handler(mainLooper)
     }
 
-    private val timeCell: TimeCell by lazy {
+    val timeCell: TimeCell by lazy {
         TimeCell()
     }
 

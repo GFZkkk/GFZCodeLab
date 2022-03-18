@@ -2,6 +2,8 @@ package com.gfz.lab.ui.fragment.home
 
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import com.gfz.common.ext.setDisplay
 import com.gfz.common.ext.setVisible
@@ -32,6 +34,7 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
                 viewModel.stop()
             }
         }
+
     }
 
     override fun initData() {

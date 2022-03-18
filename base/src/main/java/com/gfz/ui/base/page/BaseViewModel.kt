@@ -21,7 +21,6 @@ abstract class BaseViewModel : ViewModel(), JobHelper {
     }
 
     private fun showLoading(show: Boolean) {
-        Log.getStackTraceString(Throwable("$show"))
         _isLoading.value = show
     }
 
@@ -56,7 +55,6 @@ abstract class BaseViewModel : ViewModel(), JobHelper {
     }
 
     override fun stopSingleJob(tag: Int) {
-        TopLog.e("stop")
         jobManager.stopSingleJob(tag)
     }
 

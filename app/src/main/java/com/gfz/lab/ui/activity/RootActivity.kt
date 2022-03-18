@@ -22,4 +22,15 @@ class RootActivity: BaseVBActivity<ActivityRootBinding>(){
         }
     }
 
+    override fun onBackPressed() {
+        if (onBackPressedDispatcher.hasEnabledCallbacks()){
+            super.onBackPressed()
+        } else {
+            if (timeCell.fastClick(0, 1000)){
+                finish()
+            } else {
+                showToast("再按一次退出")
+            }
+        }
+    }
 }
