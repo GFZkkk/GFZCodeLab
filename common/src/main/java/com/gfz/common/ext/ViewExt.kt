@@ -2,6 +2,25 @@ package com.gfz.common.ext
 
 import android.view.View
 import android.widget.TextView
+import java.lang.ref.WeakReference
+
+
+fun <T: View> T.postTask(delay: Long = 0, task: T.() -> Unit) {
+    postDelayed(object : ViewRunnable<T>(WeakReference(this)) {
+        override fun run(view: T) {
+            task(view)
+        }
+    }, delay)
+}
+
+abstract class ViewRunnable<T : View>(private val view: WeakReference<T>) : Runnable {
+    override fun run() {
+        view.get()?.let {
+            run(it)
+        }
+    }
+    abstract fun run(view: T)
+}
 
 const val LEFT: Int = 0
 const val TOP: Int = 1
