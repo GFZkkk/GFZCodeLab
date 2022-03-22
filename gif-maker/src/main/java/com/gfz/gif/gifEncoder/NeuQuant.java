@@ -1,4 +1,4 @@
-package com.gfz.bitmap.gifEncoder;
+package com.gfz.gif.gifEncoder;
 
 
 /*

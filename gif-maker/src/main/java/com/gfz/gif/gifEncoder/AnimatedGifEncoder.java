@@ -1,4 +1,4 @@
-package com.gfz.bitmap.gifEncoder;
+package com.gfz.gif.gifEncoder;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

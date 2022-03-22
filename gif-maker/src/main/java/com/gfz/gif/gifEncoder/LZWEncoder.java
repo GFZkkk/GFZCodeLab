@@ -1,4 +1,4 @@
-package com.gfz.bitmap.gifEncoder;
+package com.gfz.gif.gifEncoder;
 
 //	 ==============================================================================
 //	 Adapted from Jef Poskanzer's Java port by way of J. M. G. Elliott.

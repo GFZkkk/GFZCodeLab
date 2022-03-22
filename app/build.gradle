@@ -87,8 +87,9 @@ android {
 
 dependencies {
     implementation project(path: ":common")
-    implementation project(path: ":base")
+    implementation project(path: ":base-ui")
     implementation project(path: ":recyclerview")
+    implementation project(path: ":gif-maker")
     // 基础配置
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
