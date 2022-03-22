@@ -41,7 +41,7 @@ class TestCalendarFragment : BaseVBFragment<FragmentCalendarBinding>() {
             updateBtnVisible()
 
             adapter.setOnItemClickDataListener { _, _, bean ->
-                tvEvent.text = bean?.event
+                tvEvent.text = bean.event
             }
         }
 
@@ -51,5 +51,17 @@ class TestCalendarFragment : BaseVBFragment<FragmentCalendarBinding>() {
     private fun updateBtnVisible() {
         binding.tvPre.setColorRes(if (adapter.havePre()) R.color.col_323640 else R.color.col_94949b)
         binding.tvNext.setColorRes(if (adapter.haveNext()) R.color.col_323640 else R.color.col_94949b)
+    }
+
+    override fun getTitleText(): String? {
+        return "日历实验区"
+    }
+
+    override fun getBackViewId(): Int {
+        return R.id.tv_back
+    }
+
+    override fun getHeadViewId(): Int {
+        return R.id.tv_header_title
     }
 }

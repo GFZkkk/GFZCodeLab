@@ -6,6 +6,7 @@ import com.gfz.common.ext.*
 import com.gfz.lab.adapter.TestClockAdapter
 import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.common.utils.TopLog
+import com.gfz.lab.R
 import com.gfz.lab.databinding.FragmentCustomBinding
 import com.gfz.recyclerview.decoration.NormalDecoration
 import com.gfz.ui.base.page.BaseVBFragment
@@ -24,6 +25,14 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
 
     override fun getTitleText(): String {
         return "时钟实验区"
+    }
+
+    override fun getBackViewId(): Int {
+        return R.id.tv_back
+    }
+
+    override fun getHeadViewId(): Int {
+        return R.id.tv_header_title
     }
 
     override fun initView() {

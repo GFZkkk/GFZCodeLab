@@ -1,6 +1,7 @@
 package com.gfz.lab.ui.fragment.home
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gfz.lab.R
 import com.gfz.lab.adapter.TestMultipleChooseAdapter
 import com.gfz.lab.databinding.FragmentMultiChooseBinding
 import com.gfz.lab.model.bean.MultipleChooseBean
@@ -42,5 +43,13 @@ class TestMultipleChooseFragment : BaseVBFragment<FragmentMultiChooseBinding>() 
 
     override fun getTitleText(): String {
         return "滑动多选试验区"
+    }
+
+    override fun getBackViewId(): Int {
+        return R.id.tv_back
+    }
+
+    override fun getHeadViewId(): Int {
+        return R.id.tv_header_title
     }
 }

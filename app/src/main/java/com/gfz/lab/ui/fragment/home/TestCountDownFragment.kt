@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import com.gfz.lab.databinding.FragmentCountdownBinding
 import com.gfz.lab.service.DrawOverService
 import com.gfz.common.utils.ToastUtil
+import com.gfz.lab.R
 import com.gfz.ui.base.page.BaseVBFragment
 
 /**
@@ -35,6 +36,14 @@ class TestCountDownFragment : BaseVBFragment<FragmentCountdownBinding>() {
 
     override fun getTitleText(): String {
         return "悬浮计时试验区"
+    }
+
+    override fun getBackViewId(): Int {
+        return R.id.tv_back
+    }
+
+    override fun getHeadViewId(): Int {
+        return R.id.tv_header_title
     }
 
     private fun openService() {

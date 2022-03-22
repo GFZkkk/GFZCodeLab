@@ -1,6 +1,7 @@
 package com.gfz.lab.ui.fragment.home
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.gfz.lab.R
 import com.gfz.lab.adapter.TestMoveAdapter
 import com.gfz.lab.databinding.FragmentMoveBinding
 import com.gfz.lab.model.bean.MoveBean
@@ -27,5 +28,13 @@ class TestMoveFragment : BaseVBFragment<FragmentMoveBinding>() {
 
     override fun getTitleText(): String {
         return "移动列表实验区"
+    }
+
+    override fun getBackViewId(): Int {
+        return R.id.tv_back
+    }
+
+    override fun getHeadViewId(): Int {
+        return R.id.tv_header_title
     }
 }

@@ -9,6 +9,7 @@ import com.gfz.common.ext.setDisplay
 import com.gfz.common.ext.setVisible
 import com.gfz.common.ext.toPX
 import com.gfz.common.utils.TopLog
+import com.gfz.lab.R
 import com.gfz.lab.databinding.FragmentFlowBinding
 import com.gfz.lab.viewmodel.FlowViewModel
 import com.gfz.ui.base.page.BaseVMFragment
@@ -88,5 +89,17 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
             }
         }
 
+    }
+
+    override fun getTitleText(): String {
+        return "流式布局实验区"
+    }
+
+    override fun getBackViewId(): Int {
+        return R.id.tv_back
+    }
+
+    override fun getHeadViewId(): Int {
+        return R.id.tv_header_title
     }
 }
