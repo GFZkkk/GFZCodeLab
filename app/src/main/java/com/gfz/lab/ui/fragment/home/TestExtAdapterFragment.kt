@@ -67,12 +67,4 @@ class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>() {
     override fun getTitleText(): String {
         return "扩展布局实验区"
     }
-
-    override fun getBackViewId(): Int {
-        return R.id.tv_back
-    }
-
-    override fun getHeadViewId(): Int {
-        return R.id.tv_header_title
-    }
 }

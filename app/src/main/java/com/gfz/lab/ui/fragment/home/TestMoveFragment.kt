@@ -29,12 +29,4 @@ class TestMoveFragment : BaseVBFragment<FragmentMoveBinding>() {
     override fun getTitleText(): String {
         return "移动列表实验区"
     }
-
-    override fun getBackViewId(): Int {
-        return R.id.tv_back
-    }
-
-    override fun getHeadViewId(): Int {
-        return R.id.tv_header_title
-    }
 }

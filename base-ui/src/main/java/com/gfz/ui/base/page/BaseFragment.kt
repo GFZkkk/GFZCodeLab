@@ -12,6 +12,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.gfz.common.ext.setDisplay
 import com.gfz.common.utils.TimeCell
+import com.gfz.ui.base.R
 import com.gfz.ui.base.dialog.LoadingDialog
 import com.gfz.ui.base.interfaces.BasePageTools
 
@@ -49,9 +50,8 @@ abstract class BaseFragment : Fragment(), BasePageTools {
 
     protected abstract fun initView()
 
-    protected open fun getBackViewId(): Int = 0
-    protected open fun getHeadViewId(): Int = 0
-
+    protected open fun getBackViewId(): Int = R.id.tv_back
+    protected open fun getHeadViewId(): Int = R.id.tv_header_title
     protected open fun getTitleText(): String? = null
 
     open fun setTitleView(view: View) {

@@ -27,14 +27,6 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
         return "时钟实验区"
     }
 
-    override fun getBackViewId(): Int {
-        return R.id.tv_back
-    }
-
-    override fun getHeadViewId(): Int {
-        return R.id.tv_header_title
-    }
-
     override fun initView() {
         // 截图
         /*handler.postDelayed({

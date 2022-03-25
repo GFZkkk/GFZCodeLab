@@ -94,12 +94,4 @@ class TestFlowFragment() : BaseVMFragment<FragmentFlowBinding, FlowViewModel>() 
     override fun getTitleText(): String {
         return "流式布局实验区"
     }
-
-    override fun getBackViewId(): Int {
-        return R.id.tv_back
-    }
-
-    override fun getHeadViewId(): Int {
-        return R.id.tv_header_title
-    }
 }

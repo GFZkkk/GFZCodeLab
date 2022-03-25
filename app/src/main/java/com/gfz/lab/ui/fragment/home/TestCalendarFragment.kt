@@ -56,12 +56,4 @@ class TestCalendarFragment : BaseVBFragment<FragmentCalendarBinding>() {
     override fun getTitleText(): String? {
         return "日历实验区"
     }
-
-    override fun getBackViewId(): Int {
-        return R.id.tv_back
-    }
-
-    override fun getHeadViewId(): Int {
-        return R.id.tv_header_title
-    }
 }

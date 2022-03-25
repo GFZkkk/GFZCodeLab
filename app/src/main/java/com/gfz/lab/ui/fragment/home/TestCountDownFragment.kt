@@ -38,14 +38,6 @@ class TestCountDownFragment : BaseVBFragment<FragmentCountdownBinding>() {
         return "悬浮计时试验区"
     }
 
-    override fun getBackViewId(): Int {
-        return R.id.tv_back
-    }
-
-    override fun getHeadViewId(): Int {
-        return R.id.tv_header_title
-    }
-
     private fun openService() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (Settings.canDrawOverlays(requireContext())) {
