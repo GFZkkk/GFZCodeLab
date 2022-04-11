@@ -36,7 +36,7 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
     }
 
     /**
-     * 设置固定的选择范围
+     * 设置view额外的选择范围
      */
     fun setBound(correction: Int) {
         this.correction = correction
