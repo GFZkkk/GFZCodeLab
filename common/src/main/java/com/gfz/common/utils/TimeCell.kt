@@ -1,15 +1,14 @@
 package com.gfz.common.utils
 
 import android.os.SystemClock
-import android.util.SparseArray
 
 /**
  * 时间间隔工具类
  */
 class TimeCell(size: Int = 5) {
 
-    private val timeArray: SparseArray<Long> by lazy {
-        SparseArray<Long>(size)
+    private val timePool = DataPool(size){
+        0L
     }
 
     private var lastTime = 0L
@@ -50,14 +49,6 @@ class TimeCell(size: Int = 5) {
         return overTimeInterval(getNowTime(), getLastTime(tag), dur)
     }
 
-    fun isNewTag(tag: Int): Boolean {
-        return if (tag == 0) {
-            lastTime == 0L
-        } else {
-            timeArray.indexOfKey(tag) < 0
-        }
-    }
-
     /**
      * 判断两个时间的间隔是否已经超过条件
      */
@@ -79,7 +70,7 @@ class TimeCell(size: Int = 5) {
         return if (tag == 0) {
             lastTime
         } else {
-            timeArray[tag, 0L]
+            timePool[tag]
         }
     }
 
@@ -90,7 +81,7 @@ class TimeCell(size: Int = 5) {
         if (tag == 0) {
             lastTime = now
         } else {
-            timeArray.append(tag, now)
+            timePool[tag] = now
         }
     }
 }
