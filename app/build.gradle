@@ -53,7 +53,7 @@ android {
             shrinkResources true
             zipAlignEnabled true
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
 
@@ -90,6 +90,7 @@ dependencies {
     implementation project(path: ":base-ui")
     implementation project(path: ":recyclerview")
     implementation project(path: ":gif-maker")
+    implementation project(path: ":message")
     // 基础配置
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
