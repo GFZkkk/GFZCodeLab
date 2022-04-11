@@ -6,7 +6,7 @@ import android.os.Handler
  * 任务顺序执行工具类
  * created by gaofengze on 2021/4/30
  */
-class EventListTaskUtil<T>(handler: Handler, runnable: DataRunnable<T>, private val data: List<T>) :
+class EventListTaskUtil<T>(private val data: List<T>, handler: Handler, runnable: DataRunnable<T>) :
     BaseTaskManager<EventListTaskUtil<T>>(handler) {
 
     init {

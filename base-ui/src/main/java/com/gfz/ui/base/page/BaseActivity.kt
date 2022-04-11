@@ -5,13 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.gfz.common.ext.setVisible
-import com.gfz.common.utils.TimeCell
+import com.gfz.common.task.TimeCell
 import com.gfz.common.utils.ToastUtil
 import com.gfz.ui.base.dialog.LoadingDialog
 import com.gfz.ui.base.interfaces.BasePageTools

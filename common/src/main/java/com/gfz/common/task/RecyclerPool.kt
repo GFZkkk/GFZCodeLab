@@ -1,6 +1,7 @@
-package com.gfz.common.utils
+package com.gfz.common.task
 
 import android.util.SparseArray
+import com.gfz.common.utils.TopLog
 
 /**
  *
@@ -24,6 +25,23 @@ class RecyclerPool(initialCapacity: Int = 10) {
                 pool.append(key, this)
             }
         }
+    }
+
+    suspend inline fun <reified T> getSuspend(key: Int, crossinline create: suspend () -> T): T {
+        val data = pool[key]
+        total++
+        return if (data is T) {
+            success++
+            log()
+            data
+        } else {
+            log()
+            create.invoke().apply {
+                pool.append(key, this)
+            }
+        }
+
+
     }
 
     fun log() {
