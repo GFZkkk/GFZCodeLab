@@ -3,23 +3,16 @@ package com.gfz.message
 import java.io.IOException
 import java.net.*
 
-class SendSocket{
-    companion object{
-        fun init(){
+class SendSocket() {
 
-        }
-    }
+    var host = "127.0.0.1"
 
-    private val port = 1985
-
-    private val host = "192.168.1.96"
-
-    fun connectServerWithUDPSocket(str: String) {
+    fun pushWithUDPSocket(str: String) {
         val socket: DatagramSocket
         try {
             //创建DatagramSocket对象并指定一个端口号，注意，如果客户端需要接收服务器的返回数据,
             //还需要使用这个端口号来receive，所以一定要记住
-            socket = DatagramSocket(port)
+            socket = DatagramSocket(MessageManger.port)
             //使用InetAddress(Inet4Address).getByName把IP地址转换为网络地址
             val serverAddress = InetAddress.getByName(host)
             val data = str.toByteArray() //把字符串str字符串转换为字节数组

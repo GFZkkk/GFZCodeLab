@@ -1,4 +1,4 @@
-package com.gfz.message
+package com.gfz.message.utils
 
 import java.net.InetAddress
 
