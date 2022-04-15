@@ -19,4 +19,8 @@
     <color name="transparent">#00000000</color>
 
     <color name="gary">#f0f0f2</color>
+
+    <color name="col_323640">#323640</color>
+    <color name="col_94949b">#94949B</color>
+    <color name="col_ccccd2">#ccccd2</color>
 </resources>

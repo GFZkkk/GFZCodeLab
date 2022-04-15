@@ -1,0 +1,21 @@
+<resources>
+
+    <style name="Regular12sp323640" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">@color/col_323640</item>
+    </style>
+
+    <style name="Regular16sp323640" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/col_323640</item>
+    </style>
+
+    <style name="Bold18sp323640" parent="TextAppearance.AppCompat">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/col_323640</item>
+    </style>
+
+</resources>

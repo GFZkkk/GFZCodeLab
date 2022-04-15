@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import com.gfz.common.task.RecyclerPool
 import com.gfz.common.task.TimeLoop
+import com.gfz.common.utils.TopLog
 import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.*
 import okio.ByteString
@@ -17,7 +18,7 @@ import kotlin.coroutines.resumeWithException
  * created by xueya on 2022/4/15
  */
 object WebSocketUtil {
-    const val TEST_URL = "wss://echo.websocket.org"
+    const val TEST_URL = "ws://82.157.123.54:9010/ajaxchattest"
     private const val CONNECT_TIMEOUT = 3000L
     private const val READ_TIMEOUT = 3000L
     const val HEART_BEAT_RATE = 2 * 60 * 1000
@@ -110,36 +111,42 @@ class WebSocketCell(private val url: String) : WebSocketListener(), MessageCallb
             }
         }
         state = WebSocketState.ONLINE
+        TopLog.e("onOpen")
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         curWebSocket = webSocket
         state = WebSocketState.ONLINE
         onMessage(text)
+        TopLog.e("onMessage")
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
         curWebSocket = webSocket
         state = WebSocketState.ONLINE
         onMessage(bytes)
+        TopLog.e("onMessage")
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
         curWebSocket = null
         heartBeatLoop?.remove()
         state = WebSocketState.CLOSE
+        TopLog.e("onClosing")
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         curWebSocket = null
         heartBeatLoop?.remove()
         state = WebSocketState.UN_CONNECT
+        TopLog.e("onClosed")
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         curWebSocket = webSocket
         state = WebSocketState.OFFLINE
         curWebSocket?.cancel()
+        TopLog.e("onFailure:${t.message}")
     }
 
     override fun onMessage(text: String) {

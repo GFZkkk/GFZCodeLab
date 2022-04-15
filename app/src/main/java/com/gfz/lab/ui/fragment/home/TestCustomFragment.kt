@@ -1,5 +1,6 @@
 package com.gfz.lab.ui.fragment.home
 
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.common.ext.*
@@ -8,6 +9,8 @@ import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.common.utils.TopLog
 import com.gfz.lab.R
 import com.gfz.lab.databinding.FragmentCustomBinding
+import com.gfz.lab.utils.MessageCallback
+import com.gfz.lab.utils.WebSocketUtil
 import com.gfz.recyclerview.decoration.NormalDecoration
 import com.gfz.ui.base.page.BaseVBFragment
 import kotlin.math.abs
@@ -15,7 +18,7 @@ import kotlin.math.abs
 /**
  * Created by gaofengze on 2020/7/2.
  */
-class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
+class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>(), MessageCallback{
 
     val adapter by lazy {
         TestClockAdapter(requireContext())
@@ -28,6 +31,13 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
     }
 
     override fun initView() {
+        lifecycleScope.launchSafe {
+            val socket = WebSocketUtil.getWebSocketByUrl(WebSocketUtil.TEST_URL)
+            socket.addListener(this@TestCustomFragment)
+            socket.connect()
+            socket.sendMessage("hello")
+
+        }
         // 截图
         /*handler.postDelayed({
             lifecycleScope.launchSafe {
@@ -131,5 +141,9 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>() {
             }
         }
         return -1
+    }
+
+    override fun onMessage(text: String) {
+        showToast(text)
     }
 }
