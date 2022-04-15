@@ -25,6 +25,10 @@
             android:name="design_height_in_dp"
             android:value="665"/>
 
+        <meta-data android:name="flutterEmbedding"
+            android:value="2">
+        </meta-data>
+
         <activity android:name=".LaunchActivity"
             android:theme="@style/ThemeSplash"
             android:exported="true">
@@ -37,6 +41,16 @@
         <activity android:name=".ui.activity.RootActivity" />
 
         <service android:name=".service.DrawOverService" />
+
+        <activity
+            android:name="com.idlefish.flutterboost.containers.FlutterBoostActivity"
+            android:theme="@style/Theme.AppCompat"
+            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustResize" >
+
+        </activity>
+
     </application>
 
 </manifest>

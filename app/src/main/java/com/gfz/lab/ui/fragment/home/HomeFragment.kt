@@ -6,6 +6,11 @@ import com.gfz.lab.adapter.Test3Adapter
 import com.gfz.lab.databinding.FragmentHomeBinding
 import com.gfz.lab.model.bean.TestBean
 import com.gfz.ui.base.page.BaseVBFragment
+import com.idlefish.flutterboost.containers.FlutterBoostFragment
+import okhttp3.*
+import okio.ByteString
+import java.util.concurrent.TimeUnit
+
 
 /**
  * 首页
@@ -35,7 +40,18 @@ class HomeFragment : BaseVBFragment<FragmentHomeBinding>() {
         )
 
         adapter.setOnItemClickDataListener { _, _, testBean ->
-            start(testBean.idRes)
+            if (testBean.idRes == R.id.testMessageFragment) {
+                start(
+                    testBean.idRes,
+                    FlutterBoostFragment
+                        .CachedEngineFragmentBuilder(TestMessageFragment::class.java)
+                        .url("MessageListPage")
+                        .createArgs()
+                )
+            } else {
+                start(testBean.idRes)
+            }
+
         }
     }
 }
