@@ -91,8 +91,8 @@ dependencies {
     implementation project(path: ":recyclerview")
     implementation project(path: ":gif-maker")
 
-    implementation project(':flutter')
-    implementation project(':flutter_boost')
+//    implementation project(':flutter')
+//    implementation project(':flutter_boost')
 
     // 基础配置
     implementation fileTree(dir: "libs", include: ["*.jar"])

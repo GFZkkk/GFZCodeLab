@@ -7,10 +7,10 @@ include ':router'
 include ':base-ui'
 include ':gif-maker'
 include ':message'
-setBinding(new Binding([gradle: this]))
-evaluate(new File(
-        settingsDir.parentFile,
-        'flutter_page/.android/include_flutter.groovy'
-))
-include ':flutter_page'
-project(':flutter_page').projectDir = new File('../flutter_page')
+//setBinding(new Binding([gradle: this]))
+//evaluate(new File(
+//        settingsDir.parentFile,
+//        'flutter_page/.android/include_flutter.groovy'
+//))
+//include ':flutter_page'
+//project(':flutter_page').projectDir = new File('../flutter_page')

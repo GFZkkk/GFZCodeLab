@@ -41,7 +41,6 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
                 R.string.tab_main,
                 R.color.tab_active,
                 R.color.tab_default,
-                R.id.homeFragment
             ),
             TabItemBean(
                 R.drawable.ic_all_active,
@@ -49,7 +48,6 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
                 R.string.tab_function,
                 R.color.tab_active,
                 R.color.tab_default,
-                R.id.funcFragment
             ),
             TabItemBean(
                 R.drawable.ic_account_active,
@@ -57,7 +55,6 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
                 R.string.tab_mine,
                 R.color.tab_active,
                 R.color.tab_default,
-                R.id.mineFragment
             )
         ))
         binding.rvBottom.adapter = adapter

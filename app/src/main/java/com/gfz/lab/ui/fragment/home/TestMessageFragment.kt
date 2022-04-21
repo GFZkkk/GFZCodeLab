@@ -1,13 +1,12 @@
 package com.gfz.lab.ui.fragment.home
 
-import android.os.Bundle
-import com.idlefish.flutterboost.containers.FlutterBoostFragment
+import com.gfz.ui.base.page.BaseFragment
 
 /**
  *
  * created by xueya on 2022/4/11
  */
-class TestMessageFragment() : FlutterBoostFragment() {
-
-
+class TestMessageFragment() : BaseFragment() {
+    override fun initView() {
+    }
 }

@@ -15,7 +15,6 @@ data class TabItemBean(
     @StringRes val desRes: Int,
     @ColorRes val textActiveColorRes: Int,
     @ColorRes val textDefaultColorRes: Int,
-    @IdRes val actionRes: Int
 ){
     fun getIconRes(choose: Boolean) = if (choose) { activeIconRes } else { defaultIconRes }
 
