@@ -1,5 +1,6 @@
 package com.gfz.lab.ui.activity
 
+import android.view.View
 import android.view.WindowManager
 import com.gfz.common.ext.getCompatColor
 import com.gfz.lab.R
@@ -18,7 +19,8 @@ class RootActivity: BaseVBActivity<ActivityRootBinding>(){
     override fun initData() {
         window.apply {
             addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            statusBarColor = getCompatColor(R.color.col_b07529)
+            statusBarColor = getCompatColor(R.color.white)
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
     }
 

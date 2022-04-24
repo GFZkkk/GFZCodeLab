@@ -55,6 +55,11 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
+
+        profile {
+            initWith debug
+        }
+
     }
 
     compileOptions {
@@ -93,6 +98,10 @@ dependencies {
 
 //    implementation project(':flutter')
 //    implementation project(':flutter_boost')
+    debugImplementation 'com.gfz.flutter_page:flutter_debug:1.0'
+    profileImplementation 'com.gfz.flutter_page:flutter_profile:1.0'
+    releaseImplementation 'com.gfz.flutter_page:flutter_release:1.0'
+
 
     // 基础配置
     implementation fileTree(dir: "libs", include: ["*.jar"])

@@ -14,14 +14,19 @@ import com.gfz.lab.ui.fragment.func.FuncFragment
 import com.gfz.lab.ui.fragment.home.HomeFragment
 import com.gfz.lab.ui.fragment.mine.MineFragment
 import com.gfz.common.utils.ScreenUtil
+import com.gfz.common.utils.TopLog
 import com.gfz.ui.base.page.BaseVBFragment
+import com.idlefish.flutterboost.containers.FlutterBoostFragment
 
 
 class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
 
     override fun initView() {
         // 初始化fragment
-        val fragmentList = listOf(HomeFragment(), FuncFragment(), MineFragment())
+        val fragmentList = listOf(HomeFragment(),
+            FlutterBoostFragment.CachedEngineFragmentBuilder().url("MessageListPage").build<FlutterBoostFragment>(),
+            MineFragment()
+        )
         binding.vpMain.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int {
                 return fragmentList.size
@@ -32,6 +37,7 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
             }
         }
         binding.vpMain.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        binding.vpMain.offscreenPageLimit = fragmentList.size
 
         // 初始化bottombar
         val adapter = BottomBarAdapter(listOf(
