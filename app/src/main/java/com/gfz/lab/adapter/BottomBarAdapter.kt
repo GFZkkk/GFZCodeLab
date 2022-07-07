@@ -12,7 +12,8 @@ import com.gfz.lab.model.bean.TabItemBean
  * 底部导航栏item
  * created by gaofengze on 2021/5/13
  */
-class BottomBarAdapter(dataList: List<TabItemBean> = ArrayList()) : BaseRecyclerViewAdapter<TabItemBean>(dataList) {
+class BottomBarAdapter(dataList: List<TabItemBean> = ArrayList()) :
+    BaseRecyclerViewAdapter<TabItemBean>(dataList) {
 
     init {
         needAutoRefreshClickItem = true
@@ -26,11 +27,12 @@ class BottomBarAdapter(dataList: List<TabItemBean> = ArrayList()) : BaseRecycler
         return ViewHolder(ItemBottomBarBinding.inflate(layoutInflater, parent, false))
     }
 
-    inner class ViewHolder(binding: ItemBottomBarBinding): BaseVBRecyclerViewHolder<TabItemBean, ItemBottomBarBinding>(binding){
+    inner class ViewHolder(binding: ItemBottomBarBinding) :
+        BaseVBRecyclerViewHolder<TabItemBean, ItemBottomBarBinding>(binding) {
 
         override fun onBindViewHolder(data: TabItemBean, position: Int) {
             val choose = getClickIndex() == position
-            with(binding){
+            with(binding) {
                 ivBottomIcon.setImageResource(data.getIconRes(choose))
                 tvBottomDes.setText(data.desRes)
                 tvBottomDes.setTextColorRes(data.getDesColorRes(choose))

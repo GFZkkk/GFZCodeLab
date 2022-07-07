@@ -7,10 +7,8 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.view.animation.Interpolator
 import androidx.annotation.Px
 import androidx.recyclerview.widget.*
-import com.gfz.common.utils.ScreenUtil
-import com.gfz.common.ext.toPX
 import com.gfz.common.utils.ScreenUtil.getScreenWidth
-import com.gfz.recyclerview.decoration.NormalDecoration
+import com.gfz.recyclerview.decoration.SpaceItemDecoration
 import kotlin.math.ceil
 import kotlin.math.sqrt
 
@@ -122,7 +120,7 @@ abstract class BaseCenterAdapter<T>(
         }
         if (recyclerView.itemDecorationCount > 0) {
             val itemDecoration = recyclerView.getItemDecorationAt(0)
-            headDecorations = (itemDecoration as? NormalDecoration)?.headMargin ?: 0
+            headDecorations = (itemDecoration as? SpaceItemDecoration)?.marginH ?: 0
         }
     }
 
