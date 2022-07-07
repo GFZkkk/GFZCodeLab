@@ -1,6 +1,5 @@
 package com.gfz.lab.ui.fragment.home
 
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.common.ext.*
@@ -9,7 +8,6 @@ import com.gfz.lab.adapter.TestClockAdapter
 import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.common.utils.TopLog
 import com.gfz.lab.databinding.FragmentCustomBinding
-import com.gfz.lab.utils.MessageCallback
 import com.gfz.recyclerview.decoration.SpaceItemDecoration
 import com.gfz.ui.base.page.BaseVBFragment
 import kotlin.math.abs
@@ -17,7 +15,7 @@ import kotlin.math.abs
 /**
  * Created by gaofengze on 2020/7/2.
  */
-class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>(), MessageCallback{
+class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>(){
 
     val adapter by lazy {
         TestClockAdapter(requireContext())
@@ -30,9 +28,9 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>(), MessageCallb
     }
 
     override fun initView() {
-        TimeLoop.createHandlerLoop(handler, 5000, viewLifecycleOwner.lifecycle){
+        /*TimeLoop.createHandlerLoop(handler, 5000, viewLifecycleOwner.lifecycle){
             TopLog.e("TimeLoop")
-        }.start()
+        }.start()*/
         // 截图
         /*handler.postDelayed({
             lifecycleScope.launchSafe {
@@ -138,9 +136,5 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>(), MessageCallb
             }
         }
         return -1
-    }
-
-    override fun onMessage(text: String) {
-        showToast(text)
     }
 }

@@ -3,9 +3,12 @@ package com.gfz.recyclerview.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.CallSuper
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.gfz.common.task.TimeCell
+import com.gfz.common.utils.TopLog
 
 
 /**
@@ -92,6 +95,14 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 列表长度
      */
     override fun getItemCount(): Int = dataSize
+
+    @CallSuper
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        // 解决默认动画刷新时闪烁
+        (recyclerView.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+        // 不显示下拉阴影
+        recyclerView.overScrollMode = View.OVER_SCROLL_NEVER
+    }
 
     /**
      * 得到当前点击的itemIndex
@@ -233,19 +244,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         }
     }
 
-    fun removeIf(block: T?.() -> Boolean){
-        val it = getDataList().iterator()
-        while (it.hasNext()){
-            val data = it.next()
-            val delete = block(data)
-            if (delete){
-                val index = getDataList().indexOf(data)
-                if (isDataIndex(index)){
-                    remove(index)
-                }
-            }
-        }
-    }
     // endregion
 
     // region 修改数据但不刷新界面
@@ -345,7 +343,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         val oldLength = dataSize
         block()
         val newLength = dataSize
-
+        TopLog.e("oldLength:$oldLength, newLength:$newLength")
         notifyItemRangeChanged(0, oldLength.coerceAtMost(newLength))
         if (oldLength > newLength){
             notifyItemRangeRemoved(newLength, oldLength - newLength)

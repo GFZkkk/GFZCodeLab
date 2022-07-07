@@ -2,6 +2,7 @@ package com.gfz.lab.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.gfz.common.utils.TopLog
 import com.gfz.lab.R
 import com.gfz.recyclerview.adapter.BaseCalendarAdapter
 import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
@@ -33,6 +34,10 @@ class TestCalendarAdapter(sDate: String, eDate: String):
         return ViewHolder(ItemCalendarBinding.inflate(layoutInflater, parent,false))
     }
 
+    override fun notifyDataAllChange(block: () -> Unit) {
+        super.notifyDataAllChange(block)
+    }
+
     inner class ViewHolder(binding: ItemCalendarBinding): BaseVBRecyclerViewHolder<EventCalendarBean, ItemCalendarBinding>(binding){
 
         override fun onBindViewHolder(data: EventCalendarBean, position: Int) {
@@ -46,8 +51,8 @@ class TestCalendarAdapter(sDate: String, eDate: String):
             ))
         }
 
+        override fun bindNoDataViewHolder() {
+            binding.tvDate.text = ""
+        }
     }
-
-
-
 }

@@ -19,8 +19,7 @@ abstract class BaseCalendarAdapter<T>(
     nDate: String = DateUtil.getShortDateStr(),
     private val partLimit: Int = 10,
     private val loadNextLimit: Int = 3
-) :
-    BaseRecyclerViewAdapter<T>() {
+) : BaseRecyclerViewAdapter<T>() {
 
     /**
      * 开始时间
@@ -162,8 +161,6 @@ abstract class BaseCalendarAdapter<T>(
         } else {
             refresh(monthList[focusMonth])
         }
-        needLoadPartition.apply { }
-
     }
 
     /**
@@ -204,7 +201,7 @@ abstract class BaseCalendarAdapter<T>(
 
             }
         } else {
-            if (monthList.count() == 0) {
+            if (monthList.isEmpty()) {
                 loadDataList()
             }
 
