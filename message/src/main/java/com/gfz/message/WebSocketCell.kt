@@ -1,59 +1,21 @@
-package com.gfz.lab.utils
+package com.gfz.message
 
-import android.os.Handler
-import android.os.Looper
-import com.gfz.common.task.RecyclerPool
 import com.gfz.common.task.TimeLoop
 import com.gfz.common.utils.TopLog
-import okhttp3.*
+import com.gfz.message.enum.WebSocketStateEnum
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import okio.ByteString
-import java.util.concurrent.TimeUnit
 
 /**
- * WebSocket工具
- * created by xueya on 2022/4/15
  *
- * val socket = WebSocketUtil.startWebSocketByUrl(WebSocketUtil.TEST_URL)
- * socket.addListener(this@TestCustomFragment)
- * socket.connect()
+ * created by xueya on 2022/7/7
  */
-object WebSocketUtil {
-    const val TEST_URL = "ws://121.40.165.18:8800"
-    private const val CONNECT_TIMEOUT = 3000L
-    private const val READ_TIMEOUT = 3000L
-    const val HEART_BEAT_RATE = 2 * 60 * 1000
-
-    private val client: OkHttpClient by lazy {
-        OkHttpClient.Builder()
-            .connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
-            .readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
-            .build()
-    }
-
-    private val WebSocketCellPool by lazy {
-        RecyclerPool()
-    }
-
-    fun startWebSocketByUrl(url: String): WebSocketCell {
-        return WebSocketCellPool.get(url.hashCode()) {
-            WebSocketCell(url)
-        }.apply {
-            connect()
-        }
-    }
-
-    fun closeWebSocketByUrl(url: String) {
-        WebSocketCellPool.get<WebSocketCell>(url.hashCode())?.close()
-    }
-
-    fun build(request: Request, listener: WebSocketListener) {
-        client.newWebSocket(request, listener)
-    }
-}
-
 class WebSocketCell(private val url: String) : WebSocketListener(), MessageCallback {
 
-    var state: WebSocketState = WebSocketState.UN_CONNECT
+    var state: WebSocketStateEnum = WebSocketStateEnum.UN_CONNECT
     var isConnecting = false
 
     private val request: Request by lazy {
@@ -61,9 +23,9 @@ class WebSocketCell(private val url: String) : WebSocketListener(), MessageCallb
     }
 
     private val heartBeatLoop: TimeLoop by lazy {
-        TimeLoop.createTimerLoop(WebSocketUtil.HEART_BEAT_RATE) {
+        TimeLoop.createTimerLoop(MessageManger.HEART_BEAT_RATE) {
             if (curWebSocket?.send("") == false) {
-                state = WebSocketState.OFFLINE
+                state = WebSocketStateEnum.OFFLINE
                 connect()
             }
         }
@@ -85,12 +47,12 @@ class WebSocketCell(private val url: String) : WebSocketListener(), MessageCallb
     }
 
     fun connect() {
-        if (isConnecting || state == WebSocketState.ONLINE) {
+        if (isConnecting || state == WebSocketStateEnum.ONLINE) {
             return
         }
         try {
             isConnecting = true
-            WebSocketUtil.build(request, this)
+            MessageManger.build(request, this)
         } catch (e: Exception) {
             isConnecting = false
             TopLog.e(e)
@@ -115,21 +77,22 @@ class WebSocketCell(private val url: String) : WebSocketListener(), MessageCallb
     override fun onOpen(webSocket: WebSocket, response: Response) {
         TopLog.e("onOpen")
         curWebSocket = webSocket
-        state = WebSocketState.ONLINE
+        state = WebSocketStateEnum.ONLINE
         isConnecting = false
+        heartBeatLoop.startAfterDelay()
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
         TopLog.e("onMessage:$text")
         curWebSocket = webSocket
-        state = WebSocketState.ONLINE
+        state = WebSocketStateEnum.ONLINE
         onMessage(text)
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
         TopLog.e("onMessage")
         curWebSocket = webSocket
-        state = WebSocketState.ONLINE
+        state = WebSocketStateEnum.ONLINE
         onMessage(bytes)
     }
 
@@ -137,20 +100,20 @@ class WebSocketCell(private val url: String) : WebSocketListener(), MessageCallb
         TopLog.e("onClosing")
         curWebSocket = null
         heartBeatLoop.remove()
-        state = WebSocketState.CLOSE
+        state = WebSocketStateEnum.CLOSE
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         TopLog.e("onClosed")
         curWebSocket = null
         heartBeatLoop.remove()
-        state = WebSocketState.UN_CONNECT
+        state = WebSocketStateEnum.UN_CONNECT
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
         TopLog.e("onFailure:${t.message}")
         curWebSocket = webSocket
-        state = WebSocketState.OFFLINE
+        state = WebSocketStateEnum.OFFLINE
         curWebSocket?.cancel()
         isConnecting = false
     }
@@ -168,19 +131,4 @@ class WebSocketCell(private val url: String) : WebSocketListener(), MessageCallb
             it.next().onMessage(bytes)
         }
     }
-}
-
-interface MessageCallback {
-    fun onMessage(text: String)
-
-    fun onMessage(bytes: ByteString) {
-
-    }
-}
-
-enum class WebSocketState {
-    UN_CONNECT,
-    ONLINE,
-    OFFLINE,
-    CLOSE
 }

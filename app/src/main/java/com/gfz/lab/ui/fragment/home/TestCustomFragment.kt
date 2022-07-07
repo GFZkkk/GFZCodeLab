@@ -10,7 +10,6 @@ import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.common.utils.TopLog
 import com.gfz.lab.databinding.FragmentCustomBinding
 import com.gfz.lab.utils.MessageCallback
-import com.gfz.lab.utils.WebSocketUtil
 import com.gfz.recyclerview.decoration.SpaceItemDecoration
 import com.gfz.ui.base.page.BaseVBFragment
 import kotlin.math.abs
