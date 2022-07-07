@@ -6,6 +6,7 @@ import com.gfz.common.ext.getCompatColor
 import com.gfz.lab.R
 import com.gfz.lab.databinding.ActivityRootBinding
 import com.gfz.ui.base.page.BaseVBActivity
+import com.gyf.immersionbar.ktx.immersionBar
 
 
 /**
@@ -17,10 +18,8 @@ class RootActivity: BaseVBActivity<ActivityRootBinding>(){
     override fun getNavId(): Int = R.id.fcv_host
 
     override fun initData() {
-        window.apply {
-            addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            statusBarColor = getCompatColor(R.color.white)
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        immersionBar {
+            statusBarDarkFont(true)
         }
     }
 

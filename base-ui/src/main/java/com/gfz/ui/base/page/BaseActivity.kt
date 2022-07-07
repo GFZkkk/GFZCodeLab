@@ -98,7 +98,9 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
      * 显示吐司
      */
     override fun showToast(text: String) {
-        ToastUtil.showToast(text)
+        runOnUiThread {
+            ToastUtil.showToast(text)
+        }
     }
 
     override fun showToast(textRes: Int) {

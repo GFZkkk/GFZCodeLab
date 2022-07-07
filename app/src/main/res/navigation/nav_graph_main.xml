@@ -42,8 +42,4 @@
         android:id="@+id/testFlowFragment"
         android:name="com.gfz.lab.ui.fragment.home.TestFlowFragment"
         android:label="TestFlowFragment" />
-    <fragment
-        android:id="@+id/testMessageFragment"
-        android:name="com.gfz.lab.ui.fragment.home.TestMessageFragment"
-        android:label="TestMessageFragment" />
 </navigation>
