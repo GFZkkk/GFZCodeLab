@@ -4,14 +4,14 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.common.ext.*
+import com.gfz.common.task.TimeLoop
 import com.gfz.lab.adapter.TestClockAdapter
 import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.common.utils.TopLog
-import com.gfz.lab.R
 import com.gfz.lab.databinding.FragmentCustomBinding
 import com.gfz.lab.utils.MessageCallback
 import com.gfz.lab.utils.WebSocketUtil
-import com.gfz.recyclerview.decoration.NormalDecoration
+import com.gfz.recyclerview.decoration.SpaceItemDecoration
 import com.gfz.ui.base.page.BaseVBFragment
 import kotlin.math.abs
 
@@ -31,13 +31,9 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>(), MessageCallb
     }
 
     override fun initView() {
-        lifecycleScope.launchSafe {
-            val socket = WebSocketUtil.getWebSocketByUrl(WebSocketUtil.TEST_URL)
-            socket.addListener(this@TestCustomFragment)
-            socket.connect()
-            socket.sendMessage("hello")
-
-        }
+        TimeLoop.createHandlerLoop(handler, 5000, viewLifecycleOwner.lifecycle){
+            TopLog.e("TimeLoop")
+        }.start()
         // 截图
         /*handler.postDelayed({
             lifecycleScope.launchSafe {
@@ -66,7 +62,9 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>(), MessageCallb
             }
 
             rvList.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-            rvList.addItemDecoration(NormalDecoration(0, 90.toPX()))
+            rvList.addItemDecoration(SpaceItemDecoration(
+                marginH = 90.toPX()
+            ))
             rvList.adapter = adapter
             val timeItems: MutableList<Int?> = ArrayList()
             for (i in 1..12) {

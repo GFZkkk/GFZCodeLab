@@ -5,20 +5,20 @@ import android.os.Looper
 import com.gfz.common.task.RecyclerPool
 import com.gfz.common.task.TimeLoop
 import com.gfz.common.utils.TopLog
-import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.*
 import okio.ByteString
-import java.lang.IllegalStateException
 import java.util.concurrent.TimeUnit
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 /**
- *
+ * WebSocket工具
  * created by xueya on 2022/4/15
+ *
+ * val socket = WebSocketUtil.startWebSocketByUrl(WebSocketUtil.TEST_URL)
+ * socket.addListener(this@TestCustomFragment)
+ * socket.connect()
  */
 object WebSocketUtil {
-    const val TEST_URL = "ws://82.157.123.54:9010/ajaxchattest"
+    const val TEST_URL = "ws://121.40.165.18:8800"
     private const val CONNECT_TIMEOUT = 3000L
     private const val READ_TIMEOUT = 3000L
     const val HEART_BEAT_RATE = 2 * 60 * 1000
@@ -34,13 +34,15 @@ object WebSocketUtil {
         RecyclerPool()
     }
 
-    fun getWebSocketByUrl(url: String): WebSocketCell{
-        return WebSocketCellPool.get(url.hashCode()){
+    fun startWebSocketByUrl(url: String): WebSocketCell {
+        return WebSocketCellPool.get(url.hashCode()) {
             WebSocketCell(url)
+        }.apply {
+            connect()
         }
     }
 
-    fun closeWebSocketByUrl(url: String){
+    fun closeWebSocketByUrl(url: String) {
         WebSocketCellPool.get<WebSocketCell>(url.hashCode())?.close()
     }
 
@@ -49,131 +51,134 @@ object WebSocketUtil {
     }
 }
 
-class WebSocketCell(private val url: String) : WebSocketListener(), MessageCallback{
+class WebSocketCell(private val url: String) : WebSocketListener(), MessageCallback {
 
     var state: WebSocketState = WebSocketState.UN_CONNECT
+    var isConnecting = false
 
     private val request: Request by lazy {
         Request.Builder().url(url).build()
     }
 
-    var heartBeatLoop: TimeLoop? = null
+    private val heartBeatLoop: TimeLoop by lazy {
+        TimeLoop.createTimerLoop(WebSocketUtil.HEART_BEAT_RATE) {
+            if (curWebSocket?.send("") == false) {
+                state = WebSocketState.OFFLINE
+                connect()
+            }
+        }
+    }
     var curWebSocket: WebSocket? = null
 
     private var listeners = HashSet<MessageCallback>()
 
-    fun addListener(listener: MessageCallback){
+    fun addListener(listener: MessageCallback) {
         listeners.add(listener)
     }
 
-    fun removeListener(listener: MessageCallback){
+    fun removeListener(listener: MessageCallback) {
         listeners.remove(listener)
     }
 
-    suspend fun sendMessage(message: String):Boolean = suspendCancellableCoroutine {
-        when(state){
-            WebSocketState.UN_CONNECT ->
-                it.resumeWithException(IllegalStateException("未建立连接"))
-            WebSocketState.ONLINE ->
-                it.resume(curWebSocket?.send(message)?:false)
-            WebSocketState.OFFLINE ->
-                it.resumeWithException(IllegalStateException("已离线"))
-            WebSocketState.CLOSE ->
-                it.resumeWithException(IllegalStateException("连接已关闭"))
-        }
+    fun sendMessage(message: String): Boolean {
+        return curWebSocket?.send(message) ?: false
     }
 
-    suspend fun connect(): WebSocketCell = suspendCancellableCoroutine{
+    fun connect() {
+        if (isConnecting || state == WebSocketState.ONLINE) {
+            return
+        }
         try {
+            isConnecting = true
             WebSocketUtil.build(request, this)
-            it.resume(this)
-        }catch (e: Exception){
-            it.resumeWithException(e)
+        } catch (e: Exception) {
+            isConnecting = false
+            TopLog.e(e)
         }
     }
 
-    fun close(){
-        if (state == WebSocketState.ONLINE){
+    fun close() {
+        try {
+            heartBeatLoop.remove()
             curWebSocket?.cancel()
+            curWebSocket?.close(1001, "关闭连接")
+        }catch (e: Exception){
+            TopLog.e(e)
         }
-        if (state != WebSocketState.CLOSE){
-            curWebSocket?.close(1001,null)
-        }
+    }
+
+    fun release(){
+        close()
+        listeners.clear()
     }
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        curWebSocket = webSocket
-        heartBeatLoop = TimeLoop(Handler(Looper.getMainLooper()),
-            WebSocketUtil.HEART_BEAT_RATE
-        ){
-            if(!webSocket.send("")){
-                state = WebSocketState.OFFLINE
-            }
-        }
-        state = WebSocketState.ONLINE
         TopLog.e("onOpen")
+        curWebSocket = webSocket
+        state = WebSocketState.ONLINE
+        isConnecting = false
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
+        TopLog.e("onMessage:$text")
         curWebSocket = webSocket
         state = WebSocketState.ONLINE
         onMessage(text)
-        TopLog.e("onMessage")
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
+        TopLog.e("onMessage")
         curWebSocket = webSocket
         state = WebSocketState.ONLINE
         onMessage(bytes)
-        TopLog.e("onMessage")
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        curWebSocket = null
-        heartBeatLoop?.remove()
-        state = WebSocketState.CLOSE
         TopLog.e("onClosing")
+        curWebSocket = null
+        heartBeatLoop.remove()
+        state = WebSocketState.CLOSE
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-        curWebSocket = null
-        heartBeatLoop?.remove()
-        state = WebSocketState.UN_CONNECT
         TopLog.e("onClosed")
+        curWebSocket = null
+        heartBeatLoop.remove()
+        state = WebSocketState.UN_CONNECT
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+        TopLog.e("onFailure:${t.message}")
         curWebSocket = webSocket
         state = WebSocketState.OFFLINE
         curWebSocket?.cancel()
-        TopLog.e("onFailure:${t.message}")
+        isConnecting = false
     }
 
     override fun onMessage(text: String) {
         val it = listeners.iterator()
-        while (it.hasNext()){
+        while (it.hasNext()) {
             it.next().onMessage(text)
         }
-
     }
 
     override fun onMessage(bytes: ByteString) {
         val it = listeners.iterator()
-        while (it.hasNext()){
+        while (it.hasNext()) {
             it.next().onMessage(bytes)
         }
     }
 }
 
-interface MessageCallback{
+interface MessageCallback {
     fun onMessage(text: String)
 
-    fun onMessage(bytes: ByteString){
+    fun onMessage(bytes: ByteString) {
 
     }
 }
 
-enum class WebSocketState{
+enum class WebSocketState {
     UN_CONNECT,
     ONLINE,
     OFFLINE,
