@@ -3,7 +3,6 @@ package com.gfz.lab.ui.fragment.home
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.common.ext.*
-import com.gfz.common.task.TimeLoop
 import com.gfz.lab.adapter.TestClockAdapter
 import com.gfz.recyclerview.adapter.BaseCenterAdapter
 import com.gfz.common.utils.TopLog

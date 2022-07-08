@@ -1,6 +1,6 @@
 package com.gfz.message
 
-import com.gfz.common.task.RecyclerPool
+import com.gfz.common.utils.RecyclerPool
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocketListener

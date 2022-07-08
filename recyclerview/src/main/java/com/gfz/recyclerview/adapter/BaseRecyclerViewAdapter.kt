@@ -7,7 +7,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.gfz.common.task.TimeCell
+import com.gfz.common.utils.TimeCell
 import com.gfz.common.utils.TopLog
 
 
