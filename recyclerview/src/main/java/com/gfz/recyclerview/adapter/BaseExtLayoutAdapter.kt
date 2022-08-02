@@ -99,11 +99,11 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     }
 
     override fun addAll(data: List<T?>) {
-        addAll(data, getHeaderNum() + dataSize)
+        addAll(data, getHeaderNum() + length)
     }
 
     override fun add(data: T) {
-        add(data, getHeaderNum() + dataSize)
+        add(data, getHeaderNum() + length)
     }
 
     override fun addAllData(dataList: List<T?>?, position: Int) {
@@ -253,10 +253,10 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
 
         inner class FooterRangeStatus() : RangeStatus() {
             override fun recordRange(range: Range) {
-                range.start = if (dataSize == 0) {
+                range.start = if (length == 0) {
                     getEmptyNum()
                 } else {
-                    getHeaderNum() + dataSize
+                    getHeaderNum() + length
                 }
 
                 range.length = getFooterNum()
@@ -287,7 +287,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
      * 获取数据长度
      */
     open fun getDataItemCount(): Int {
-        return dataSize
+        return length
     }
 
     protected open fun getEFItemViewType(position: Int): Int {

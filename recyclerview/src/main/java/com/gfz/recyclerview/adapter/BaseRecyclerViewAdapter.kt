@@ -27,7 +27,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 获取数据长度
      */
-    val dataSize
+    val length
         get() = getDataList().size
 
     /**
@@ -94,7 +94,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 列表长度
      */
-    override fun getItemCount(): Int = dataSize
+    override fun getItemCount(): Int = length
 
     @CallSuper
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -194,21 +194,21 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 刷新添加数据列表后的视图
      */
     open fun addAll(data: List<T?>) {
-        addAll(data, dataSize)
+        addAll(data, length)
     }
 
     /**
      * 刷新添加某个数据后的视图
      */
     open fun add(data: T) {
-        add(data, dataSize)
+        add(data, length)
     }
 
     /**
      * 刷新添加数据列表后的视图
      * @param position item
      */
-    fun addAll(data: List<T?>, position: Int = dataSize) {
+    fun addAll(data: List<T?>, position: Int = length) {
         notifyDataRangeInsert(position){
             addAllData(data, position)
         }
@@ -218,7 +218,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 刷新添加某个数据后的视图
      * @param position item
      */
-    fun add(data: T, position: Int = dataSize) {
+    fun add(data: T, position: Int = length) {
         notifyDataRangeInsert(position){
             addData(data, position)
         }
@@ -259,14 +259,14 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 添加数据列表
      * @param position data
      */
-    open fun addAllData(dataList: List<T?>?, position: Int = dataSize) {
+    open fun addAllData(dataList: List<T?>?, position: Int = length) {
         if (dataList != null) {
             val newList = dataList.filter {
                 !needAutoFilterEmptyData || it != null
             }
             if (isDataIndex(position)){
                 list.addAll(position, newList)
-            } else if(position == dataSize){
+            } else if(position == length){
                 list.addAll(newList)
             }
         }
@@ -276,13 +276,13 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 添加单个数据
      * @param position data
      */
-    open fun addData(data: T?, position: Int = dataSize) {
+    open fun addData(data: T?, position: Int = length) {
         if (needAutoFilterEmptyData && data == null) {
             return
         }
         if (isDataIndex(position)){
             list.add(position, data)
-        } else if(position == dataSize){
+        } else if(position == length){
             list.add(data)
         }
     }
@@ -323,7 +323,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     /**
      * 是否是数组下标
      */
-    open fun isDataIndex(position: Int): Boolean = position in 0 until dataSize
+    open fun isDataIndex(position: Int): Boolean = position in 0 until length
 
     /**
      * 是否是item下标
@@ -332,7 +332,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     open fun isFirstData(position: Int) = position == 0
 
-    open fun isLastData(position: Int) = position == dataSize - 1
+    open fun isLastData(position: Int) = position == length - 1
     // endregion
 
     // endregion
@@ -340,9 +340,9 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     // region 刷新
 
     open fun notifyDataAllChange(block: () -> Unit){
-        val oldLength = dataSize
+        val oldLength = length
         block()
-        val newLength = dataSize
+        val newLength = length
         TopLog.e("oldLength:$oldLength, newLength:$newLength")
         notifyItemRangeChanged(0, oldLength.coerceAtMost(newLength))
         if (oldLength > newLength){

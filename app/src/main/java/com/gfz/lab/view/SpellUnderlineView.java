@@ -11,6 +11,7 @@ import android.util.TypedValue;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
 
 import com.gfz.lab.R;
@@ -18,7 +19,7 @@ import com.gfz.lab.R;
 /**
  * created by gaofengze on 2021/4/13
  */
-public class SpellUnderlineView extends androidx.appcompat.widget.AppCompatTextView {
+public class SpellUnderlineView extends AppCompatTextView {
     // 画图数据
     float dottedLength = getPX(5);
     float dottedSpace = getPX(5);

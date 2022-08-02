@@ -63,7 +63,7 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
             )
         )
         binding.rvBottom.adapter = adapter
-        binding.rvBottom.layoutManager = GridLayoutManager(context, adapter.dataSize)
+        binding.rvBottom.layoutManager = GridLayoutManager(context, adapter.length)
 
         adapter.setOnItemClickListener { _, position ->
             binding.vpMain.setCurrentItem(position, false)
