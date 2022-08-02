@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.NonNull
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.gfz.common.utils.TimeCell
@@ -99,7 +100,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
     @CallSuper
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         // 解决默认动画刷新时闪烁
-        (recyclerView.itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+        (recyclerView.itemAnimator as? DefaultItemAnimator)?.supportsChangeAnimations = false
         // 不显示下拉阴影
         recyclerView.overScrollMode = View.OVER_SCROLL_NEVER
     }

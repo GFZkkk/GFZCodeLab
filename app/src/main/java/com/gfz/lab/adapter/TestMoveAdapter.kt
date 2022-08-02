@@ -36,6 +36,7 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
         helper?.attachToRecyclerView(recyclerView)
     }
 

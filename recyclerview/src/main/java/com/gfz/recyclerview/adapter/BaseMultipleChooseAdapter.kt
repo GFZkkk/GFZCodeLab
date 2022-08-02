@@ -199,14 +199,6 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
 
     }
 
-    /**
-     * 防止item多次更新闪烁
-     */
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        (recyclerView.itemAnimator as DefaultItemAnimator).supportsChangeAnimations = false
-    }
-
     data class ChooseBound(val left: Int, val right: Int, val flag: Int = 0)
 
 }
