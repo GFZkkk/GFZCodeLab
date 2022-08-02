@@ -4,7 +4,9 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import com.gfz.common.utils.LocalFileUtil
 import com.gfz.gif.gifEncoder.AnimatedGifEncoder
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import java.io.File
 import kotlin.coroutines.resume
@@ -73,17 +75,19 @@ object GifUtil {
         gifPath: String,
         build: AnimatedGifEncoder.() -> Unit = {},
         addFrames: AnimatedGifEncoder.() -> Unit
-    ): Boolean = suspendCancellableCoroutine {
-        try {
-            val baos = ByteArrayOutputStream()
-            build(gifEncoder)
-            gifEncoder.start(baos)
-            addFrames(gifEncoder)
-            gifEncoder.finish()
-            LocalFileUtil.writeFile(gifPath, baos)
-            it.resume(true)
-        } catch (e: Exception) {
-            it.resume(false)
+    ): Boolean {
+        return try {
+            withContext(Dispatchers.IO){
+                val baos = ByteArrayOutputStream()
+                build(gifEncoder)
+                gifEncoder.start(baos)
+                addFrames(gifEncoder)
+                gifEncoder.finish()
+                LocalFileUtil.writeFile(gifPath, baos)
+            }
+            true
+        }catch (e: Exception){
+            false
         }
 
     }

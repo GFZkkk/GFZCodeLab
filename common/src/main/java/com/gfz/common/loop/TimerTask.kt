@@ -20,12 +20,14 @@ class TimerTask : TimeTask {
     }
 
     override fun startAfterDelay(delay: Long) {
+        timer?.cancel()
         timer = timer(initialDelay = delay, period = period) {
             runnable.run()
         }
     }
 
     override fun start() {
+        timer?.cancel()
         timer = timer(period = period) {
             runnable.run()
         }

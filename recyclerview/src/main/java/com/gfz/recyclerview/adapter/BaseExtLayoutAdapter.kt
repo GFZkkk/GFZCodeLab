@@ -67,6 +67,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
      * 重写该方法时注意处理
      */
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
         val manager = recyclerView.layoutManager
         if (manager is GridLayoutManager) {
             manager.spanSizeLookup = object : SpanSizeLookup() {
