@@ -3,6 +3,7 @@ package com.gfz.lab.ui.fragment.home
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gfz.lab.R
 import com.gfz.lab.adapter.TestMoveAdapter
+import com.gfz.lab.adapter.TestSlideDeleteAdapter
 import com.gfz.lab.databinding.FragmentMoveBinding
 import com.gfz.lab.model.bean.MoveBean
 import com.gfz.ui.base.page.BaseVBFragment
@@ -24,6 +25,9 @@ class TestMoveFragment : BaseVBFragment<FragmentMoveBinding>() {
                 MoveBean("译词训练")
             )
         )
+
+        binding.rvList2.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvList2.adapter = TestSlideDeleteAdapter()
     }
 
     override fun getTitleText(): String {

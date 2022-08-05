@@ -40,10 +40,6 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
         helper?.attachToRecyclerView(recyclerView)
     }
 
-    fun setCanMove(canMove: Boolean){
-        callBack?.setCanMove(canMove)
-    }
-
     inner class ViewHolder(binding: ItemMoveBinding) : BaseVBRecyclerViewHolder<MoveBean, ItemMoveBinding>(binding) {
 
         override fun onBindViewHolder(data: MoveBean, position: Int) {
@@ -51,14 +47,8 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
                 tvName.text = data.name
 
                 ivMove.setOnLongClickListener {
-                    setCanMove(true)
+                    helper?.startDrag(this@ViewHolder)
                     true
-                }
-                ivMove.setOnTouchListener { _, event ->
-                    if(event.action == MotionEvent.ACTION_UP){
-                        setCanMove(false)
-                    }
-                    false
                 }
             }
 
@@ -67,23 +57,12 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
 
     class RecycItemTouchHelper<T>(var adapter: BaseRecyclerViewAdapter<T>) : ItemTouchHelper.Callback() {
 
-        private var canMove: Boolean = false
-
-        fun setCanMove(canMove: Boolean){
-            this.canMove = canMove
-            TopLog.e(canMove)
-        }
-
         override fun getMovementFlags(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder
         ): Int {
-            val dragFlags = if(canMove){
-                ItemTouchHelper.UP or ItemTouchHelper.DOWN
-            }else{
-                0
-            }
-            val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+            val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
+            val swipeFlags = 0
             TopLog.e(dragFlags)
             return makeMovementFlags(dragFlags, swipeFlags)
         }
@@ -93,10 +72,6 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder
         ): Boolean {
-            TopLog.e(canMove)
-            if (!canMove){
-                return false
-            }
             val fromPosition = viewHolder.layoutPosition
             val toPosition = target.layoutPosition
             if (fromPosition < toPosition) {
@@ -114,6 +89,10 @@ class TestMoveAdapter(data: List<MoveBean>) : BaseRecyclerViewAdapter<MoveBean>(
 
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
 
+        }
+
+        override fun isLongPressDragEnabled(): Boolean {
+            return false
         }
     }
 }

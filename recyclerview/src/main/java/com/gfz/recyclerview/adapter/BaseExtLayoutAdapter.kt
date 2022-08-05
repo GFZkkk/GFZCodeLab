@@ -122,12 +122,23 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         super.setData(getDataPosition(position), data)
     }
 
+    override fun notifyDataAllChange(block: () -> Unit) {
+        val oldLength = length
+        extViewNotifyHelper.notifyExtItemChange(block) {
+            val newLength = length
+            notifyItemRangeChanged(getHeaderNum(), oldLength.coerceAtMost(newLength))
+            if (oldLength > newLength) {
+                notifyItemRangeRemoved(getHeaderNum() + newLength, oldLength - newLength)
+            } else if (oldLength < newLength) {
+                notifyItemRangeInserted(getHeaderNum() + oldLength, newLength - oldLength)
+            }
+        }
+    }
+
     override fun notifyDataRangeInsert(position: Int, length: Int, block: () -> Unit) {
         extViewNotifyHelper.notifyExtItemChange(block) {
             notifyItemRangeInserted(position + headerStatus.moveRange.length, length)
         }
-        /*block()
-        notifyItemRangeInserted(position, length)*/
     }
 
     override fun notifyDataRangeRemove(position: Int, length: Int, block: () -> Unit) {

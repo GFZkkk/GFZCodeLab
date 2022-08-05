@@ -61,6 +61,14 @@ class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>() {
 
                 adapter.add(RandomUtil.getRandomIndex(100))
             }
+
+            footerTestBinding.tvFooter.setOnClickListener {
+                adapter.refresh(ArrayList<Number?>().apply {
+                    repeat(RandomUtil.getRandomIndex(10)){
+                        add(RandomUtil.getRandomIndex(100))
+                    }
+                })
+            }
         }
     }
 
