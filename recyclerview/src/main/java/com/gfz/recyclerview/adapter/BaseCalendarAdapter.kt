@@ -8,7 +8,7 @@ import kotlin.collections.ArrayList
 /**
  * 日历适配器基类
  * 一般只需要实现生成bean的方法就可以用了。
- * 当加载的月份超过[partLimit]的两倍，将自动启动分布加载策略，也可以在后续手动设置[needLoadPartition]为false来关闭分步加载。
+ * 当加载的月份超过[partLimit]的两倍，将自动启动分步加载策略，也可以在后续手动设置[needLoadPartition]为false来关闭分步加载。
  * 分步加载将月的容器[monthList]为分两部分，每一部分大小为[partLimit]，当前在使用的为数据区，没被使用的为备用区。
  * 当月份变化触发[loadNextLimit]时，将会触发改变数据区的位置，更新备份区数据的方法。
  * created by gfz on 2020/4/6
@@ -49,7 +49,7 @@ abstract class BaseCalendarAdapter<T>(
     /**
      * 当前展示的月份是第几个月
      */
-    private var focusMonth = 0
+    private var curMonth = 0
 
     /**
      * 是否需要分步加载
@@ -59,7 +59,7 @@ abstract class BaseCalendarAdapter<T>(
     /**
      * 当前加载下标
      */
-    private var partFocusIndex = 0
+    private var curPartIndex = 0
 
     enum class MMDateEnum {
         BEFORE, AFTER, SAME
@@ -81,14 +81,14 @@ abstract class BaseCalendarAdapter<T>(
         monthNum =
             (endDate.getYear() - startDate.getYear()) * 12 + endDate.getMonth() - startDate.getMonth() + 1
         //当前要显示哪个月
-        focusMonth =
+        curMonth =
             (nowDate.getYear() - startDate.getYear()) * 12 + nowDate.getMonth() - startDate.getMonth()
         //分步加载的月份下标
         if (needLoadPartition) {
-            partFocusIndex = focusMonth % partLimit
+            curPartIndex = curMonth % partLimit
             //最后一段数据和不是第一段数据但坐标处于前半部分的情况需要往后移
-            if (focusMonth / partLimit == monthNum / partLimit || partFocusIndex < partLimit / 2 && focusMonth / partLimit != 0) {
-                partFocusIndex += partLimit
+            if (curMonth / partLimit == monthNum / partLimit || curPartIndex < partLimit / 2 && curMonth / partLimit != 0) {
+                curPartIndex += partLimit
             }
         }
         //支持不显示上个月数据的情况
@@ -105,7 +105,7 @@ abstract class BaseCalendarAdapter<T>(
      */
     open fun getDateTime(): String {
         var year = startDate.getYear()
-        var month = startDate.getMonth() + focusMonth
+        var month = startDate.getMonth() + curMonth
         year += (month - 1) / 12
         month = (month - 1) % 12 + 1
         return "${year}年${month}月"
@@ -117,15 +117,15 @@ abstract class BaseCalendarAdapter<T>(
     open fun laterMonth() {
         if (haveNext()) {
             if (needLoadPartition) {
-                if (partFocusIndex < partLimit * 2 - 1) {
-                    partFocusIndex++
-                    focusMonth++
+                if (curPartIndex < partLimit * 2 - 1) {
+                    curPartIndex++
+                    curMonth++
                     show()
                 } else {
                     TopLog.i("数据加载中")
                 }
             } else {
-                focusMonth++
+                curMonth++
                 show()
             }
         }
@@ -137,15 +137,15 @@ abstract class BaseCalendarAdapter<T>(
     open fun preMonth() {
         if (havePre()) {
             if (needLoadPartition) {
-                if (partFocusIndex > 0) {
-                    partFocusIndex--
-                    focusMonth--
+                if (curPartIndex > 0) {
+                    curPartIndex--
+                    curMonth--
                     show()
                 } else {
                     TopLog.i("数据加载中")
                 }
             } else {
-                focusMonth--
+                curMonth--
                 show()
             }
         }
@@ -157,43 +157,43 @@ abstract class BaseCalendarAdapter<T>(
     open fun show() {
         checkMonthList()
         if (needLoadPartition) {
-            refresh(monthList[partFocusIndex])
+            refresh(monthList[curPartIndex])
         } else {
-            refresh(monthList[focusMonth])
+            refresh(monthList[curMonth])
         }
     }
 
     /**
      * 是否还有前一个月的数据
      */
-    open fun havePre() = focusMonth > 0
+    open fun havePre() = curMonth > 0
 
     /**
      * 是否还有下一个月的数据
      */
-    open fun haveNext() = focusMonth < monthNum - 1
+    open fun haveNext() = curMonth < monthNum - 1
 
     /**
      * 检查每个月的数据
      */
     private fun checkMonthList() {
         if (needLoadPartition) {
-            val start = focusMonth - partFocusIndex % partLimit
-            if (monthList.count() != 0) {
-                if (partFocusIndex <= loadNextLimit && focusMonth / partLimit != 0) {
+            val start = curMonth - curPartIndex % partLimit
+            if (monthList.isNotEmpty()) {
+                if (curPartIndex <= loadNextLimit && curMonth / partLimit != 0) {
                     TopLog.e("数据区后移")
                     monthList.move(true)
                     loadDataList(start, 0, partLimit)
-                    partFocusIndex += partLimit
-                } else if (partFocusIndex >= partLimit * 2 - loadNextLimit && focusMonth / partLimit != monthNum / partLimit) {
+                    curPartIndex += partLimit
+                } else if (curPartIndex >= partLimit * 2 - loadNextLimit && curMonth / partLimit != monthNum / partLimit) {
                     TopLog.e("数据区前移")
                     monthList.move(false)
                     loadDataList(start, partLimit, partLimit * 2)
-                    partFocusIndex -= partLimit
+                    curPartIndex -= partLimit
                 }
             } else {
                 //如果下标靠前且不是第一序列则数据区加载到后半部分
-                if (focusMonth > partLimit && partFocusIndex % partLimit < partLimit / 2) {
+                if (curMonth > partLimit && curPartIndex % partLimit < partLimit / 2) {
                     loadDataList(start - partLimit, 0, partLimit * 2)
                 } else {
                     loadDataList(start, 0, partLimit * 2)

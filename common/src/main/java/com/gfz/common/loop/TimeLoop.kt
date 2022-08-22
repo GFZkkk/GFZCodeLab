@@ -24,6 +24,7 @@ class TimeLoop(
 
     companion object {
 
+        // 不会堆积
         fun createHandlerLoop(
             handler: Handler?,
             period: Int = 1000,
@@ -35,6 +36,7 @@ class TimeLoop(
             return TimeLoop(task, period, runOnUIThread, lifecycle, runnable)
         }
 
+        // 不会延误
         fun createTimerLoop(
             period: Int = 1000,
             lifecycle: Lifecycle? = null,

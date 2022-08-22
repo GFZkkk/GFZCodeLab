@@ -10,8 +10,7 @@ import kotlin.reflect.KProperty
 private class ObjectPropertyDelegate<T>(
     val beforeChange: ((T?) -> Unit)? = null,
     val afterChange: ((T?) -> Unit)? = null
-) :
-    ReadWriteProperty<Any, T?> {
+) : ReadWriteProperty<Any, T?> {
     private var value: T? = null
 
     override operator fun getValue(thisRef: Any, property: KProperty<*>): T? {
