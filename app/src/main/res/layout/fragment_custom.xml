@@ -6,162 +6,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white">
     <include layout="@layout/layout_header"/>
-    <androidx.core.widget.NestedScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@id/cl_header"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:overScrollMode="never">
-        <LinearLayout
+        app:layout_constraintBottom_toBottomOf="parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingVertical="100dp"
-            android:gravity="center_horizontal">
-            <TextView
-                android:id="@+id/tvMarquee"
+            android:background="@color/transparent"
+            app:elevation="0dp">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clAppHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:singleLine="true"
-                tools:text="这是第一条"
-                android:focusable="true"/>
-            <RelativeLayout
-                android:layout_width="300dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="100dp">
-                <RelativeLayout
-                    android:id="@+id/v_1"
-                    android:layout_width="200dp"
-                    android:layout_height="70dp"
-                    android:background="@color/tab_active"/>
-                <RelativeLayout
-                    android:id="@+id/v_2"
-                    android:layout_width="200dp"
-                    android:layout_height="70dp"
-                    android:background="@color/tab_default"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"/>
-            </RelativeLayout>
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cl_bottom"
-                android:layout_width="265dp"
-                android:layout_height="265dp"
-                android:layout_marginTop="100dp">
-
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
                 <TextView
-                    android:id="@+id/tv_clock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginTop="90dp"
-                    android:textColor="@color/col_323640"
-                    android:textSize="46dp"
-                    android:textStyle="bold"
-                    tools:text="60:00"/>
-                <ImageView
-                    android:id="@+id/iv_clock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_clock"
-                    android:src="@drawable/study_chosetime"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/iv_top_icon"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginHorizontal="12.5dp"/>
-                <LinearLayout
-                    android:id="@+id/ll_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    app:layout_constraintTop_toTopOf="@id/rv_list"
-                    app:layout_constraintBottom_toBottomOf="@id/rv_list"
-                    app:layout_constraintLeft_toLeftOf="@id/rv_list"
-                    android:orientation="horizontal">
-                    <View
-                        android:layout_width="7dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"/>
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white_90"/>
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white_70"/>
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white_50"/>
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white_30"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/ll_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toTopOf="@id/rv_list"
-                    app:layout_constraintBottom_toBottomOf="@id/rv_list"
-                    app:layout_constraintRight_toRightOf="@id/rv_list">
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white_30"/>
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white_50"/>
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white_70"/>
-                    <View
-                        android:layout_width="12dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white_90"/>
-                    <View
-                        android:layout_width="7dp"
-                        android:layout_height="match_parent"
-                        android:background="@color/white"/>
-                </LinearLayout>
-                <ImageView
-                    android:id="@+id/iv_top_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:src="@drawable/img_tomato"
-                    android:layout_marginTop="53dp"/>
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/img_ring"/>
+                    android:text="一个很大的头部"
+                    android:textSize="30sp"
+                    android:padding="30dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-    <ImageView
-        android:id="@+id/ivTest"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        android:scaleType="center"
-        android:background="@color/col_b07529"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="拦住"/>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

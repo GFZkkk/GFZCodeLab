@@ -2,6 +2,7 @@ package com.gfz.lab.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.gfz.common.utils.TopLog
 import com.gfz.recyclerview.adapter.BaseRecyclerViewAdapter
 import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.recyclerview.adapter.BaseVBRecyclerViewHolder
@@ -21,6 +22,7 @@ class Test3Adapter(list: MutableList<TestBean?> = ArrayList()) :
 
     class ViewHolder(binding: ItemTestBinding): BaseVBRecyclerViewHolder<TestBean, ItemTestBinding>(binding){
         override fun onBindViewHolder(data: TestBean, position: Int) {
+            TopLog.e("position:$position")
             binding.tvTitle.text = data.str
         }
     }

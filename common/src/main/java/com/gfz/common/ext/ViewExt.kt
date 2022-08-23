@@ -2,10 +2,11 @@ package com.gfz.common.ext
 
 import android.view.View
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import java.lang.ref.WeakReference
 
 
-fun <T: View> T.postTask(delay: Long = 0, task: T.() -> Unit) {
+fun <T : View> T.postTask(delay: Long = 0, task: T.() -> Unit) {
     postDelayed(object : ViewRunnable<T>(WeakReference(this)) {
         override fun run(view: T) {
             task(view)
@@ -19,6 +20,7 @@ abstract class ViewRunnable<T : View>(private val view: WeakReference<T>) : Runn
             run(it)
         }
     }
+
     abstract fun run(view: T)
 }
 
@@ -27,26 +29,20 @@ const val TOP: Int = 1
 const val RIGHT: Int = 2
 const val BOTTOM: Int = 3
 
-/**
- * 设置TextView文字旁边的图标
- * 0：文字左边图标
- * 1：文字上边图标
- * 2：文字右边图标
- * 3：文字下边图标
- */
-fun TextView?.setIcon(
-    resId: Int,
-    direction: Int
+fun TextView.setIcon(
+    @DrawableRes leftId: Int = 0,
+    @DrawableRes topId: Int = 0,
+    @DrawableRes rightId: Int = 0,
+    @DrawableRes bottomId: Int = 0
 ) {
-    when (direction) {
-        LEFT -> this?.setCompoundDrawables(context.getDrawableWithBounds(resId), null, null, null)
-        TOP -> this?.setCompoundDrawables(null, context.getDrawableWithBounds(resId), null, null)
-        RIGHT -> this?.setCompoundDrawables(null, null, context.getDrawableWithBounds(resId), null)
-        BOTTOM -> this?.setCompoundDrawables(null, null, null, context.getDrawableWithBounds(resId))
-    }
+    val left = context.getDrawableWithBounds(leftId)
+    val top = context.getDrawableWithBounds(topId)
+    val right = context.getDrawableWithBounds(rightId)
+    val bottom = context.getDrawableWithBounds(bottomId)
+    setCompoundDrawables(left, top, right, bottom)
 }
 
-fun TextView?.clearIcon(){
+fun TextView?.clearIcon() {
     this?.setCompoundDrawables(null, null, null, null)
 }
 
@@ -74,3 +70,15 @@ fun View?.setVisible(visible: Boolean) {
  * 某个view是否显示
  */
 fun View?.isDisplay(): Boolean = this?.visibility == View.VISIBLE
+
+fun View.setHeight(height: Int) {
+    val params = layoutParams
+    params.height = height
+    layoutParams = params
+}
+
+fun View.setWidth(width: Int) {
+    val params = layoutParams
+    params.width = width
+    layoutParams = params
+}

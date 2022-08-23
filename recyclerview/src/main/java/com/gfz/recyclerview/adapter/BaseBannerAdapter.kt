@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
  * 轮播图
  * created by gaofengze on 2021/1/27
  */
-abstract class BaseBannerAdapter<T>(context: Context, private val time: Int, private var smoothTime: Float = 50f) :
-    BaseCenterAdapter<T>(context, true, smoothTime) {
+abstract class BaseBannerAdapter<T>(context: Context, private val time: Int, smoothTime: Float = 50f) :
+    BaseCenterAdapter<T>(context, smoothTime = smoothTime) {
 
     private val mHandler by lazy {
         Handler(Looper.getMainLooper())

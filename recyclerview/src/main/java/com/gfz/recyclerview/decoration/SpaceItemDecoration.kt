@@ -5,6 +5,7 @@ import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.gfz.common.utils.TopLog
 
 /**
  * 控制列表item之间间隔
@@ -18,12 +19,31 @@ import androidx.recyclerview.widget.RecyclerView
  * created by xueya on 2022/3/30
  */
 class SpaceItemDecoration(
-    val paddingH: Int = 0,
-    val marginH: Int = 0,
-    val paddingV: Int = 0,
-    val marginV: Int = 0,
-    val titlePaddingV: Int = 0
+    marginH: Int = 0,
+    marginV: Int = 0,
+    private val paddingH: Int = 0,
+    private val paddingV: Int = 0,
+    var marginTop: Int = 0,
+    var marginBottom: Int = 0,
+    var marginLeft: Int = 0,
+    var marginRight: Int = 0,
+    private val titlePaddingV: Int = 0
 ) : RecyclerView.ItemDecoration() {
+
+    init {
+        if (marginTop == 0){
+            marginTop = marginV
+        }
+        if (marginBottom == 0){
+            marginBottom = marginV
+        }
+        if (marginLeft == 0){
+            marginLeft = marginH
+        }
+        if (marginRight == 0){
+            marginRight = marginH
+        }
+    }
 
     override fun getItemOffsets(
         outRect: Rect,
@@ -44,16 +64,15 @@ class SpaceItemDecoration(
     private fun linearOffsets(outRect: Rect, layoutManager: LinearLayoutManager, position: Int, size: Int) {
         val isHorizontal = layoutManager.orientation == RecyclerView.HORIZONTAL
         if (isHorizontal) {
-            val head = marginH
             val body = paddingH / 2
             when (position) {
                 0 -> {
-                    outRect.left = head
+                    outRect.left = marginLeft
                     outRect.right = body
                 }
                 size - 1 -> {
                     outRect.left = body
-                    outRect.right = head
+                    outRect.right = marginRight
                 }
                 else -> {
                     outRect.left = body
@@ -61,16 +80,15 @@ class SpaceItemDecoration(
                 }
             }
         } else {
-            val head = marginV
             val body = paddingV / 2
             when (position) {
                 0 -> {
-                    outRect.top = head
+                    outRect.top = marginTop
                     outRect.bottom = body
                 }
                 size - 1 -> {
                     outRect.top = body
-                    outRect.bottom = head
+                    outRect.bottom = marginBottom
                 }
                 else -> {
                     outRect.top = body
@@ -93,22 +111,22 @@ class SpaceItemDecoration(
         val maxGroup = layoutManager.spanSizeLookup.getSpanGroupIndex(size, layoutManager.spanCount)
         outRect.apply {
             left = if(index == 0){
-                marginH
+                marginLeft
             } else {
                 paddingH / 2
             }
             right = if(index == maxIndex) {
-                marginH
+                marginRight
             } else {
                 paddingH / 2
             }
             top = if (group == 0 || isTitle(layoutManager, position - index - 1)){
-                marginV
+                marginTop
             } else {
                 paddingV / 2
             }
             bottom = if (group == maxGroup || isTitle(layoutManager, position - index + maxIndex + 1)){
-                marginV
+                marginBottom
             } else {
                 paddingV / 2
             }

@@ -18,8 +18,8 @@ import kotlin.math.sqrt
  */
 abstract class BaseCenterAdapter<T>(
     var context: Context,
-    needStopCenter: Boolean = false,
-    private var smoothTime: Float = 50f
+    needStopCenter: Boolean = true,
+    var smoothTime: Float = 50f
 ) : BaseRecyclerViewAdapter<T>() {
     private lateinit var mLayoutManager: LinearLayoutManager
     private lateinit var mRecyclerView: RecyclerView
@@ -44,7 +44,7 @@ abstract class BaseCenterAdapter<T>(
             }
         }
     }
-    private var firstVisiblePosition = 0
+    private var curPosition = 0
 
     // 是否在滑动后自动更新checkIndex
     var needChangeIndexAfterMoveEvent = false
@@ -101,7 +101,7 @@ abstract class BaseCenterAdapter<T>(
         return null
     }
 
-    protected open fun getScroller(context: Context?, time: Float): CenterScroller {
+    protected open fun getScroller(context: Context?): CenterScroller {
         return CenterScroller(context, smoothTime)
     }
 
@@ -118,10 +118,19 @@ abstract class BaseCenterAdapter<T>(
             recyclerView.onFlingListener = null
             snapHelper!!.attachToRecyclerView(recyclerView)
         }
-        if (recyclerView.itemDecorationCount > 0) {
-            val itemDecoration = recyclerView.getItemDecorationAt(0)
-            headDecorations = (itemDecoration as? SpaceItemDecoration)?.marginH ?: 0
+        if (headDecorations == 0){
+            if (recyclerView.itemDecorationCount > 0) {
+                val itemDecoration = recyclerView.getItemDecorationAt(0)
+                if (itemDecoration is SpaceItemDecoration){
+                    headDecorations = if (mLayoutManager.orientation == RecyclerView.HORIZONTAL){
+                        itemDecoration.marginLeft
+                    } else {
+                        itemDecoration.marginTop
+                    }
+                }
+            }
         }
+
     }
 
     open fun smoothScrollToPosition(position: Int) {
@@ -162,13 +171,13 @@ abstract class BaseCenterAdapter<T>(
             targetView = mLayoutManager.findViewByPosition(position)
         }
         // 通知item变动
-        if (firstVisiblePosition != position) {
+        if (curPosition != position) {
             onItemChange(position)
         }
     }
 
     open fun onItemChange(position: Int) {
-        firstVisiblePosition = position
+        curPosition = position
         if (onItemChangeListener != null) {
             onItemChangeListener!!.onItemChange(position)
         }
@@ -183,13 +192,13 @@ abstract class BaseCenterAdapter<T>(
     }
 
     private fun updateScrolledInfo(firstVisibleView: View?) {
-        if (onItemScrollListener != null) {
-            if (firstVisiblePosition == RecyclerView.NO_POSITION) {
-                onItemScrollListener!!.onItemScrolled(0, 0f, 0)
+        onItemScrollListener?.let { listener ->
+            if (curPosition == RecyclerView.NO_POSITION) {
+                listener.onItemScrolled(0, 0f, 0)
                 return
             }
             if (firstVisibleView == null) {
-                onItemScrollListener!!.onItemScrolled(0, 0f, 0)
+                listener.onItemScrolled(0, 0f, 0)
                 return
             }
             var leftDecorations = mLayoutManager.getLeftDecorationWidth(firstVisibleView)
@@ -198,11 +207,10 @@ abstract class BaseCenterAdapter<T>(
             var bottomDecorations = mLayoutManager.getBottomDecorationHeight(firstVisibleView)
             val params = firstVisibleView.layoutParams
             if (params is MarginLayoutParams) {
-                val margin = params
-                leftDecorations += margin.leftMargin
-                rightDecorations += margin.rightMargin
-                topDecorations += margin.topMargin
-                bottomDecorations += margin.bottomMargin
+                leftDecorations += params.leftMargin
+                rightDecorations += params.rightMargin
+                topDecorations += params.topMargin
+                bottomDecorations += params.bottomMargin
             }
             val decoratedHeight = firstVisibleView.height + topDecorations + bottomDecorations
             val decoratedWidth = firstVisibleView.width + leftDecorations + rightDecorations
@@ -220,7 +228,7 @@ abstract class BaseCenterAdapter<T>(
             }
             val mOffsetPx = -1 * start
             val mOffset: Float = if (sizePx == 0) 0F else mOffsetPx * 100 / sizePx / 100f
-            onItemScrollListener!!.onItemScrolled(firstVisiblePosition, mOffset, mOffsetPx)
+            listener.onItemScrolled(curPosition, mOffset, mOffsetPx)
             if (mOffset > 0.99f || mOffset < -0.99f) {
                 updatePosition()
             }
@@ -235,7 +243,7 @@ abstract class BaseCenterAdapter<T>(
     }
 
     private fun getScroller(position: Int): CenterScroller {
-        val centerScroller = getScroller(context, smoothTime)
+        val centerScroller = getScroller(context)
         centerScroller.targetPosition = position
         return centerScroller
     }
@@ -267,7 +275,6 @@ abstract class BaseCenterAdapter<T>(
         CenterScroller(context, time) {
 
         override fun onTargetFound(targetView: View, state: RecyclerView.State, action: Action) {
-            super.onTargetFound(targetView, state, action)
             val dx = calculateDxToMakeVisible(targetView, horizontalSnapPreference)
             val dy = calculateDyToMakeVisible(targetView, verticalSnapPreference)
             val distance = sqrt((dx * dx + dy * dy).toDouble()).toInt()

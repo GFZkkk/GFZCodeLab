@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.widget.FrameLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.recyclerview.adapter.BaseMultipleChooseAdapter
@@ -15,9 +16,11 @@ import com.gfz.recyclerview.adapter.BaseMultipleChooseAdapter
  * created by gaofengze on 2020/4/14
  */
 
-class MultiRecyclerView : RecyclerView {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
+class MultiRecyclerView@JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : RecyclerView(context, attrs, defStyleAttr) {
 
     private var currentPosition = -1
     private var groupId = -1

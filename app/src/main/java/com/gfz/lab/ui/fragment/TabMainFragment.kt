@@ -34,7 +34,7 @@ class TabMainFragment : BaseVBFragment<FragmentTabMainBinding>() {
         }
         binding.vpMain.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.vpMain.offscreenPageLimit = fragmentList.size
-        binding.vpMain.isUserInputEnabled = false
+        binding.vpMain.isUserInputEnabled = true
 
         // 初始化bottombar
         val adapter = BottomBarAdapter(
