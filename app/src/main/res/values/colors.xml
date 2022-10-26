@@ -5,6 +5,8 @@
     <color name="colorAccent">#b07529</color>
 
     <color name="themeColor">#E6EDCA8D</color>
+    <color name="col_FF950A">#FF950A</color>
+    <color name="col_4B4F5A">#4B4F5A</color>
 
     <color name="tab_active">#fb6d59</color>
     <color name="tab_default">#94949b</color>

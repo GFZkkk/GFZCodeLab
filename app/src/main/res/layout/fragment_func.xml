@@ -2,11 +2,50 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabRippleColor="@color/transparent"
+        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicator="@drawable/tab_indicator"
+        app:tabIndicatorColor="@color/col_FF950A"
+        app:tabSelectedTextColor="@color/col_FF950A"
+        app:tabTextColor="@color/col_4B4F5A"
+        app:tabTextAppearance="@style/CustomTabTextAppearance"
+        android:paddingVertical="8dp"
+        app:tabMode="scrollable"
+        app:tabPaddingStart="18dp"
+        app:tabPaddingEnd="18dp">
+    </com.google.android.material.tabs.TabLayout>
     <com.gfz.lab.view.RecyclerViewAtViewPager2
         android:id="@+id/rvList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:listitem="@layout/item_banner"/>
+    <Button
+        android:id="@+id/btnLeft"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="滑动"
+        app:layout_constraintTop_toBottomOf="@id/rvList"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/btnRight"/>
+    <Button
+        android:id="@+id/btnRight"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="快速滑动"
+        app:layout_constraintTop_toBottomOf="@id/rvList"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/btnLeft"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

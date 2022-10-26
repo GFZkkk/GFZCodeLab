@@ -31,6 +31,7 @@ class HomeFragment : BaseVBFragment<FragmentHomeBinding>() {
                 TestBean("自定义动画实验区", R.id.testAnimationFragment),
                 TestBean("扩展布局实验区", R.id.testExtAdapterFragment),
                 TestBean("流式布局实验区", R.id.testFlowFragment),
+                TestBean("画板实验区", R.id.testWhiteBoardFragment),
             )
         )
 
