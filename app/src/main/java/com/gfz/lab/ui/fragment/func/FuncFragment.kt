@@ -1,21 +1,24 @@
 package com.gfz.lab.ui.fragment.func
 
+import android.os.Environment
+import android.os.StatFs
+import android.text.format.Formatter
 import android.view.ViewGroup
-import androidx.core.view.marginTop
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gfz.common.ext.getScreenWidth
-import com.gfz.common.ext.toDP
+import com.gfz.common.ext.launchSafe
 import com.gfz.common.ext.toPX
-import com.gfz.lab.adapter.Test3Adapter
 import com.gfz.lab.adapter.TestBannerAdapter
 import com.gfz.lab.databinding.FragmentFuncBinding
 import com.gfz.lab.model.bean.BannerBean
-import com.gfz.lab.model.bean.TestBean
 import com.gfz.recyclerview.decoration.SpaceItemDecoration
 import com.gfz.ui.base.page.BaseVBFragment
 import com.google.android.material.tabs.TabLayout
 import com.gyf.immersionbar.ImmersionBar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 /**
  *
@@ -27,7 +30,8 @@ class FuncFragment : BaseVBFragment<FragmentFuncBinding>() {
     }
 
     override fun initView() {
-        binding.rvList.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
+        binding.rvList.layoutManager =
+            LinearLayoutManager(requireContext(), RecyclerView.HORIZONTAL, false)
         binding.rvList.adapter = adapter
         val itemWidth = 300.toPX()
         val screenWidth = requireContext().getScreenWidth()
@@ -35,13 +39,15 @@ class FuncFragment : BaseVBFragment<FragmentFuncBinding>() {
         val padding = space / 5
         val next = space - padding * 2
         val endPadding = padding + next
-        binding.rvList.addItemDecoration(SpaceItemDecoration(
-            paddingH = padding,
-            marginLeft = padding,
-            marginRight = endPadding,
-        ))
+        binding.rvList.addItemDecoration(
+            SpaceItemDecoration(
+                paddingH = padding,
+                marginLeft = padding,
+                marginRight = endPadding,
+            )
+        )
         adapter.refresh(ArrayList<BannerBean>().apply {
-            repeat(3){
+            repeat(3) {
                 add(BannerBean("测试：$it"))
             }
         })
@@ -64,10 +70,10 @@ class FuncFragment : BaseVBFragment<FragmentFuncBinding>() {
         }
         binding.tabLayout.apply {
             layoutParams = (layoutParams as ViewGroup.MarginLayoutParams).apply {
-                setMargins(0,ImmersionBar.getStatusBarHeight(this@FuncFragment),0,0)
+                setMargins(0, ImmersionBar.getStatusBarHeight(this@FuncFragment), 0, 0)
             }
         }
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
             }
 
@@ -80,6 +86,17 @@ class FuncFragment : BaseVBFragment<FragmentFuncBinding>() {
             }
 
         })
+        lifecycleScope.launchSafe {
+            var memoryAvaliSpace = ""
+            withContext(Dispatchers.IO) {
+                val path = Environment.getDataDirectory().absolutePath
+                val statFs = StatFs(path)
+                val count = statFs.availableBlocksLong
+                val size = statFs.blockSizeLong
+                memoryAvaliSpace = Formatter.formatFileSize(requireContext(), count * size)
+            }
+            binding.tvInfo.text = "当前可用内存：$memoryAvaliSpace"
+        }
     }
 
 }

@@ -4,5 +4,6 @@
     <string name="tab_main">首页</string>
     <string name="tab_mine">我的</string>
     <string name="tab_function">功能</string>
+    <string name="accessibility_service_name">功能</string>
 
 </resources>

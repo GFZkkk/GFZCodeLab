@@ -46,4 +46,9 @@
         android:id="@+id/testWhiteBoardFragment"
         android:name="com.gfz.lab.ui.fragment.home.whiteboard.TestWhiteBoardFragment"
         android:label="TestWhiteBoardFragment" />
+
+    <fragment
+        android:id="@+id/testTeleprompterFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestTeleprompterFragment"
+        android:label="TestTeleprompterFragment" />
 </navigation>

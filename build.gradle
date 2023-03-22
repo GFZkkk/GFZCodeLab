@@ -2,11 +2,11 @@
 
 buildscript {
 
-    ext{
+    ext {
         compile_sdk_version = 31
         build_tools_version = '31.0.0'
         min_sdk_version = 21
-        target_sdk_version = 31
+        target_sdk_version = 29
         version_code = 1
         version_name = '1.0'
 
@@ -34,7 +34,7 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        maven {url 'https://jitpack.io'}
+        maven { url 'https://jitpack.io' }
     }
 
     dependencies {
@@ -53,7 +53,7 @@ allprojects {
         }
         google()
         mavenCentral()
-        maven {url 'https://jitpack.io'}
+        maven { url 'https://jitpack.io' }
         maven {
             url '/Users/xueya/StudioProjects/flutter_page/build/host/outputs/repo'
         }
@@ -71,12 +71,12 @@ task clean(type: Delete) {
 /**
  * 加固前打包流程
  */
-task step1(dependsOn: ":resetFileFolder"){
+task step1(dependsOn: ":resetFileFolder") {
     doLast {
         def output0 = rootProject.ext.packgeConfig.releasePath
 
         println("copy apk")
-        copy{
+        copy {
             from('app/build/outputs/apk/release/')
             into(output0)
             include("app-release.apk")
@@ -87,17 +87,17 @@ task step1(dependsOn: ":resetFileFolder"){
 /**
  * 加固后签名流程
  */
-task step2(dependsOn: ":packer"){
+task step2(dependsOn: ":packer") {
     doFirst {
         def versionName = rootProject.ext.androidConfig.versionName
         def output0 = rootProject.ext.packgeConfig.releasePath
         def output4 = rootProject.ext.packgeConfig.channelPath
 
         println("build channel")
-        copy{
+        copy {
             from "${output0}/channel"
             include("towords_${versionName}-*")
-            rename("towords_(.*)-(.*).apk","towords_\$2_\$1.apk")
+            rename("towords_(.*)-(.*).apk", "towords_\$2_\$1.apk")
             into output4
         }
         List<File> listOfFiles = fileTree(dir: "${output0}/channel").asList()
@@ -111,17 +111,17 @@ task step2(dependsOn: ":packer"){
     }
 }
 
-task step2Windows(dependsOn: ":packerWindows"){
+task step2Windows(dependsOn: ":packerWindows") {
     doFirst {
         def versionName = rootProject.ext.androidConfig.versionName
         def output0 = rootProject.ext.packgeConfig.releasePath
         def output4 = rootProject.ext.packgeConfig.channelPath
 
         println("build channel")
-        copy{
+        copy {
             from "${output0}/channel"
             include("towords_${versionName}-*")
-            rename("towords_(.*)-(.*).apk","towords_\$2_\$1.apk")
+            rename("towords_(.*)-(.*).apk", "towords_\$2_\$1.apk")
             into output4
         }
         List<File> listOfFiles = fileTree(dir: "${output0}/channel").asList()
@@ -135,7 +135,7 @@ task step2Windows(dependsOn: ":packerWindows"){
     }
 }
 
-task resetFileFolder(dependsOn: "::app:assembleRelease"){
+task resetFileFolder(dependsOn: "::app:assembleRelease") {
     doFirst {
         def output0 = rootProject.ext.packgeConfig.releasePath
         def output4 = rootProject.ext.packgeConfig.channelPath
@@ -157,7 +157,7 @@ task resetFileFolder(dependsOn: "::app:assembleRelease"){
     }
 }
 
-task packer(dependsOn: ":apksigner"){
+task packer(dependsOn: ":apksigner") {
     doFirst {
         def versionName = rootProject.ext.androidConfig.versionName
         def output0 = rootProject.ext.packgeConfig.releasePath
@@ -167,7 +167,7 @@ task packer(dependsOn: ":apksigner"){
     }
 }
 
-task packerWindows(dependsOn: ":apksignerWindows"){
+task packerWindows(dependsOn: ":apksignerWindows") {
     doFirst {
         def versionName = rootProject.ext.androidConfig.versionName
         def output0 = rootProject.ext.packgeConfig.releasePath
@@ -177,7 +177,7 @@ task packerWindows(dependsOn: ":apksignerWindows"){
     }
 }
 
-task apksigner(dependsOn: ":zipalign"){
+task apksigner(dependsOn: ":zipalign") {
     doFirst {
         def toolsPath = rootProject.ext.packgeConfig.toolsPath
         def versionName = rootProject.ext.androidConfig.versionName
@@ -188,7 +188,7 @@ task apksigner(dependsOn: ":zipalign"){
     }
 }
 
-task apksignerWindows(dependsOn: ":zipalign"){
+task apksignerWindows(dependsOn: ":zipalign") {
     doFirst {
         def toolsPath = rootProject.ext.packgeConfig.toolsPath
         def versionName = rootProject.ext.androidConfig.versionName
@@ -199,11 +199,11 @@ task apksignerWindows(dependsOn: ":zipalign"){
     }
 }
 
-task zipalign{
+task zipalign {
     doFirst {
         def toolsPath = rootProject.ext.packgeConfig.toolsPath
         def versionName = rootProject.ext.androidConfig.versionName
-        def versionCode = versionName.replace(".","")
+        def versionCode = versionName.replace(".", "")
         def output0 = rootProject.ext.packgeConfig.releasePath
         exec {
             commandLine "${toolsPath}/zipalign -v -p 4 ${output0}/app-release_${versionCode}_jiagu.apk ${output0}/my-app-unsigned-aligned.apk".split(" ")
@@ -211,18 +211,277 @@ task zipalign{
     }
 }
 
-ext{
+ext {
 
     debugKeyStoreFile = "../key_store/key"
     releaseKeyStoreFile = "../key_store/key"
 
     Properties properties = new Properties()
     InputStream inputStream = project.rootProject.file('local.properties').newDataInputStream()
-    properties.load( inputStream )
+    properties.load(inputStream)
     packgeConfig = [
-            releasePath : properties.getProperty('releasePath'),
-            channelPath : properties.getProperty('channelPath'),
-            toolsPath : properties.getProperty('toolsPath')+"/27.0.3",
+            releasePath: properties.getProperty('releasePath'),
+            channelPath: properties.getProperty('channelPath'),
+            toolsPath  : properties.getProperty('toolsPath') + "/27.0.3",
 
     ]
+
+    signToolPath = "/Users/xueya/Library/Android/sdk/build-tools/30.0.3"
+    signOutputPathRoot = "/Users/xueya/Downloads/app_market"
+    unSignOutput = "/Users/xueya/Downloads"
+    channelToolPath = "/Users/xueya/Downloads/app_market/tools"
+    channelPath = "/Users/xueya/Downloads/app_market/channel"
+
+    abiv8 = "arm64-v8a"
+    abiv7 = "armeabi-v7a"
+
+    versionName = "3.6.0"
+
+    student = [
+            unSignNameV8  : "ed4d83e12580ed31e7a05c2c793eaeec.20230306164429.apk",
+            unSignNameV7  : "2a4f1f8ac24af09644c39c14e80c8e11.20230306164509.apk",
+            keyPath       : "/Users/xueya/StudioProjects/partnertrainingstudent/app/partnerTrainingStudent.jks",
+            signOutputPath: "$signOutputPathRoot/sign/student/$versionName",
+            packageName   : "com.xihang.partnertrainingstudent",
+            channelPath   : "$channelPath/studentChannel.txt",
+            output0       : "$signOutputPathRoot/student_$versionName",
+            alias         : "partnerTrainingStudent",
+            ks_pass       : "xihangpartnerTrainingStudent",
+            key_pass      : "xihangpartnerTrainingStudent",
+    ]
+    teacher = [
+            unSignNameV8  : "9795992e274c66ebd37be85df8b936c7.20230309115013.apk",
+            unSignNameV7  : "2ad6206499a651a9059e1a9cca59f534.20230309115106.apk",
+            keyPath       : "/Users/xueya/StudioProjects/partnertrainingteacher/app/partnerTrainingTeacher.jks",
+            signOutputPath: "$signOutputPathRoot/sign/teacher/$versionName",
+            packageName   : "com.xihang.partnertrainingteacher",
+            channelPath   : "$channelPath/teacherChannel.txt",
+            output0       : "$signOutputPathRoot/teacher_$versionName",
+            alias         : "xihangpartnerTrainingTeacher",
+            ks_pass       : "xihangpartnerTrainingTeacher",
+            key_pass      : "xihangpartnerTrainingTeacher",
+    ]
+
+
+}
+
+task student(dependsOn: ":channelStudentV8"){
+    doFirst {
+        println "学生端多渠道打包完成"
+    }
+}
+
+task teacher(dependsOn: ":channelTeacherV8"){
+    doFirst {
+        println "老师端多渠道打包完成"
+    }
+}
+
+task channelStudentV8(dependsOn: ":signStudentV8") {
+    doFirst {
+        def versionName = rootProject.ext.versionName
+        def channelToolPath = rootProject.ext.channelToolPath
+        def abiName = rootProject.ext.abiv8
+
+        def channelPath = rootProject.ext.student.channelPath
+        def signOutputPath = rootProject.ext.student.signOutputPath
+        def packageName = rootProject.ext.student.packageName
+        def output0 = rootProject.ext.student.output0
+
+        exec {
+            commandLine "java -jar ${channelToolPath}/VasDolly.jar put -c ${channelPath} ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${output0}".split(" ")
+        }
+    }
+}
+
+task channelStudentV7(dependsOn: ":signStudentV7") {
+    doFirst {
+        def versionName = rootProject.ext.versionName
+        def channelToolPath = rootProject.ext.channelToolPath
+        def abiName = rootProject.ext.abiv7
+
+        def channelPath = rootProject.ext.student.channelPath
+        def signOutputPath = rootProject.ext.student.signOutputPath
+        def packageName = rootProject.ext.student.packageName
+        def output0 = rootProject.ext.student.output0
+
+        exec {
+            commandLine "java -jar ${channelToolPath}/VasDolly.jar put -c ${channelPath} ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${output0}".split(" ")
+        }
+    }
+}
+
+task channelTeacherV8(dependsOn: ":signTeacherV8") {
+    doFirst {
+        def versionName = rootProject.ext.versionName
+        def channelToolPath = rootProject.ext.channelToolPath
+        def abiName = rootProject.ext.abiv8
+
+        def channelPath = rootProject.ext.teacher.channelPath
+        def signOutputPath = rootProject.ext.teacher.signOutputPath
+        def packageName = rootProject.ext.teacher.packageName
+        def output0 = rootProject.ext.teacher.output0
+
+        exec {
+            commandLine "java -jar ${channelToolPath}/VasDolly.jar put -c ${channelPath} ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${output0}".split(" ")
+        }
+    }
+}
+
+task channelTeacherV7(dependsOn: ":signTeacherV7") {
+    doFirst {
+        def versionName = rootProject.ext.versionName
+        def channelToolPath = rootProject.ext.channelToolPath
+        def abiName = rootProject.ext.abiv7
+
+        def channelPath = rootProject.ext.teacher.channelPath
+        def signOutputPath = rootProject.ext.teacher.signOutputPath
+        def packageName = rootProject.ext.teacher.packageName
+        def output0 = rootProject.ext.teacher.output0
+
+        exec {
+            commandLine "java -jar ${channelToolPath}/VasDolly.jar put -c ${channelPath} ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${output0}".split(" ")
+        }
+    }
+}
+
+task signStudentV8(dependsOn: ":channelStudentV7") {
+    doFirst {
+        def signToolPath = rootProject.ext.signToolPath
+        def unSignOutput = rootProject.ext.unSignOutput
+        def versionName = rootProject.ext.versionName
+        def abiName = rootProject.ext.abiv8
+
+        def keyPath = rootProject.ext.student.keyPath
+        def signOutputPath = rootProject.ext.student.signOutputPath
+        def packageName = rootProject.ext.student.packageName
+        def unSignName = rootProject.ext.student.unSignNameV8
+
+        def alias = rootProject.ext.student.alias
+        def ks_pass = rootProject.ext.student.ks_pass
+        def key_pass = rootProject.ext.student.key_pass
+
+        exec {
+            commandLine "${signToolPath}/apksigner sign --ks ${keyPath} --ks-key-alias ${alias} --ks-pass pass:${ks_pass} --key-pass pass:${key_pass} --out ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${unSignOutput}/${unSignName}".split(" ")
+        }
+    }
+}
+
+task signStudentV7(dependsOn: ":beforeStudentWork") {
+    doFirst {
+        def signToolPath = rootProject.ext.signToolPath
+        def unSignOutput = rootProject.ext.unSignOutput
+        def versionName = rootProject.ext.versionName
+        def abiName = rootProject.ext.abiv7
+
+        def keyPath = rootProject.ext.student.keyPath
+        def signOutputPath = rootProject.ext.student.signOutputPath
+        def packageName = rootProject.ext.student.packageName
+        def unSignName = rootProject.ext.student.unSignNameV7
+
+        def alias = rootProject.ext.student.alias
+        def ks_pass = rootProject.ext.student.ks_pass
+        def key_pass = rootProject.ext.student.key_pass
+
+        exec {
+            commandLine "${signToolPath}/apksigner sign --ks ${keyPath} --ks-key-alias ${alias} --ks-pass pass:${ks_pass} --key-pass pass:${key_pass} --out ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${unSignOutput}/${unSignName}".split(" ")
+        }
+    }
+}
+
+task signTeacherV8(dependsOn: ":channelTeacherV7") {
+    doFirst {
+        def signToolPath = rootProject.ext.signToolPath
+        def unSignOutput = rootProject.ext.unSignOutput
+        def versionName = rootProject.ext.versionName
+        def abiName = rootProject.ext.abiv8
+
+        def keyPath = rootProject.ext.teacher.keyPath
+        def signOutputPath = rootProject.ext.teacher.signOutputPath
+        def packageName = rootProject.ext.teacher.packageName
+        def unSignName = rootProject.ext.teacher.unSignNameV8
+        def alias = rootProject.ext.teacher.alias
+        def ks_pass = rootProject.ext.teacher.ks_pass
+        def key_pass = rootProject.ext.teacher.key_pass
+
+        exec {
+            commandLine "${signToolPath}/apksigner sign --ks ${keyPath} --ks-key-alias ${alias} --ks-pass pass:${ks_pass} --key-pass pass:${key_pass} --out ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${unSignOutput}/${unSignName}".split(" ")
+        }
+    }
+}
+
+task signTeacherV7(dependsOn: ":beforeTeacherWork") {
+    doFirst {
+        def signToolPath = rootProject.ext.signToolPath
+        def unSignOutput = rootProject.ext.unSignOutput
+        def versionName = rootProject.ext.versionName
+        def abiName = rootProject.ext.abiv7
+
+        def keyPath = rootProject.ext.teacher.keyPath
+        def signOutputPath = rootProject.ext.teacher.signOutputPath
+        def packageName = rootProject.ext.teacher.packageName
+        def unSignName = rootProject.ext.teacher.unSignNameV7
+
+        def alias = rootProject.ext.teacher.alias
+        def ks_pass = rootProject.ext.teacher.ks_pass
+        def key_pass = rootProject.ext.teacher.key_pass
+
+        exec {
+            commandLine "${signToolPath}/apksigner sign --ks ${keyPath} --ks-key-alias ${alias} --ks-pass pass:${ks_pass} --key-pass pass:${key_pass} --out ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${unSignOutput}/${unSignName}".split(" ")
+        }
+    }
+}
+
+task beforeStudentWork {
+    doFirst {
+
+        def signOutputPath = rootProject.ext.student.signOutputPath
+        def output0 = rootProject.ext.student.output0
+
+        mkdir "$signOutputPath"
+        mkdir "$output0"
+
+        List<File> listOfSignFiles = fileTree(dir: "$signOutputPath").asList()
+        List<File> listOfChannelFiles = fileTree(dir: "$output0").asList()
+
+        delete {
+            listOfSignFiles.each {
+                file ->
+                    println file.name
+                    delete file
+            }
+            listOfChannelFiles.each {
+                file ->
+                    println file.name
+                    delete file
+            }
+        }
+    }
+}
+
+task beforeTeacherWork {
+    doFirst {
+
+        def signOutputPath = rootProject.ext.teacher.signOutputPath
+        def output0 = rootProject.ext.teacher.output0
+
+        mkdir "$signOutputPath"
+        mkdir "$output0"
+
+        List<File> listOfSignFiles = fileTree(dir: "$signOutputPath").asList()
+        List<File> listOfChannelFiles = fileTree(dir: "$output0").asList()
+
+        delete {
+            listOfSignFiles.each {
+                file ->
+                    println file.name
+                    delete file
+            }
+            listOfChannelFiles.each {
+                file ->
+                    println file.name
+                    delete file
+            }
+        }
+    }
 }
