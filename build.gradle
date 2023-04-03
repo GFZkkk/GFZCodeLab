@@ -96,7 +96,7 @@ task step2(dependsOn: ":packer") {
         println("build channel")
         copy {
             from "${output0}/channel"
-            include("towords_${versionName}-*")
+            include("towords_$versionName-*")
             rename("towords_(.*)-(.*).apk", "towords_\$2_\$1.apk")
             into output4
         }
@@ -120,7 +120,7 @@ task step2Windows(dependsOn: ":packerWindows") {
         println("build channel")
         copy {
             from "${output0}/channel"
-            include("towords_${versionName}-*")
+            include("towords_$versionName-*")
             rename("towords_(.*)-(.*).apk", "towords_\$2_\$1.apk")
             into output4
         }
@@ -162,7 +162,7 @@ task packer(dependsOn: ":apksigner") {
         def versionName = rootProject.ext.androidConfig.versionName
         def output0 = rootProject.ext.packgeConfig.releasePath
         exec {
-            commandLine "java -jar packer-ng-2.0.1.jar generate --channels=@markets.txt --output=${output0}/channel ${output0}/towords_${versionName}.apk".split(" ")
+            commandLine "java -jar packer-ng-2.0.1.jar generate --channels=@markets.txt --output=${output0}/channel ${output0}/towords_$versionName.apk".split(" ")
         }
     }
 }
@@ -172,7 +172,7 @@ task packerWindows(dependsOn: ":apksignerWindows") {
         def versionName = rootProject.ext.androidConfig.versionName
         def output0 = rootProject.ext.packgeConfig.releasePath
         exec {
-            commandLine "java -jar packer-ng-2.0.1.jar generate --channels=@markets.txt --output=${output0}/channel ${output0}/towords_${versionName}.apk".split(" ")
+            commandLine "java -jar packer-ng-2.0.1.jar generate --channels=@markets.txt --output=${output0}/channel ${output0}/towords_$versionName.apk".split(" ")
         }
     }
 }
@@ -183,7 +183,7 @@ task apksigner(dependsOn: ":zipalign") {
         def versionName = rootProject.ext.androidConfig.versionName
         def output0 = rootProject.ext.packgeConfig.releasePath
         exec {
-            commandLine "${toolsPath}/apksigner sign --ks key_store/key --ks-key-alias minimud_towords --ks-pass pass:2081101 --key-pass pass:2081101 --out ${output0}/towords_${versionName}.apk ${output0}/my-app-unsigned-aligned.apk".split(" ")
+            commandLine "${toolsPath}/apksigner sign --ks key_store/key --ks-key-alias minimud_towords --ks-pass pass:2081101 --key-pass pass:2081101 --out ${output0}/towords_$versionName.apk ${output0}/my-app-unsigned-aligned.apk".split(" ")
         }
     }
 }
@@ -194,7 +194,7 @@ task apksignerWindows(dependsOn: ":zipalign") {
         def versionName = rootProject.ext.androidConfig.versionName
         def output0 = rootProject.ext.packgeConfig.releasePath
         exec {
-            commandLine "${toolsPath}/apksigner.bat sign --ks key_store/key --ks-key-alias minimud_towords --ks-pass pass:2081101 --key-pass pass:2081101 --out ${output0}/towords_${versionName}.apk ${output0}/my-app-unsigned-aligned.apk".split(" ")
+            commandLine "${toolsPath}/apksigner.bat sign --ks key_store/key --ks-key-alias minimud_towords --ks-pass pass:2081101 --key-pass pass:2081101 --out ${output0}/towords_$versionName.apk ${output0}/my-app-unsigned-aligned.apk".split(" ")
         }
     }
 }
@@ -235,11 +235,11 @@ ext {
     abiv8 = "arm64-v8a"
     abiv7 = "armeabi-v7a"
 
-    versionName = "3.6.0"
+    versionName = "3.7.0"
 
     student = [
-            unSignNameV8  : "ed4d83e12580ed31e7a05c2c793eaeec.20230306164429.apk",
-            unSignNameV7  : "2a4f1f8ac24af09644c39c14e80c8e11.20230306164509.apk",
+            unSignNameV8  : "com.xihang.partnertrainingstudent-v3.7.0-arm64-v8a-normalRelease_370_jiagu.apk",
+            unSignNameV7  : "com.xihang.partnertrainingstudent-v3.7.0-armeabi-v7a-normalRelease_370_jiagu.apk",
             keyPath       : "/Users/xueya/StudioProjects/partnertrainingstudent/app/partnerTrainingStudent.jks",
             signOutputPath: "$signOutputPathRoot/sign/student/$versionName",
             packageName   : "com.xihang.partnertrainingstudent",
@@ -250,8 +250,8 @@ ext {
             key_pass      : "xihangpartnerTrainingStudent",
     ]
     teacher = [
-            unSignNameV8  : "9795992e274c66ebd37be85df8b936c7.20230309115013.apk",
-            unSignNameV7  : "2ad6206499a651a9059e1a9cca59f534.20230309115106.apk",
+            unSignNameV8  : "com.xihang.partnertrainingteacher-v3.7.0-arm64-v8a-release_370_jiagu.apk",
+            unSignNameV7  : "com.xihang.partnertrainingteacher-v3.7.0-armeabi-v7a-release_370_jiagu.apk",
             keyPath       : "/Users/xueya/StudioProjects/partnertrainingteacher/app/partnerTrainingTeacher.jks",
             signOutputPath: "$signOutputPathRoot/sign/teacher/$versionName",
             packageName   : "com.xihang.partnertrainingteacher",
@@ -279,6 +279,8 @@ task teacher(dependsOn: ":channelTeacherV8"){
 
 task channelStudentV8(dependsOn: ":signStudentV8") {
     doFirst {
+        println "channelStudentV8"
+
         def versionName = rootProject.ext.versionName
         def channelToolPath = rootProject.ext.channelToolPath
         def abiName = rootProject.ext.abiv8
@@ -288,8 +290,10 @@ task channelStudentV8(dependsOn: ":signStudentV8") {
         def packageName = rootProject.ext.student.packageName
         def output0 = rootProject.ext.student.output0
 
+        def inApk = "$signOutputPath/$packageName-v$versionName-v$abiName-sign.apk"
+
         exec {
-            commandLine "java -jar ${channelToolPath}/VasDolly.jar put -c ${channelPath} ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${output0}".split(" ")
+            commandLine "java -jar $channelToolPath/VasDolly.jar put -c $channelPath $inApk $output0".split(" ")
         }
     }
 }
@@ -305,8 +309,10 @@ task channelStudentV7(dependsOn: ":signStudentV7") {
         def packageName = rootProject.ext.student.packageName
         def output0 = rootProject.ext.student.output0
 
+        def inApk = "$signOutputPath/$packageName-v$versionName-v$abiName-sign.apk"
+
         exec {
-            commandLine "java -jar ${channelToolPath}/VasDolly.jar put -c ${channelPath} ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${output0}".split(" ")
+            commandLine "java -jar $channelToolPath/VasDolly.jar put -c $channelPath $inApk $output0".split(" ")
         }
     }
 }
@@ -322,8 +328,10 @@ task channelTeacherV8(dependsOn: ":signTeacherV8") {
         def packageName = rootProject.ext.teacher.packageName
         def output0 = rootProject.ext.teacher.output0
 
+        def inApk = "$signOutputPath/$packageName-v$versionName-v$abiName-sign.apk"
+
         exec {
-            commandLine "java -jar ${channelToolPath}/VasDolly.jar put -c ${channelPath} ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${output0}".split(" ")
+            commandLine "java -jar $channelToolPath/VasDolly.jar put -c $channelPath $inApk $output0".split(" ")
         }
     }
 }
@@ -339,95 +347,181 @@ task channelTeacherV7(dependsOn: ":signTeacherV7") {
         def packageName = rootProject.ext.teacher.packageName
         def output0 = rootProject.ext.teacher.output0
 
+        def inApk = "$signOutputPath/$packageName-v$versionName-v$abiName-sign.apk"
+
         exec {
-            commandLine "java -jar ${channelToolPath}/VasDolly.jar put -c ${channelPath} ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${output0}".split(" ")
+            commandLine "java -jar $channelToolPath/VasDolly.jar put -c $channelPath $inApk $output0".split(" ")
         }
     }
 }
 
-task signStudentV8(dependsOn: ":channelStudentV7") {
+task signStudentV8(dependsOn: ":zipalignStudentV8") {
+    doFirst {
+        def signToolPath = rootProject.ext.signToolPath
+        def versionName = rootProject.ext.versionName
+        def abiName = rootProject.ext.abiv8
+
+        def keyPath = rootProject.ext.student.keyPath
+        def signOutputPath = rootProject.ext.student.signOutputPath
+        def packageName = rootProject.ext.student.packageName
+
+        def alias = rootProject.ext.student.alias
+        def ks_pass = rootProject.ext.student.ks_pass
+        def key_pass = rootProject.ext.student.key_pass
+
+        def inputApk = "$signOutputPath/$packageName-v$versionName-v$abiName-zipalign.apk"
+        def outApk = "$signOutputPath/$packageName-v$versionName-v$abiName-sign.apk"
+
+        exec {
+            commandLine "$signToolPath/apksigner sign --ks $keyPath --ks-key-alias $alias --ks-pass pass:$ks_pass --key-pass pass:$key_pass --out $outApk $inputApk ".split(" ")
+        }
+    }
+}
+
+task signStudentV7(dependsOn: ":zipalignStudentV7") {
+    doFirst {
+        def signToolPath = rootProject.ext.signToolPath
+        def versionName = rootProject.ext.versionName
+        def abiName = rootProject.ext.abiv7
+
+        def keyPath = rootProject.ext.student.keyPath
+        def signOutputPath = rootProject.ext.student.signOutputPath
+        def packageName = rootProject.ext.student.packageName
+
+        def alias = rootProject.ext.student.alias
+        def ks_pass = rootProject.ext.student.ks_pass
+        def key_pass = rootProject.ext.student.key_pass
+
+        def inputApk = "$signOutputPath/$packageName-v$versionName-v$abiName-zipalign.apk"
+        def outApk = "$signOutputPath/$packageName-v$versionName-v$abiName-sign.apk"
+
+        exec {
+            commandLine "$signToolPath/apksigner sign --ks $keyPath --ks-key-alias $alias --ks-pass pass:$ks_pass --key-pass pass:${key_pass} --out $outApk $inputApk ".split(" ")
+        }
+    }
+}
+
+task signTeacherV8(dependsOn: ":zipalignTeacherV8") {
+    doFirst {
+        def signToolPath = rootProject.ext.signToolPath
+        def versionName = rootProject.ext.versionName
+        def abiName = rootProject.ext.abiv8
+
+        def keyPath = rootProject.ext.teacher.keyPath
+        def signOutputPath = rootProject.ext.teacher.signOutputPath
+        def packageName = rootProject.ext.teacher.packageName
+        def alias = rootProject.ext.teacher.alias
+        def ks_pass = rootProject.ext.teacher.ks_pass
+        def key_pass = rootProject.ext.teacher.key_pass
+
+        def inputApk = "$signOutputPath/$packageName-v$versionName-v$abiName-zipalign.apk"
+        def outApk = "$signOutputPath/$packageName-v$versionName-v$abiName-sign.apk"
+
+        exec {
+            commandLine "${signToolPath}/apksigner sign --ks $keyPath --ks-key-alias $alias --ks-pass pass:$ks_pass --key-pass pass:${key_pass} --out $outApk $inputApk ".split(" ")
+        }
+    }
+}
+
+task signTeacherV7(dependsOn: ":zipalignTeacherV7") {
+    doFirst {
+        def signToolPath = rootProject.ext.signToolPath
+        def versionName = rootProject.ext.versionName
+        def abiName = rootProject.ext.abiv7
+
+        def keyPath = rootProject.ext.teacher.keyPath
+        def signOutputPath = rootProject.ext.teacher.signOutputPath
+        def packageName = rootProject.ext.teacher.packageName
+
+        def alias = rootProject.ext.teacher.alias
+        def ks_pass = rootProject.ext.teacher.ks_pass
+        def key_pass = rootProject.ext.teacher.key_pass
+
+        def inputApk = "$signOutputPath/$packageName-v$versionName-v$abiName-zipalign.apk"
+        def outApk = "$signOutputPath/$packageName-v$versionName-v$abiName-sign.apk"
+
+        exec {
+            commandLine "${signToolPath}/apksigner sign --ks $keyPath --ks-key-alias $alias --ks-pass pass:$ks_pass --key-pass pass:${key_pass} --out $outApk $inputApk ".split(" ")
+        }
+    }
+}
+
+task zipalignStudentV8(dependsOn: ":channelStudentV7") {
     doFirst {
         def signToolPath = rootProject.ext.signToolPath
         def unSignOutput = rootProject.ext.unSignOutput
         def versionName = rootProject.ext.versionName
         def abiName = rootProject.ext.abiv8
 
-        def keyPath = rootProject.ext.student.keyPath
         def signOutputPath = rootProject.ext.student.signOutputPath
         def packageName = rootProject.ext.student.packageName
         def unSignName = rootProject.ext.student.unSignNameV8
 
-        def alias = rootProject.ext.student.alias
-        def ks_pass = rootProject.ext.student.ks_pass
-        def key_pass = rootProject.ext.student.key_pass
+        def inputApk = "$unSignOutput/$unSignName"
+        def outApk = "$signOutputPath/$packageName-v$versionName-v$abiName-zipalign.apk"
 
         exec {
-            commandLine "${signToolPath}/apksigner sign --ks ${keyPath} --ks-key-alias ${alias} --ks-pass pass:${ks_pass} --key-pass pass:${key_pass} --out ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${unSignOutput}/${unSignName}".split(" ")
+            commandLine "${signToolPath}/zipalign -p -f -v 4 $inputApk $outApk".split(" ")
         }
     }
 }
 
-task signStudentV7(dependsOn: ":beforeStudentWork") {
+task zipalignStudentV7(dependsOn: ":beforeStudentWork") {
     doFirst {
         def signToolPath = rootProject.ext.signToolPath
         def unSignOutput = rootProject.ext.unSignOutput
         def versionName = rootProject.ext.versionName
         def abiName = rootProject.ext.abiv7
 
-        def keyPath = rootProject.ext.student.keyPath
         def signOutputPath = rootProject.ext.student.signOutputPath
         def packageName = rootProject.ext.student.packageName
         def unSignName = rootProject.ext.student.unSignNameV7
 
-        def alias = rootProject.ext.student.alias
-        def ks_pass = rootProject.ext.student.ks_pass
-        def key_pass = rootProject.ext.student.key_pass
+        def inputApk = "$unSignOutput/$unSignName"
+        def outApk = "$signOutputPath/$packageName-v$versionName-v$abiName-zipalign.apk"
 
         exec {
-            commandLine "${signToolPath}/apksigner sign --ks ${keyPath} --ks-key-alias ${alias} --ks-pass pass:${ks_pass} --key-pass pass:${key_pass} --out ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${unSignOutput}/${unSignName}".split(" ")
+            commandLine "${signToolPath}/zipalign -p -f -v 4 $inputApk $outApk".split(" ")
         }
     }
 }
 
-task signTeacherV8(dependsOn: ":channelTeacherV7") {
+task zipalignTeacherV8(dependsOn: ":channelTeacherV7") {
     doFirst {
         def signToolPath = rootProject.ext.signToolPath
         def unSignOutput = rootProject.ext.unSignOutput
         def versionName = rootProject.ext.versionName
         def abiName = rootProject.ext.abiv8
 
-        def keyPath = rootProject.ext.teacher.keyPath
         def signOutputPath = rootProject.ext.teacher.signOutputPath
         def packageName = rootProject.ext.teacher.packageName
         def unSignName = rootProject.ext.teacher.unSignNameV8
-        def alias = rootProject.ext.teacher.alias
-        def ks_pass = rootProject.ext.teacher.ks_pass
-        def key_pass = rootProject.ext.teacher.key_pass
+
+        def inputApk = "$unSignOutput/$unSignName"
+        def outApk = "$signOutputPath/$packageName-v$versionName-v$abiName-zipalign.apk"
 
         exec {
-            commandLine "${signToolPath}/apksigner sign --ks ${keyPath} --ks-key-alias ${alias} --ks-pass pass:${ks_pass} --key-pass pass:${key_pass} --out ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${unSignOutput}/${unSignName}".split(" ")
+            commandLine "${signToolPath}/zipalign -p -f -v 4 $inputApk $outApk".split(" ")
         }
     }
 }
 
-task signTeacherV7(dependsOn: ":beforeTeacherWork") {
+task zipalignTeacherV7(dependsOn: ":beforeTeacherWork") {
     doFirst {
         def signToolPath = rootProject.ext.signToolPath
         def unSignOutput = rootProject.ext.unSignOutput
         def versionName = rootProject.ext.versionName
         def abiName = rootProject.ext.abiv7
 
-        def keyPath = rootProject.ext.teacher.keyPath
         def signOutputPath = rootProject.ext.teacher.signOutputPath
         def packageName = rootProject.ext.teacher.packageName
         def unSignName = rootProject.ext.teacher.unSignNameV7
 
-        def alias = rootProject.ext.teacher.alias
-        def ks_pass = rootProject.ext.teacher.ks_pass
-        def key_pass = rootProject.ext.teacher.key_pass
+        def inputApk = "$unSignOutput/$unSignName"
+        def outApk = "$signOutputPath/$packageName-v$versionName-v$abiName-zipalign.apk"
 
         exec {
-            commandLine "${signToolPath}/apksigner sign --ks ${keyPath} --ks-key-alias ${alias} --ks-pass pass:${ks_pass} --key-pass pass:${key_pass} --out ${signOutputPath}/${packageName}-v${versionName}-v${abiName}-sign.apk ${unSignOutput}/${unSignName}".split(" ")
+            commandLine "${signToolPath}/zipalign -p -f -v 4 $inputApk $outApk".split(" ")
         }
     }
 }

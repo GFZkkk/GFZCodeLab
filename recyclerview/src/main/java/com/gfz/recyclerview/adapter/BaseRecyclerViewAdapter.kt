@@ -344,7 +344,6 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         val oldLength = length
         block()
         val newLength = length
-        TopLog.e("oldLength:$oldLength, newLength:$newLength")
         notifyItemRangeChanged(0, oldLength.coerceAtMost(newLength))
         if (oldLength > newLength){
             notifyItemRangeRemoved(newLength, oldLength - newLength)

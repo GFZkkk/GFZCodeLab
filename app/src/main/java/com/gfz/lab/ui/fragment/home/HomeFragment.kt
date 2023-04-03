@@ -1,5 +1,7 @@
 package com.gfz.lab.ui.fragment.home
 
+import android.Manifest
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.gfz.lab.R
 import com.gfz.lab.adapter.Test3Adapter
@@ -15,6 +17,7 @@ import com.gfz.ui.base.page.BaseVBFragment
 class HomeFragment : BaseVBFragment<FragmentHomeBinding>() {
 
     override fun initView() {
+        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),0)
 
         val adapter = Test3Adapter()
 
