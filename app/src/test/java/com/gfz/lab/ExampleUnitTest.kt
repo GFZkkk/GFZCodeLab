@@ -29,7 +29,7 @@ class ExampleUnitTest {
     }
 
     @Test
-    fun printApi(){
+    fun printApi() {
         buildApi(
             listOf(
                 ApiBean("mm_sync_data/save_user_speech_info_record.do", "保存用户跟读打分使用记录")
@@ -45,7 +45,7 @@ class ExampleUnitTest {
         val vh = 876
         val scale = 1f * w / h
         val scale2 = 1f * vw / vh
-        val s = if (scale < scale2){
+        val s = if (scale < scale2) {
             1f * w / vw
         } else {
             1f * h / vh
@@ -53,7 +53,7 @@ class ExampleUnitTest {
         val bw = (s * vw).toInt()
         val bh = (s * vh).toInt()
         val ss = 1f * bw / bh
-        println(Scale(w,h,vw,vh,scale,scale2,s,bw,bh,ss))
+        println(Scale(w, h, vw, vh, scale, scale2, s, bw, bh, ss))
     }
 
     data class Scale(
@@ -70,7 +70,7 @@ class ExampleUnitTest {
     )
 
     @Test
-    fun code(){
+    fun code() {
         val list = listOf(
             User(1, "部门1", 0),
             User(2, "部门2", 1),
@@ -83,19 +83,19 @@ class ExampleUnitTest {
         println(list.toString())
     }
 
-    private fun handler(list: List<User>){
+    private fun handler(list: List<User>) {
         val map = HashMap<Int, MutableList<User>>()
         // id不重复，id不是很多，pid比较分散
         list.forEach {
             val children = map[it.id]
-            if (children == null){
+            if (children == null) {
                 map[it.id] = it.children
             } else {
                 it.children = children
             }
-            if (it.pid != 0){
+            if (it.pid != 0) {
                 var parent = map[it.pid]
-                if (parent == null){
+                if (parent == null) {
                     parent = ArrayList()
                     map[it.pid] = parent
                 }
@@ -112,8 +112,8 @@ class ExampleUnitTest {
     )
 
     @Test
-    fun flow(){
-        val list = sequence{
+    fun flow() {
+        val list = sequence {
             yield("String")
             yield("Int")
             yield("Boolean")
@@ -138,6 +138,127 @@ class ExampleUnitTest {
     fun testSP() {
         val result = SpUtil.getUserKey("U_test")
         println(result)
+    }
+
+    @Test
+    fun testLinkHashSet() {
+        val set = mutableSetOf<Int>()
+        set.add(1)
+        println(set.last())
+        set.add(2)
+        println(set.last())
+        set.add(3)
+        println(set.last())
+        set.add(1)
+        println(set.last())
+    }
+
+    var textCurIndex = 0
+    private val text = "机app"
+
+    @Test
+    fun testbbbbb() {
+        focusWord("App")
+    }
+
+
+    fun focusWord(word: String) {
+        // 未识别的文字
+        val text = text.substring(textCurIndex)
+        // 下一个文字所在的范围
+        val findTextLength = text.getWordLength(9)
+        // 下一个文字所在的字符串
+        val findText = text.substring(0, findTextLength)
+        // 找到的下标
+        val wordIndex = findText.getWordIndex(word)
+        // 没找到
+        if (wordIndex == -1) {
+            return
+        }
+        // 文字所占长度，包含符号
+        val wordLength = findText.substring(wordIndex).getWordLength()
+        val newIndex = textCurIndex + wordIndex + wordLength
+        println("wordLength:$wordLength")
+        // 标记
+        textCurIndex = newIndex
+    }
+
+    fun String.getWordIndex(word: String): Int {
+        val letter = StringBuilder()
+        var letterStartIndex = -1
+        toCharArray().forEachIndexed { index, it ->
+            var isLetter = false
+            // 如果是中文，字数+1
+            if (it.isChinese()) {
+                if (it.toString() == word) {
+                    return index
+                }
+            } else if (it.isNumber()) {
+                if (it.toString() == word) {
+                    return index
+                }
+            } else if (it.isEnglish()) {
+                isLetter = true
+                // 记录字母
+                letter.append(it.toString())
+                if (letterStartIndex == -1) {
+                    letterStartIndex = index
+                }
+            }
+            if (!isLetter && letterStartIndex != -1) {
+                if (letter.toString().equals(word, true)) {
+                    return letterStartIndex
+                }
+                letterStartIndex = -1
+                letter.clear()
+            }
+
+        }
+        // 处理最后一个也是字母的情况
+        if (letterStartIndex != -1) {
+            if (letter.toString().equals(word, true)) {
+                return letterStartIndex
+            }
+        }
+        return -1
+    }
+
+
+    fun String.getWordLength(num: Int = 1): Int {
+        var count = 0
+        var lastLetter = false
+        toCharArray().forEachIndexed { index, it ->
+            var isLetter = false
+            // 如果是中文，字数+1
+            if (it.isChinese()) {
+                count++
+            } else if (it.isNumber()) {
+                count++
+            } else if (it.isEnglish()) {
+                // 如果是字母，并且前一个不是字母，字数+1
+                isLetter = true
+                if (!lastLetter) {
+                    count++
+                }
+            }
+            if (count > num) {
+                return index
+            }
+            lastLetter = isLetter
+        }
+        return length
+    }
+
+    fun Char.isChinese(): Boolean {
+        return this >= 0x4E00.toChar() && this <= 0x9FA5.toChar()
+    }
+
+    fun Char.isEnglish(): Boolean {
+        return this in 'a'..'z' || this in 'A'..'Z'
+    }
+
+    fun Char.isNumber(): Boolean {
+        return this in '0'..'9'
     }
 
     fun thread() = runBlocking {
@@ -243,13 +364,13 @@ class ExampleUnitTest {
     open class TestClass<T>
 
     @Test
-    fun show(){
+    fun show() {
         val alpha100 = getAlpha100()
         val alpha1 = getAlpha1()
 
     }
 
-    fun getAlpha1(): HashMap<String, Float>{
+    fun getAlpha1(): HashMap<String, Float> {
         return HashMap<String, Float>().apply {
             alpha255.forEach { (t, u) ->
                 this[u] = t.toFloat() / 100
@@ -257,7 +378,7 @@ class ExampleUnitTest {
         }
     }
 
-    private fun getAlpha100(): HashMap<String, Int>{
+    private fun getAlpha100(): HashMap<String, Int> {
         return HashMap<String, Int>().apply {
             alpha255.forEach { (t, u) ->
                 this[u] = t
