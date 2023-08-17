@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import com.gfz.lab.databinding.FragmentWhiteboardBinding
 import com.gfz.lab.ui.fragment.home.whiteboard.view.LocalWhiteBoardView
 import com.gfz.lab.ui.fragment.home.whiteboard.view.WhiteBoardView
+import com.gfz.lab.utils.ViewScaleUtil
 import com.gfz.ui.base.page.BaseVBFragment
 
 /**
@@ -15,6 +16,10 @@ import com.gfz.ui.base.page.BaseVBFragment
 class TestWhiteBoardFragment : BaseVBFragment<FragmentWhiteboardBinding>() {
 
     var whiteBoard: LocalWhiteBoardView? = null
+
+    private val scaleUtil by lazy {
+        ViewScaleUtil(binding.llWhiteBoardLayout, 1f, 3f)
+    }
 
     override fun initView() {
         with(binding) {
@@ -29,6 +34,9 @@ class TestWhiteBoardFragment : BaseVBFragment<FragmentWhiteboardBinding>() {
             btnRubber.setOnClickListener {
                 whiteBoard?.setIsEraser(true)
             }
+            flWhiteBoardLayout.init { fl, fl2, fl3 ->
+                scaleUtil.onScale(fl, fl2, fl3)
+            }
         }
     }
 
@@ -37,11 +45,11 @@ class TestWhiteBoardFragment : BaseVBFragment<FragmentWhiteboardBinding>() {
     }
 
     private fun addWhiteBoard(view: View) {
-        binding.flWhiteBoardLayout.removeAllViews()
+        binding.llWhiteBoardLayout.removeAllViews()
         view.layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-        binding.flWhiteBoardLayout.addView(view)
+        binding.llWhiteBoardLayout.addView(view)
     }
 }
