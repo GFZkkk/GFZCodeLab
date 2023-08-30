@@ -389,7 +389,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * 防止重复点击
      */
     private fun fastClick(): Boolean {
-        return timeCell.fastClick(0, 500)
+        return timeCell.fastClick(0, getClickDoubleTime())
     }
     // endregion
 }

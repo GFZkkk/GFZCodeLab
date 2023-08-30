@@ -7,10 +7,6 @@ import okhttp3.WebSocketListener
 import java.util.concurrent.TimeUnit
 
 /**
- *
- * created by xueya on 2022/4/11
- */
-/**
  * WebSocket工具
  * created by xueya on 2022/4/15
  *
