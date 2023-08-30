@@ -46,7 +46,7 @@ class FuncFragment : BaseVBFragment<FragmentFuncBinding>() {
                 marginRight = endPadding,
             )
         )
-        adapter.refresh(ArrayList<BannerBean>().apply {
+        adapter.setData(ArrayList<BannerBean>().apply {
             repeat(3) {
                 add(BannerBean("测试：$it"))
             }

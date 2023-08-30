@@ -7,9 +7,8 @@ import androidx.annotation.CallSuper
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SimpleItemAnimator
 import com.gfz.common.utils.TimeCell
-import com.gfz.common.utils.TopLog
+import com.gfz.recyclerview.databinding.ItemUnknownBinding
 
 
 /**
@@ -183,10 +182,19 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     // region 修改并刷新
     /**
-     * 刷新全部数据
+     * 刷新全部数据以及布局
+     * 涉及到布局变动的必须用notifyDataSetChanged
      */
     fun refresh(data: List<T?>?) {
-        notifyDataAllChange{
+        setDataList(data)
+        notifyDataSetChanged()
+    }
+
+    /**
+     * 刷新全部数据
+     */
+    fun setData(data: List<T?>?) {
+        notifyDataAllChanged {
             setDataList(data)
         }
     }
@@ -210,7 +218,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * @param position item
      */
     fun addAll(data: List<T?>, position: Int = length) {
-        notifyDataRangeInsert(position){
+        notifyDataRangeInserted(position){
             addAllData(data, position)
         }
     }
@@ -220,7 +228,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * @param position item
      */
     fun add(data: T, position: Int = length) {
-        notifyDataRangeInsert(position){
+        notifyDataRangeInserted(position){
             addData(data, position)
         }
     }
@@ -240,7 +248,7 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
      * @param position item
      */
     fun remove(position: Int) {
-        notifyDataRangeRemove(position){
+        notifyDataRangeRemoved(position){
             removeData(position)
         }
     }
@@ -340,31 +348,40 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
 
     // region 刷新
 
-    open fun notifyDataAllChange(block: () -> Unit){
+    open fun notifyDataAllChanged(block: () -> Unit) {
         val oldLength = length
         block()
         val newLength = length
         notifyItemRangeChanged(0, oldLength.coerceAtMost(newLength))
-        if (oldLength > newLength){
+        if (oldLength > newLength) {
             notifyItemRangeRemoved(newLength, oldLength - newLength)
-        } else if(oldLength < newLength){
+        } else if (oldLength < newLength) {
             notifyItemRangeInserted(oldLength, newLength - oldLength)
         }
     }
+
     /**
      * 刷新改变item的位置
      */
-    open fun notifyDataRangeInsert(position: Int, length: Int = 1, block: () -> Unit = {}) {
+    open fun notifyDataRangeInserted(position: Int, block: () -> Unit) {
+        val oldLength = length
         block()
-        notifyItemRangeInserted(position, length)
+        val newLength = length
+        if (newLength > oldLength) {
+            notifyItemRangeInserted(position, newLength - oldLength)
+        }
     }
 
     /**
      * 刷新删除item的位置
      */
-    open fun notifyDataRangeRemove(position: Int, length: Int = 1, block: () -> Unit = {}) {
+    open fun notifyDataRangeRemoved(position: Int, block: () -> Unit) {
+        val oldLength = length
         block()
-        notifyItemRangeRemoved(position, length)
+        val newLength = length
+        if (newLength < oldLength) {
+            notifyItemRangeRemoved(position, oldLength - newLength)
+        }
     }
 
     /**
@@ -392,4 +409,17 @@ abstract class BaseRecyclerViewAdapter<T>(dataList: List<T?> = ArrayList()) :
         return timeCell.fastClick(0, getClickDoubleTime())
     }
     // endregion
+
+    inner class UnknownViewHolder(
+        layoutInflater: LayoutInflater,
+        parent: ViewGroup
+    ) : BaseVBRecyclerViewHolder<T, ItemUnknownBinding>(
+        ItemUnknownBinding.inflate(
+            layoutInflater,
+            parent,
+            false
+        )
+    ) {
+        override fun onBindViewHolder(data: T, position: Int) {}
+    }
 }

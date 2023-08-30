@@ -27,7 +27,7 @@ class TestCustomFragment : BaseVBFragment<FragmentCustomBinding>(){
         }
         binding.rvList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvList.adapter = adapter
-        adapter.refresh(list)
+        adapter.setData(list)
     }
 
 

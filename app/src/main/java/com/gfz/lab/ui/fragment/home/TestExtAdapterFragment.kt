@@ -43,7 +43,7 @@ class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>() {
         with(binding) {
             rvList.adapter = adapter
             rvList.layoutManager = LinearLayoutManager(requireContext())
-            adapter.refresh(listOf(1, 2, 3, 4))
+            adapter.setData(listOf(1, 2, 3, 4))
             val emptyBinding: LayoutEmptyTestBinding = viewBind(rvList)
             adapter.emptyViewBinding = emptyBinding
 
@@ -63,7 +63,7 @@ class TestExtAdapterFragment : BaseVBFragment<FragmentExtlayoutBinding>() {
             }
 
             footerTestBinding.tvFooter.setOnClickListener {
-                adapter.refresh(ArrayList<Number?>().apply {
+                adapter.setData(ArrayList<Number?>().apply {
                     repeat(RandomUtil.getRandomIndex(10)){
                         add(RandomUtil.getRandomIndex(100))
                     }

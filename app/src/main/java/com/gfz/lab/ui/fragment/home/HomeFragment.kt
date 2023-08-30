@@ -24,7 +24,7 @@ class HomeFragment : BaseVBFragment<FragmentHomeBinding>() {
         binding.rvList.adapter = adapter
         binding.rvList.layoutManager = GridLayoutManager(context, 2)
 
-        adapter.refresh(
+        adapter.setData(
             listOf(
                 TestBean("日历实验区", R.id.testCalendarFragment),
                 TestBean("滑动多选实验区", R.id.testMultipleChooseFragment),

@@ -15,15 +15,14 @@ import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder as BaseRecyclerViewHo
  *
  * created by gaofengze on 2021/1/27
  */
-abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
-    BaseRecyclerViewAdapter<T>(list) {
+abstract class BaseExtLayoutAdapter<T> : BaseRecyclerViewAdapter<T>() {
 
     val EMPTY = -1
     val FOOT = -2
     val HEAD = -3
 
-    var footerViewBinding: ViewBinding? = null
     var emptyViewBinding: ViewBinding? = null
+    var footerViewBinding: ViewBinding? = null
     var headerViewBinding: ViewBinding? = null
 
     private val extViewNotifyHelper by lazy {
@@ -41,9 +40,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
             HEAD -> getHeaderViewHolder(layoutInflater, parent) as? BaseRecyclerViewHolder<T>
             else -> onCreateDataViewHolder(layoutInflater, parent, viewType)
         }
-        return requireNotNull(holder) {
-            TopLog.e("view holder is null")
-        }
+        return holder ?: UnknownViewHolder(layoutInflater, parent)
     }
 
     abstract fun onCreateDataViewHolder(
@@ -57,9 +54,9 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (isEmptyView()) return EMPTY
         if (isHeadView(position)) return HEAD
-        return if (isFootView(position)) FOOT else getEFItemViewType(getDataPosition(position))
+        if (isFootView(position)) return FOOT
+        return if (isEmptyView()) return EMPTY else getEFItemViewType(getDataPosition(position))
     }
 
     /**
@@ -70,7 +67,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         super.onAttachedToRecyclerView(recyclerView)
         val manager = recyclerView.layoutManager
         if (manager is GridLayoutManager) {
-            manager.spanSizeLookup = object : SpanSizeLookup() {
+            manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return if (isDataPosition(position)) {
                         1
@@ -98,31 +95,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         return super.getData(getDataPosition(position))
     }
 
-    override fun addAll(data: List<T?>) {
-        addAll(data, getHeaderNum() + length)
-    }
-
-    override fun add(data: T) {
-        add(data, getHeaderNum() + length)
-    }
-
-    override fun addAllData(dataList: List<T?>?, position: Int) {
-        super.addAllData(dataList, position - getHeaderNum())
-    }
-
-    override fun addData(data: T?, position: Int) {
-        super.addData(data, position - getHeaderNum())
-    }
-
-    override fun removeData(position: Int) {
-        super.removeData(getDataPosition(position))
-    }
-
-    override fun setData(position: Int, data: T?) {
-        super.setData(getDataPosition(position), data)
-    }
-
-    override fun notifyDataAllChange(block: () -> Unit) {
+    override fun notifyDataAllChanged(block: () -> Unit) {
         val oldLength = length
         extViewNotifyHelper.notifyExtItemChange(block) {
             val newLength = length
@@ -135,161 +108,40 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
         }
     }
 
-    override fun notifyDataRangeInsert(position: Int, length: Int, block: () -> Unit) {
+    // 因数据变化可能会引起额外布局变化
+    override fun notifyDataRangeInserted(position: Int, block: () -> Unit) {
         extViewNotifyHelper.notifyExtItemChange(block) {
             notifyItemRangeInserted(position + headerStatus.moveRange.length, length)
         }
     }
 
-    override fun notifyDataRangeRemove(position: Int, length: Int, block: () -> Unit) {
+    // 因数据变化可能会引起额外布局变化
+    override fun notifyDataRangeRemoved(position: Int, block: () -> Unit) {
         extViewNotifyHelper.notifyExtItemChange(block) {
             notifyItemRangeRemoved(position + headerStatus.moveRange.length, length)
         }
     }
 
-    override fun notifyDataRangeChange(position: Int, length: Int, block: () -> Unit) {
-        extViewNotifyHelper.notifyExtItemChange(block) {
-            notifyItemRangeChanged(position + headerStatus.moveRange.length, length)
-        }
+    fun notifyExtItemChanged(block: () -> Unit) {
+        extViewNotifyHelper.notifyExtItemChange(block)
     }
 
-    /**
-     * 额外布局刷新
-     * 在数据变化前后记录额外布局变化。
-     * 根据变化在数据item刷新前更新空布局和头布局，之后更新足布局。
-     */
-    inner class ExtViewNotifyHelper {
-        var emptyStatus: RangeStatus = EmptyRangeStatus()
-            private set
-        var headerStatus: RangeStatus = HeaderRangeStatus()
-            private set
-        var footerStatus: RangeStatus = FooterRangeStatus()
-            private set
-
-        fun notifyExtItemChange(
-            block: () -> Unit,
-            notifyDataChange: ExtViewNotifyHelper.() -> Unit
-        ) {
-            // 记录，更新数据
-            beforeDataChange()
-            block()
-            afterDataChange()
-            // 更新视图
-            beforeItemChange()
-            notifyDataChange(this)
-            afterItemChange()
-        }
-
-        // 记录数据变化之前
-        private fun beforeDataChange() {
-            emptyStatus.recordOld()
-            headerStatus.recordOld()
-            footerStatus.recordOld()
-        }
-
-        // 记录数据变化之后
-        private fun afterDataChange() {
-            emptyStatus.recordNew()
-            headerStatus.recordNew()
-            footerStatus.recordNew()
-        }
-
-        private fun beforeItemChange(){
-            emptyStatus.notifyItemChanged()
-            headerStatus.notifyItemChanged()
-        }
-
-        private fun afterItemChange(){
-            footerStatus.notifyItemChanged()
-        }
-
-        abstract inner class RangeStatus {
-            private val oldRange by lazy {
-                Range()
-            }
-
-            private val newRange by lazy {
-                Range()
-            }
-
-            val moveRange by lazy {
-                Range()
-            }
-
-            abstract fun recordRange(range: Range)
-
-            fun recordOld() {
-                recordRange(oldRange)
-            }
-
-            fun recordNew() {
-                recordRange(newRange)
-                mergeRange()
-            }
-
-            // 刷新布局
-            fun notifyItemChanged() {
-                with(moveRange){
-                    if (length > 0) {
-                        notifyItemRangeInserted(start, length)
-                    } else if (length < 0) {
-                        notifyItemRangeRemoved(start, -length)
-                    }
-                }
-            }
-
-            // 合并变化前后的range
-            private fun mergeRange() {
-                val unChangeLength = newRange.length.coerceAtMost(oldRange.length)
-                val start = newRange.start + unChangeLength
-                val moveLength = newRange.length - oldRange.length
-                moveRange.start = start
-                moveRange.length = moveLength
-            }
-        }
-
-        inner class EmptyRangeStatus() : RangeStatus() {
-            override fun recordRange(range: Range) {
-                range.start = 0
-                range.length = getEmptyNum()
-            }
-        }
-
-        inner class HeaderRangeStatus() : RangeStatus() {
-            override fun recordRange(range: Range) {
-                range.start = 0
-                range.length = getHeaderNum()
-            }
-        }
-
-        inner class FooterRangeStatus() : RangeStatus() {
-            override fun recordRange(range: Range) {
-                range.start = if (length == 0) {
-                    getEmptyNum()
-                } else {
-                    getHeaderNum() + length
-                }
-
-                range.length = getFooterNum()
-            }
-        }
-
-        inner class Range(var start: Int = 0, var length: Int = 0)
-    }
+//    override fun notifyDataRangeChange(position: Int, length: Int, block: () -> Unit) {
+//        extViewNotifyHelper.notifyExtItemChange(block) {
+//            notifyItemRangeChanged(position + headerStatus.moveRange.length, length)
+//        }
+//    }
 
     // endregion
 
     // region 工具方法
     /**
      * 根据列表中的位置获取数据中的位置
-     * 如果是扩展类型则不做处理
      */
     open fun getDataPosition(viewPosition: Int): Int {
-        var dataPosition = viewPosition
+        var dataPosition = -1
         if (isDataPosition(viewPosition)) {
-            if (isHaveHead()) {
-                dataPosition = viewPosition - getHeaderNum()
-            }
+            dataPosition = viewPosition - getHeaderNum()
         }
         return dataPosition
     }
@@ -306,11 +158,11 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
     }
 
     protected open fun getHeaderNum(): Int {
-        return if (isHaveHead() && getDataItemCount() > 0) 1 else 0
+        return if (isHaveHead()) 1 else 0
     }
 
     protected open fun getFooterNum(): Int {
-        return if (isHaveFoot() && getDataItemCount() > 0) 1 else 0
+        return if (isHaveFoot()) 1 else 0
     }
 
     protected fun getEmptyNum(): Int {
@@ -344,7 +196,7 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
      * 是否是足布局
      */
     protected open fun isFootView(adapterPosition: Int): Boolean {
-        return isHaveFoot() && getHeaderNum() + getDataItemCount() == adapterPosition
+        return isHaveFoot() && getDataItemCount() == adapterPosition
     }
 
     /**
@@ -364,110 +216,207 @@ abstract class BaseExtLayoutAdapter<T>(list: List<T?> = ArrayList()) :
      * 是否有足布局
      */
     protected open fun isHaveHead(): Boolean {
-        return headerViewBinding != null || getHeaderViewBindingClass() != null
+        return headerViewBinding != null
     }
 
     /**
      * 是否有头布局
      */
     protected open fun isHaveFoot(): Boolean {
-        return footerViewBinding != null || getFooterViewBindingClass() != null
+        return footerViewBinding != null
     }
 
     /**
      * 是否有空布局
      */
     protected open fun isHaveEmpty(): Boolean {
-        return emptyViewBinding != null || getEmptyViewBindingClass() != null
-    }
-
-    protected open fun getEmptyViewBindingClass(): Class<*>? {
-        return null
-    }
-
-    protected open fun getFooterViewBindingClass(): Class<*>? {
-        return null
-    }
-
-    protected open fun getHeaderViewBindingClass(): Class<*>? {
-        return null
+        return emptyViewBinding != null
     }
 
     open fun getHeaderViewHolder(
-        layoutInflater: LayoutInflater?,
+        layoutInflater: LayoutInflater,
         parent: ViewGroup
     ): HeaderViewHolder<*>? {
-        if (headerViewBinding == null) {
-            headerViewBinding =
-                getViewBinding(getHeaderViewBindingClass(), layoutInflater, parent)
-        }
         return headerViewBinding?.let {
             HeaderViewHolder(it)
         }
     }
 
     open fun getFooterViewHolder(
-        layoutInflater: LayoutInflater?,
+        layoutInflater: LayoutInflater,
         parent: ViewGroup
     ): FooterViewHolder<*>? {
-        if (footerViewBinding == null) {
-            footerViewBinding = getViewBinding(getFooterViewBindingClass(), layoutInflater, parent)
-        }
         return footerViewBinding?.let {
             FooterViewHolder(it)
         }
     }
 
     open fun getEmptyViewHolder(
-        layoutInflater: LayoutInflater?,
+        layoutInflater: LayoutInflater,
         parent: ViewGroup
     ): EmptyViewHolder<ViewBinding>? {
-        if (emptyViewBinding == null) {
-            emptyViewBinding =
-                getViewBinding(getEmptyViewBindingClass(), layoutInflater, parent)
-        }
         return emptyViewBinding?.let {
             EmptyViewHolder(it)
         }
     }
 
-    open fun <VB : ViewBinding> getViewBinding(vbClass: Class<*>?, parent: ViewGroup): VB {
-        return getViewBinding(vbClass, LayoutInflater.from(parent.context), parent)
+    fun addHeaderViewBinding(
+        recyclerView: RecyclerView,
+        bind: (LayoutInflater, ViewGroup, Boolean) -> ViewBinding
+    ) {
+        headerViewBinding = bind(LayoutInflater.from(recyclerView.context), recyclerView, false)
     }
 
-    protected open fun <VB : ViewBinding> getViewBinding(
-        vbClass: Class<*>?,
-        layoutInflater: LayoutInflater?,
-        parent: ViewGroup
-    ): VB {
-        return vbClass?.getMethod(
-            "inflate",
-            LayoutInflater::class.java,
-            ViewGroup::class.java,
-            Boolean::class.javaPrimitiveType
-        )?.invoke(null, layoutInflater, parent, false) as VB
+    fun addEmptyViewBinding(
+        recyclerView: RecyclerView,
+        bind: (LayoutInflater, ViewGroup, Boolean) -> ViewBinding
+    ) {
+        emptyViewBinding = bind(LayoutInflater.from(recyclerView.context), recyclerView, false)
     }
 
+    fun addFooterViewBinding(
+        recyclerView: RecyclerView,
+        bind: (LayoutInflater, ViewGroup, Boolean) -> ViewBinding
+    ) {
+        footerViewBinding = bind(LayoutInflater.from(recyclerView.context), recyclerView, false)
+    }
 
-    //数据viewholder需要继承的布局
-    abstract class DataViewHolder<T, VB : ViewBinding>(binding: VB) :
-        BaseVBRecyclerViewHolder<T, VB>(binding) {
+    inline fun <reified T> buildHeaderBinding(binding: T.() -> Unit){
+        (headerViewBinding as? T)?.let {
+            binding(it)
+        }
     }
 
     //扩展ViewHolder需要继承的布局
-    open class ExtViewHolder<VB : ViewBinding>(binding: VB) :
+    open inner class ExtViewHolder<VB : ViewBinding>(binding: VB) :
         BaseVBRecyclerViewHolder<Any?, VB>(binding) {
-
-        override fun onBindViewHolder(data: Any?, position: Int) {
-
-        }
-
+        override fun onBindViewHolder(data: Any?, position: Int) {}
     }
 
-    class EmptyViewHolder<VB : ViewBinding>(binding: VB) : ExtViewHolder<VB>(binding)
+    inner class EmptyViewHolder<VB : ViewBinding>(binding: VB) : ExtViewHolder<VB>(binding)
 
-    class FooterViewHolder<VB : ViewBinding>(binding: VB) : ExtViewHolder<VB>(binding)
+    inner class FooterViewHolder<VB : ViewBinding>(binding: VB) : ExtViewHolder<VB>(binding)
 
-    class HeaderViewHolder<VB : ViewBinding>(binding: VB) : ExtViewHolder<VB>(binding)
+    inner class HeaderViewHolder<VB : ViewBinding>(binding: VB) : ExtViewHolder<VB>(binding)
     // endregion
+
+    /**
+     * 额外布局刷新
+     * 在数据变化前后记录额外布局变化。
+     * 根据变化在数据item刷新前更新空布局和头布局，之后更新足布局。
+     * 只改变增删，change需要手动更新
+     */
+    inner class ExtViewNotifyHelper {
+        var emptyStatus: RangeStatus = EmptyRangeStatus()
+            private set
+        var headerStatus: RangeStatus = HeaderRangeStatus()
+            private set
+        var footerStatus: RangeStatus = FooterRangeStatus()
+            private set
+
+        fun notifyExtItemChange(
+            block: () -> Unit,
+            notifyDataChange: ExtViewNotifyHelper.() -> Unit = {}
+        ) {
+            // 记录，更新数据
+            beforeDataChange()
+            block()
+            afterDataChange()
+            // 更新视图
+            beforeItemChange()
+            notifyDataChange(this)
+            afterItemChange()
+        }
+
+        // 记录数据变化之前
+        private fun beforeDataChange() {
+            emptyStatus.recordOld()
+            headerStatus.recordOld()
+            footerStatus.recordOld()
+        }
+
+        // 记录数据变化之后
+        private fun afterDataChange() {
+            emptyStatus.recordNew()
+            headerStatus.recordNew()
+            footerStatus.recordNew()
+        }
+
+        private fun beforeItemChange() {
+            headerStatus.notifyItemChanged()
+            emptyStatus.notifyItemChanged()
+        }
+
+        private fun afterItemChange() {
+            footerStatus.notifyItemChanged()
+        }
+
+        abstract inner class RangeStatus {
+            private val oldRange by lazy {
+                Range()
+            }
+
+            private val newRange by lazy {
+                Range()
+            }
+
+            val moveRange by lazy {
+                Range()
+            }
+
+            abstract fun recordRange(range: Range)
+
+            fun recordOld() {
+                recordRange(oldRange)
+            }
+
+            fun recordNew() {
+                recordRange(newRange)
+                mergeRange()
+            }
+
+            // 刷新布局
+            fun notifyItemChanged() {
+                with(moveRange) {
+                    if (length > 0) {
+                        notifyItemRangeInserted(start, length)
+                    } else if (length < 0) {
+                        notifyItemRangeRemoved(start, -length)
+                    }
+                }
+            }
+
+            // 合并变化前后的range
+            private fun mergeRange() {
+                val unChangeLength = newRange.length.coerceAtMost(oldRange.length)
+                val start = newRange.start + unChangeLength
+                val moveLength = newRange.length - oldRange.length
+                moveRange.start = start
+                moveRange.length = moveLength
+            }
+        }
+
+        inner class EmptyRangeStatus() : RangeStatus() {
+            override fun recordRange(range: Range) {
+                range.start = getHeaderNum()
+                range.length = getEmptyNum()
+            }
+        }
+
+        inner class HeaderRangeStatus() : RangeStatus() {
+            override fun recordRange(range: Range) {
+                range.start = 0
+                range.length = getHeaderNum()
+            }
+        }
+
+        inner class FooterRangeStatus() : RangeStatus() {
+            override fun recordRange(range: Range) {
+                range.start = getHeaderNum() + getEmptyNum() + getDataItemCount()
+                range.length = getFooterNum()
+            }
+        }
+
+        inner class Range(var start: Int = 0, var length: Int = 0)
+    }
 }

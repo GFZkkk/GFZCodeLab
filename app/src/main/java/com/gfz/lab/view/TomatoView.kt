@@ -46,7 +46,7 @@ class TomatoView @JvmOverloads constructor(
             for (i in 1..12) {
                 timeItems.add(i * 5)
             }
-            adapter.refresh(timeItems)
+            adapter.setData(timeItems)
 
             adapter.setOnItemChangeListener(object : BaseCenterAdapter.OnItemChangeListener {
                 override fun onItemChange(position: Int) {
