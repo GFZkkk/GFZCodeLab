@@ -50,14 +50,6 @@ class TimeCell(size: Int = 5) {
         return overTimeInterval(getNowTime(), getLastTime(tag), dur)
     }
 
-    fun isNewTag(tag: Int): Boolean {
-        return if (tag == 0) {
-            lastTime == 0L
-        } else {
-            timeArray.indexOfKey(tag) < 0
-        }
-    }
-
     /**
      * 判断两个时间的间隔是否已经超过条件
      */

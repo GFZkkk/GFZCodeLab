@@ -33,7 +33,7 @@ abstract class BaseBannerAdapter<T>(context: Context, private val time: Int, smo
     }
 
     fun readyData(data: List<T?>) {
-        notifyDataAllChange{
+        notifyDataAllChanged{
             bannerNum = data.size
             clear()
             addData(data[data.size - 1])

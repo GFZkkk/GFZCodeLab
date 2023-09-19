@@ -4,14 +4,13 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
-import android.view.View
 import android.widget.FrameLayout
 
 /**
  *
  * created by xueya on 2023/8/16
  */
-class TestView @JvmOverloads constructor(
+class ScaleLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

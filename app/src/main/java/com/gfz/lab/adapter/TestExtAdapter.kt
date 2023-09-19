@@ -9,6 +9,7 @@ import com.gfz.lab.databinding.LayoutHeaderTestBinding
 import com.gfz.common.ext.toLog
 import com.gfz.common.utils.RandomUtil
 import com.gfz.common.utils.TopLog
+import com.gfz.recyclerview.adapter.BaseVBRecyclerViewHolder
 import kotlin.random.Random
 
 /**
@@ -38,7 +39,7 @@ class TestExtAdapter : BaseExtLayoutAdapter<Number>() {
         return super.isHaveFoot() && haveFooter
     }
 
-    inner class ViewHolder(binding: ItemExtDataBinding) : DataViewHolder<Number, ItemExtDataBinding>(binding){
+    inner class ViewHolder(binding: ItemExtDataBinding) : BaseVBRecyclerViewHolder<Number, ItemExtDataBinding>(binding){
 
         override fun initEvent() {
             super.initEvent()

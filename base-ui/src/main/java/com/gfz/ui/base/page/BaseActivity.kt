@@ -13,6 +13,7 @@ import com.gfz.common.utils.TimeCell
 import com.gfz.common.utils.ToastUtil
 import com.gfz.ui.base.dialog.LoadingDialog
 import com.gfz.ui.base.interfaces.BasePageTools
+import com.gyf.immersionbar.ktx.immersionBar
 
 
 /**
@@ -58,7 +59,9 @@ abstract class BaseActivity : AppCompatActivity(), BasePageTools {
     }
 
     protected open fun setWindowStatus() {
-
+        immersionBar {
+            statusBarDarkFont(true)
+        }
     }
 
     @IdRes
