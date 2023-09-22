@@ -20,10 +20,10 @@ class TestMultipleChooseAdapter(dataList: List<MultipleChooseBean?> = ArrayList(
     var groupId = -1
 
     init {
-        setBound(10)
+        setViewBound(10)
     }
 
-    override fun getChooseViewByPosition(position: Int): Int {
+    override fun getCheckBoxIdByPosition(position: Int): Int {
         return R.id.iv_choose
     }
 

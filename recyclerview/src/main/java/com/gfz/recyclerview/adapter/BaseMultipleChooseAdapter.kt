@@ -1,14 +1,16 @@
 package com.gfz.recyclerview.adapter
 
+import android.graphics.Rect
 import android.util.SparseBooleanArray
+import android.view.MotionEvent
 import android.view.View
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.RecyclerView
+import com.gfz.common.utils.TopLog
 import com.gfz.recyclerview.bean.BaseMultipleChooseBean
 
 /**
  * 多选recyclerview 基类
- * 理念上不支持反选，以选中为优先
+ * 全选时优先选中
  * created by gaofengze on 2020/4/14
  */
 
@@ -19,56 +21,113 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
     private val chooseTitleItem: SparseBooleanArray by lazy {
         SparseBooleanArray()
     }
+    private val layoutManager get() = mRecyclerview.layoutManager
+    private lateinit var mRecyclerview: RecyclerView
 
     /**
      * 是否根据view确定多选框范围
      */
-    private var bound: ChooseBound? = null
+    private var bound: Rect? = null
     private var correction: Int = 0
-    private var sureBoundByView = true
+    private var enableTouchCheck = false
+
+    private var currentPosition = -1
+    private var groupId = -1
+    private var check = false
 
     /**
      * 设置固定的选择范围
      */
-    fun setBound(left: Int, right: Int, flag: Int = 0) {
-        this.bound = ChooseBound(left, right, flag)
-        sureBoundByView = false
+    fun setRectBound(rect: Rect) {
+        this.bound = rect
+        enableTouchCheck = true
     }
 
     /**
      * 设置view额外的选择范围
      */
-    fun setBound(correction: Int) {
+    fun setViewBound(correction: Int) {
         this.correction = correction
-        sureBoundByView = true
+        enableTouchCheck = true
     }
 
     /**
-     * 选项的范围
+     * 根据[position]获取该item的分组，当不允许跨组多选的时候需要重写
      */
-    fun checkBound(x: Float, position: Int, itemView: View?): Boolean {
-        val chooseView: View? = itemView?.findViewById(getChooseViewByPosition(position))
-        chooseView?.let {
-            return isBound(x, ChooseBound(chooseView.left, chooseView.right, correction))
+    open fun getGroupId(position: Int): Int {
+        return 0
+    }
+
+    /**
+     * 获取多选范围的viewId
+     */
+    open fun getCheckBoxIdByPosition(position: Int): Int = 0
+
+    override fun setClickIndex(clickIndex: Int) {
+        chooseItem(clickIndex)
+        super.setClickIndex(clickIndex)
+
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        mRecyclerview = recyclerView.apply {
+            if (enableTouchCheck) {
+                setOnTouchListener { _, e ->
+                    return@setOnTouchListener handleTouchCheck(e)
+                }
+            }
+        }
+    }
+
+    private fun handleTouchCheck(e: MotionEvent): Boolean {
+        if (!enableTouchCheck || layoutManager == null) {
+            return false
+        }
+        when (e.action) {
+            MotionEvent.ACTION_MOVE -> {
+                val realPosition = getTouchCheckBoxIndex(e.x, e.y)
+                if (realPosition != -1) {
+                    if (currentPosition != realPosition) {
+                        //记录第一个选中的item的groupId
+                        if (groupId == -1) {
+                            groupId = getGroupId(realPosition)
+                            check = isChooseItem(realPosition)
+                        }
+                        //只有同组的item才会在一次滑动中选中
+                        if (groupId == getGroupId(realPosition)) {
+                            chooseItem(realPosition, !check)
+                        }
+                        currentPosition = realPosition
+                    }
+                    return true
+                }
+
+            }
+            MotionEvent.ACTION_UP -> {
+                groupId = -1
+                currentPosition = -1
+            }
         }
         return false
     }
 
-    /**
-     * 选项的范围
-     */
-    fun checkBound(x: Float): Boolean {
-        bound?.let {
-            return isBound(x, it)
+    private fun getTouchCheckBoxIndex(x: Float, y: Float): Int {
+        val view = mRecyclerview.findChildViewUnder(x, y) ?: return -1
+        val position = mRecyclerview.getChildAdapterPosition(view)
+        val rect = bound ?: view.findViewById<View>(getCheckBoxIdByPosition(position))?.let {
+            Rect(it.left, it.top, it.right, it.bottom).apply {
+                inset(-correction, -correction)
+            }
         }
-        return false
-    }
-
-    /**
-     * 是否在选中范围内
-     */
-    private fun isBound(x: Float, bound: ChooseBound): Boolean {
-        return x >= bound.left - bound.flag && x <= bound.right + bound.flag
+        val rx = (x - view.left).toInt()
+        val ry = (y - view.top).toInt()
+        val hit = rect?.contains(rx, ry) ?: false
+        return if (hit) {
+            position
+        } else {
+            -1
+        }
     }
 
     // region 单选
@@ -104,6 +163,11 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
     // endregion
 
     // region 多选
+    fun isMultipleChooseItem(position: Int): Boolean {
+        val groupId = getGroupIdByPosition(position)
+        return chooseTitleItem.get(groupId, false)
+    }
+
     /**
      * 是否是新的一组
      */
@@ -113,7 +177,15 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
         else
             getData(position)?.getBaseGroupId() != getData(position - 1)?.getBaseGroupId()
 
-    fun setTitleItemStatus(position: Int, change: Boolean) {
+    /**
+     * 改变组的修改状态
+     */
+    fun changeGroupChooseStatus(position: Int) {
+        setTitleItemStatus(position, !isMultipleChooseItem(position))
+        updateMultipleItem(position)
+    }
+
+    private fun setTitleItemStatus(position: Int, change: Boolean) {
         val groupId = getGroupIdByPosition(position)
         chooseTitleItem.append(groupId, change)
         getDataList().forEachIndexed { index, t ->
@@ -124,7 +196,7 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
         }
     }
 
-    fun updateMultipleItem(position: Int) {
+    private fun updateMultipleItem(position: Int) {
         val groupId = getGroupIdByPosition(position)
         val change = isMultipleChooseItem(position)
         getDataList().forEachIndexed { index, multipleChooseBean ->
@@ -136,15 +208,7 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
         }
     }
 
-    /**
-     * 改变组的修改状态
-     */
-    fun changeGroupChooseStatus(position: Int) {
-        setTitleItemStatus(position, !isMultipleChooseItem(position))
-        updateMultipleItem(position)
-    }
-
-    fun checkGroupCheckStatus(position: Int) {
+    private fun checkGroupCheckStatus(position: Int) {
         val groupId = getGroupIdByPosition(position)
         val multipleChoose: Boolean = isMultipleChooseItem(position)
         var allChoose = true
@@ -171,34 +235,7 @@ abstract class BaseMultipleChooseAdapter<T : BaseMultipleChooseBean>(dataList: L
 
     }
 
-    fun isMultipleChooseItem(position: Int): Boolean {
-        val groupId = getGroupIdByPosition(position)
-        return chooseTitleItem.get(groupId, false)
-    }
-
-    fun getGroupIdByPosition(position: Int) = getData(position)!!.getBaseGroupId()
+    private fun getGroupIdByPosition(position: Int) = getData(position)!!.getBaseGroupId()
     // endregion
-
-    fun isCheckBoundByView() = sureBoundByView
-
-    /**
-     * 根据[position]获取该item的分组，当不允许跨组多选的时候需要重写
-     */
-    open fun getGroupId(position: Int): Int {
-        return 0
-    }
-
-    /**
-     * 获取多选范围的viewId
-     */
-    open fun getChooseViewByPosition(position: Int): Int = 0
-
-    override fun setClickIndex(clickIndex: Int) {
-        chooseItem(clickIndex)
-        super.setClickIndex(clickIndex)
-
-    }
-
-    data class ChooseBound(val left: Int, val right: Int, val flag: Int = 0)
 
 }
