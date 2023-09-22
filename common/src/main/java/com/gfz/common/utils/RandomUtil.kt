@@ -1,7 +1,6 @@
 package com.gfz.common.utils
 
-import android.os.SystemClock
-import java.util.*
+import java.util.concurrent.ThreadLocalRandom
 import kotlin.collections.ArrayList
 
 /**
@@ -9,15 +8,6 @@ import kotlin.collections.ArrayList
  * created by gaofengze on 2021/4/30
  */
 object RandomUtil {
-
-    private val random: Random by lazy {
-        Random()
-    }
-
-    fun getRandomIndex(size: Int): Int {
-        random.setSeed(SystemClock.uptimeMillis())
-        return random.nextInt(size)
-    }
 
     /**
      * 从list中取一个随机的list,不改变原有list
@@ -35,6 +25,10 @@ object RandomUtil {
         }
     }
 
+    fun getRandomIndex(size: Int): Int {
+        return ThreadLocalRandom.current().nextInt(size)
+    }
+
     /**
      * 乱序一个list
      */
@@ -42,10 +36,9 @@ object RandomUtil {
         if (num <= 0) {
             return
         }
-        random.setSeed(SystemClock.uptimeMillis())
         val size = num.coerceAtMost(list.size)
         list.forEachIndexed { index, t ->
-            val randomIndex = random.nextInt(size)
+            val randomIndex = getRandomIndex(size)
             list[index] = list[randomIndex]
             list[randomIndex] = t
         }

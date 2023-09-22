@@ -10,23 +10,22 @@ object SpUtil {
     }
 
     private val sp: MMKV by lazy {
-        MMKV.defaultMMKV()
+        MMKV.defaultMMKV(MMKV.MULTI_PROCESS_MODE, null)
     }
 
     fun putString(key: String, value: String) {
-        sp.encode(getUserKey(key), value)
+        sp.encode(key, value)
     }
 
-    fun getString(key: String?, default: String? = null): String? {
-        return sp.getString(getUserKey(key), default)
-    }
-
-    fun getUserKey(key: String?): String? = key?.let {
-        if (it.startsWith("U_")) {
-            val userId = "userId"
-            it.replaceFirst("U", userId)
-        } else {
-            key
-        }
+    fun <T> get(key: String, default: T? = null): T? {
+        return when (default) {
+            is String -> sp.decodeString(key, default)
+            is Boolean -> sp.decodeBool(key, default)
+            is Int -> sp.decodeInt(key, default)
+            is Float -> sp.decodeFloat(key, default)
+            is Double -> sp.decodeDouble(key, default)
+            is ByteArray -> sp.decodeBytes(key, default)
+            else -> throw IllegalArgumentException("MMKV get Unknown Type")
+        } as T
     }
 }

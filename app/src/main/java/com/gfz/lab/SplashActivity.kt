@@ -1,35 +1,30 @@
 package com.gfz.lab
 
-import android.Manifest
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.format.Formatter
-import androidx.core.app.ActivityCompat
 import com.gfz.common.utils.TopLog
 import com.gfz.lab.ui.activity.RootActivity
 import com.gfz.ui.base.page.BaseActivity
 import me.jessyan.autosize.internal.CancelAdapt
 import java.io.BufferedReader
 import java.io.File
-import java.io.FileInputStream
 import java.io.FileReader
-import java.io.InputStream
 
 /**
  * 启动页
  * created by gaofengze on 2021/4/30
  */
-class LaunchActivity : BaseActivity(), CancelAdapt {
+class SplashActivity : BaseActivity(), CancelAdapt {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = intent
         val action = intent.action
         val type = intent.type
-        TopLog.e("testccc  type:$type")
         if (Intent.ACTION_VIEW == action && type != null) {
             val uri = intent.data ?: return
             try{
@@ -80,6 +75,6 @@ class LaunchActivity : BaseActivity(), CancelAdapt {
             }
             start(RootActivity::class.java)
             finish()
-        }, 1000)
+        }, 0)
     }
 }
