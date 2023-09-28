@@ -2,13 +2,11 @@ package com.gfz.lab.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import com.gfz.common.utils.TopLog
 import com.gfz.lab.R
 import com.gfz.recyclerview.adapter.BaseCalendarAdapter
 import com.gfz.recyclerview.adapter.BaseRecyclerViewHolder
 import com.gfz.recyclerview.adapter.BaseVBRecyclerViewHolder
 import com.gfz.lab.databinding.ItemCalendarBinding
-import com.gfz.lab.ext.getColor
 import com.gfz.lab.model.bean.EventCalendarBean
 import com.gfz.recyclerview.ext.getColor
 

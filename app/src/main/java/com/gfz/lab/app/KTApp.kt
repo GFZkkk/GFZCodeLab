@@ -12,12 +12,8 @@ import com.gfz.common.utils.TopLog
 
 class KTApp : BaseApplication() {
 
-    companion object {
-        const val test = true
-    }
-
     override fun init() {
-        TopLog.init(test)
+        TopLog.init(isDebug)
         KTCatchException.init(this)
         SpUtil.init(appContext)
 //        FlutterInjector.instance().flutterLoader().startInitialization(this)

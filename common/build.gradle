@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.tencent:mmkv-static:1.2.10'
 
     implementation "androidx.lifecycle:lifecycle-common:$lifecycle_version"
+    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
 
     // kotlin
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"

@@ -44,7 +44,7 @@
         android:label="TestFlowFragment" />
     <fragment
         android:id="@+id/testWhiteBoardFragment"
-        android:name="com.gfz.lab.ui.fragment.home.whiteboard.TestWhiteBoardFragment"
+        android:name="com.gfz.lab.ui.fragment.home.TestWhiteBoardFragment"
         android:label="TestWhiteBoardFragment" />
 
     <fragment

@@ -32,11 +32,11 @@ object TopLog {
         printLog(E, null, "execute")
     }
 
-    fun e(msg: Any?) {
+    fun e(msg: Any) {
         if (msg is Throwable){
             printError(E, null, msg)
         } else {
-            printLog(E, null, msg!!)
+            printLog(E, null, msg)
         }
     }
 

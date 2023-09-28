@@ -4,7 +4,7 @@ package com.gfz.common.ext
  *
  * created by xueya on 2022/7/7
  */
-inline  fun <T> MutableList<T>.removeIf(filter: T?.() -> Boolean): Boolean{
+inline  fun <T> MutableList<T>.remove(filter: T.() -> Boolean): Boolean{
     val it = iterator()
     var removed = false
     while (it.hasNext()){

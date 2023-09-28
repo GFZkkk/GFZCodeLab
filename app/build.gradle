@@ -97,6 +97,8 @@ dependencies {
     implementation project(path: ":base-ui")
     implementation project(path: ":recyclerview")
     implementation project(path: ":gif-maker")
+    implementation project(path: ":message")
+    implementation project(path: ":whiteboard")
 
     implementation "androidx.core:core-ktx:$core_ktx_version"
     implementation "androidx.appcompat:appcompat:$appcompat_version"
@@ -109,24 +111,6 @@ dependencies {
     // ui
     implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
-
-//    // compose
-//    implementation "androidx.compose.ui:ui:$compose_version"
-//    // Tooling support (Previews, etc.)
-//    implementation "androidx.compose.ui:ui-tooling:$compose_version"
-//    // Foundation (Border, Background, Box, Image, Scroll, shapes, animations, etc.)
-//    implementation "androidx.compose.foundation:foundation:$compose_version"
-//    // Material Design
-//    implementation "androidx.compose.material:material:$compose_version"
-//    // Material design icons
-//    implementation "androidx.compose.material:material-icons-core:$compose_version"
-//    implementation "androidx.compose.material:material-icons-extended:$compose_version"
-//    // Integration with observables
-//    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
-//    // UI Tests
-//    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
-//    // navigation
-//    implementation "androidx.navigation:navigation-compose:$nav_version"
 
     // 网络请求
     implementation "com.squareup.retrofit2:retrofit:2.9.0"

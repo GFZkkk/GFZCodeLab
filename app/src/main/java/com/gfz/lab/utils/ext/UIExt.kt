@@ -1,4 +1,4 @@
-package com.gfz.lab.ext
+package com.gfz.lab.utils.ext
 
 import androidx.fragment.app.Fragment
 import com.gfz.common.ext.getCompatColor

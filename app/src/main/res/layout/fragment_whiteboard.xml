@@ -4,31 +4,13 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.gfz.lab.ui.fragment.home.whiteboard.view.ScaleLayout
-        android:id="@+id/flWhiteBoardLayout"
+    <LinearLayout
+        android:id="@+id/llWhiteBoardLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/llController">
-        <LinearLayout
-            android:id="@+id/llWhiteBoardLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="@drawable/bg_x"/>
-        <com.gfz.lab.ui.fragment.home.whiteboard.view.MatrixView
-            android:id="@+id/matrixView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_x">
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_x"/>
-        </com.gfz.lab.ui.fragment.home.whiteboard.view.MatrixView>
-    </com.gfz.lab.ui.fragment.home.whiteboard.view.ScaleLayout>
+        android:orientation="vertical"
+        android:gravity="center"/>
 
     <LinearLayout
         android:id="@+id/llController"

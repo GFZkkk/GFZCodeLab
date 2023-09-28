@@ -30,7 +30,6 @@ class TestCountDownFragment : BaseVBFragment<FragmentCountdownBinding>() {
             } else {
                 false
             }
-
         }
     }
 
